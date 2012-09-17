@@ -1,0 +1,289 @@
+[
+	{
+		"element":"a",
+		"options":{
+			"mode":"event,_link",
+			"category":"outbound"
+			}
+	},{
+		"element":"a[href*='wsu.edu']",
+		"options":{
+			"category":"internal",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a:not([href^='http:'])",
+		"options":{
+			"category":"internal",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.jpg']",
+		"options":{
+			"action":"jpg",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.zip']",
+		"options":{
+			"action":"zips",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.tiff']",
+		"options":{
+			"action":"tiff",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.tif']",
+		"options":{
+			"action":"tiff",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.bin']",
+		"options":{
+			"action":"bin",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.Bin']",
+		"options":{
+			"action":"bin",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.eps']",
+		"options":{
+			"action":"eps",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.gif']",
+		"options":{
+			"action":"gif",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.png']",
+		"options":{
+			"action":"png",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.ppt']",
+		"options":{
+			"action":"ppt",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.pdf']",
+		"options":{
+			"action":"pdf",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.doc']",
+		"options":{
+			"action":"doc",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.docx']",
+		"options":{
+			"action":"docx",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='facebook.com']",
+		"options":{
+			"category":"Social",
+			"action":"Facebook",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='.rss']",
+		"options":{
+			"category":"Feed",
+			"action":"RSS",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a[href*='mailto:']",
+		"options":{
+			"category":"email",
+			"overwrites":"true"
+			}
+	},
+	
+	
+	{
+		"element":"a.track.outbound",
+		"options":{
+			"mode":"event,_link",
+			"category":"outbound",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.internal",
+		"options":{
+			"skip_internal":"true",
+			"category":"internal",
+			"noninteraction":"true",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.jpg",
+		"options":{
+			"action":"jpg",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.zip",
+		"options":{
+			"action":"zips",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.tiff",
+		"options":{
+			"action":"tiff",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.bin",
+		"options":{
+			"action":"bin",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.eps",
+		"options":{
+			"action":"eps",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.gif",
+		"options":{
+			"action":"gif",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.png",
+		"options":{
+			"action":"png",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.ppt",
+		"options":{
+			"action":"ppt",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.pdf",
+		"options":{
+			"action":"pdf",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.doc",
+		"options":{
+			"action":"doc",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.docx",
+		"options":{
+			"action":"docx",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.facebook",
+		"options":{
+			"category":"Social",
+			"action":"Facebook",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.rss",
+		"options":{
+			"category":"Feed",
+			"action":"RSS",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.internal",
+		"options":{
+			"skip_internal":"true",
+			"category":"internal",
+			"noninteraction":"true",
+			"overwrites":"true"
+			}
+	},{
+		"element":"a.track.email",
+		"options":{
+			"category":"email",
+			"overwrites":"true"
+			}
+	},{
+		"element":"#siteID",
+		"options":{
+			"category":"jTrackEasterEgg",
+			"label":"function(){ var result; $.each($.browser, function(i, val) { result += ' ' + i + ':' + val }); return result; }",
+			"alias":"jTrackEasterEgg"
+			}
+	}
+	
+	
+	
+]

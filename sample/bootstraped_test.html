@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <title>jTrack -- a Google Analytics Plugin || Examples</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script id="tracker_agent" src="http://images.wsu.edu/javascripts/tracking/bootstrap.js?gacode=UA-25040747-1&loading=test" type="text/javascript"></script>
+
+    <style>
+	.level.boss{display:inline-block;border:1px solid #999;width:150px; }
+	.level.boss span{display:inline-block;float:left;border:1px solid #999; width:100%;}
+	</style>
+    
+    
+  </head>
+<body>
+ <hr/><hr/>
+    <h1>jTrack -- a Google Analytics Plugin || Examples</h1>
+    
+   
+    
+    <hr/><hr/>
+    <h4>Note: all clicks are supressed to keep only the GA events and actions </h4>
+    <hr/>
+    <h2>Deferred loading of Google Analytics</h2>
+    <code>
+    <pre>
+// Load Google Analytics script and track page views
+&lt;script type="text/javascript"&gt;
+    $.jtrack({ 
+    	load_analytics:{
+            account:'UA-xxx-xxx',
+    	    options:{onload: true, status_code: 200}
+        }
+    });
+&lt;/script&gt;
+    </pre>
+    </code>
+    <h2>Internal/external link tracking</h2>
+    <div class="normal">
+      <a href="/abcdef">Internal link -- relative link (abcdef)</a><br/>
+      <a href="http://admission.wsu.edu/">Internal link (http://admission.wsu.edu/)</a><br/>
+      <a href="http://www.complex.com">External link (http://www.complex.com)</a><br/>
+      <a href="http://beastieboys.com/" target="_blank">External link in new window (http://beastieboys.com/)</a><br/>
+      <a href="#named">Named link (#named   ie: anchor)</a><br/>
+
+      
+
+<h4>This is an email link:</h4>
+<a href="mailto:someone@example.com?Subject=Hello%20again">
+Send Mail</a>
+
+
+<h4>type test</h4>
+<ul>
+<li><a href="/abcdef.pdf">PDF</a><br/></li>
+<li><a href="/abcdef.ppt">PPT</a><br/></li>
+<li><a href="/abcdef.doc">DOC</a><br/></li>
+<li><a href="/abcdef.docx">DOCx</a><br/></li>
+<li><a href="/abcdef.jpg">jpg</a><br/></li>
+<li><a href="/abcdef.gif">gif</a><br/></li>
+<li><a href="/abcdef.png">png</a><br/></li>
+</ul>
+
+      
+    </div>
+
+    
+    <h3>Mouse over event tracking</h3>
+    <a href="http://www.google.com" id="hover">Hover over me</a>
+    
+    <div>
+    <hr/><hr/>
+    <h2>Level: <em>Boss</em></h2>
+    <hr/>
+    <hr/>
+    <div style="float:right;">
+        <h3>Json Feed <em>(loaded from track/default.txt)</em></h3>
+    <pre><code id="jsonfeed">
+    </code></pre>
+    </div>
+    <div style="float:left;">
+      <a href="http://i.imgur.com/dsDO3.gif" class="level boss click one" title="transform Me"><span>One Click EX:</span><img src="http://i.imgur.com/dsDO3.gif" /></a><br/>
+     <a href="http://i.imgur.com/YeXDp.gif" class="level boss click two"><span>DBL click EX:</span><img src="http://i.imgur.com/YeXDp.gif" /></a><br/>
+      <a href="http://i.imgur.com/Tyz0s.gif" class="level boss load"><span>onLoad EX:</span><img src="http://i.imgur.com/Tyz0s.gif" /></a>
+      </div>
+      
+      <div style="clear:both;"></div>
+     <hr/> 
+      
+      
+    </div>
+
+     <h1>Running code</h1>
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+		//$.get('http://images.wsu.edu/javascripts/tracking/configs/default.txt',function(d){$('#jsonfeed').html(d);});
+		//eval($('#codeblob').html());
+        $('a').click(function(e){
+            e.preventDefault();
+            e.stopPropagation();
+        });
+    });
+    </script>
+
+    <pre><code id="codeblob">
+    &lt;script id=&quot;tracker_agent&quot; src=&quot;bootstrap.js?gacode=UA-25040747-1&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"&gt;
+        $(document).ready(function(){
+            //this sets the examples from doing anything but the google stuff
+            $('a').click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+            });
+        });
+    &lt;/script&gt;
+    </code></pre>
+
+
+    <h2>Custom event tracking</h2>
+
+    <pre><code>
+    
+/*    
+  $.fn.track.defaults = {
+    category      : function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
+    action        : function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
+    label         : function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
+    value         : function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():''; },
+    eventTracked    : 'click',
+    noninteraction: false,
+    skip_internal : false,
+    overwrites	  : true,
+    debug         : {run : false , v_console : true}
+  };
+*/    
+    
+    
+$(document).ready(function(){
+  $('a#custom-event').click(function() {
+  
+  
+  /**
+   * Tracks an event using the given parameters. 
+   *
+   * The trackEvent method takes four arguments:
+   *
+   *  category - The name you supply for the group of objects you want to track
+   *  action - A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object
+   *  label - An optional string to provide additional dimensions to the event data
+   *  value - An integer that you can use to provide numerical data about the user event.
+   *  noninteraction - A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation..
+   *
+   */
+  	$.jtrack.trackEvent('category', 'action', 'label', 'value' , 'noninteraction')
+  });
+});
+    </code></pre>
+
+
+
+<div>
+<hr/>
+<h1>sample snipit from http://imagine.wsu.edu</h1>
+<hr/>
+
+
+<div id="sub">
+  <div id="box">
+    <div id="left">
+            <h5><strong><a href="how/new2012.aspx">New for 2012</a></strong></h5>
+            <p><em>Imagine Tomorrow</em> welcomes competing schools from four states: Washington, Idaho, Montana, and Oregon.</p>
+            <h5><strong><a href="http://imagine.wsu.edu/how/topic.aspx">New biofuels challenge</a></strong></h5>
+            <p>Show how biofuels can answer national or global energy needs.</p>
+            <h5><strong><a onClick="_gaq.push(['_trackEvent', 'download', 'pdf', 'funding grant']);" href="http://imagine.wsu.edu/pdfs/2296-ImagineT_Grant_Applic-2012.pdf"> Project development funding (PDF)</a></strong></h5>
+            <p>Small grants are available to help teams launch their 2012 projects. Apply by April 2. </p>
+            <p><a href="awards/default.aspx"><strong>University scholarships</strong></a><br>
+            2012 contestants  may apply to become an Imagine Tomorrow Scholar at Washington State University.</p>
+            <p>&nbsp;</p>
+    </div>
+    <div id="mid">
+      <h5><span style="margin-top: 0; margin-bottom: 0;"><strong><a href="http://imagine.wsu.edu/how/registration/">Registration is now closed</a></strong></span></h5>
+      <p>We're on the home stretch to the 2012 competition! All participating teams  are now registered.</p>
+      <p><strong><a href="event/keynote.aspx">2012 keynote speaker</a></strong></p>
+      <p>Microsoft Chief Environmental Strategist Rob Bernard will share his vision.
+        <br>
+    </p>
+      <!--
+      <p>
+        <span style="margin-top: 0; margin-bottom: 0;">
+            <a href="http://imagine.wsu.edu/mission.aspx">
+                <strong>
+                    Our mission
+                </strong>
+            </a>
+            <em>
+                <a href="http://imagine.wsu.edu/mission.aspx">
+                <br />
+                </a>
+                Imagine Tomorrow
+            </em> 
+            engages students, supports educators, and strengthens communities
+        </span>.
+      </p>-->
+      <h5 class="bold3">
+        <span style="margin-top: 0; margin-bottom: 0;">
+          
+          <strong>
+            Join our mailing list</strong></span></h5>
+      <p><span style="margin-top: 0; margin-bottom: 0;">Receive important updates about
+        <em>
+          
+          Imagine Tomorrow.
+          </em> 
+        
+        </span>
+      </p>
+        <form method="post" action="http://admission.wsu.edu/notifyme/notifymeproccessing.aspx" style="margin-bottom: 0pt;" id="form1">
+            <p>
+                Name:         
+                <br> 
+                <input type="text" size="25" name="name" id="name">
+            </p>
+            <p>
+                Email:         
+                <br> 
+                <input type="text" size="25" name="email" id="email">
+            </p>
+            <p>
+                <input type="hidden" value="Imagine Tomorrow 2012" name="event" id="event">
+                <input type="hidden" value="http://imaginetomorrow.wsu.edu/thankyou.aspx" name="thanksURL" id="thanksURL"> 
+                <input type="submit" value="Submit" name="Submit">
+            </p>
+        </form>
+      
+    </div>
+    <!--mid-->  
+
+  <div id="right">  
+    <p><!-- <a href="http://flashvideo.wsu.edu/wsufinals/100522_ImagineTomorrowIntro-600k.flv" rel="vidbox 560 335" title="How can you save the planet? - Imagine Tomorrow - Washington State University"><img src="images/play-video.png" alt="Video" class="play" /></a>-->
+</p><ul style="margin-bottom:-5px;margin-left:0;" id="videolist">
+    <li id="imaginevideo"><a href="#" class="video1"></a></li><p></p>
+    </ul>
+ <!--    <img src="images/video-thum-2012-2.png" alt="Imagine Tommorow Video" width="161" height="78" border="0" style="margin: 0 0 0 25px;"/>
+   
+<h6><a href="http://flashvideo.wsu.edu/wsufinals/100522_ImagineTomorrowIntro-600k.flv" rel="vidbox 560 335" title="How can you save the planet? - Imagine Tomorrow - Washington State University">Power the energy revolution </a></h6>-->
+ 
+  <div class="dots"></div>
+    <p style="margin-top: 0; margin-bottom: 0;"><!--right-->      Imagine Tomorrow is an education initiative of the <a href="http://www.nararenewables.org/news/features/imagine">Northwest Advanced Renewables Alliance (NARA)</a>. </p>
+    <p>Washington State University is a supporting organization of the <a href="http://cleanenergyforum.net/"><br>US-China Clean Energy Forum</a>.</p>
+      
+        <div class="dots"></div>
+
+    
+      
+      <div class="facebook"><a target="_blank" href="http://www.facebook.com/pages/Imagine-Tomorrow/140694025948375"><img src="images/FaceBook_32x32.gif"></a></div>
+   
+      
+    <h4 style="margin-top: 0; margin-bottom: 0;"><br>
+    </h4>
+    <p style="margin-top: 0; margin-bottom: 0"></p>
+  </div>
+  </div><!--box-->  
+<div class="clear"></div>
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+  </body>
+</html>

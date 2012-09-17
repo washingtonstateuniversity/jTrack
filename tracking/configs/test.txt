@@ -1,0 +1,8 @@
+[
+	{
+		"element":"a",
+		"options":{
+			"category":"outbound"
+			}
+	}
+]
