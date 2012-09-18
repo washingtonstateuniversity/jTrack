@@ -1,9 +1,18 @@
+/*!
+* #jTrack plugin
+* A jQuery plugin that makes it easier to implement Google Analytics tracking
+* Copyright (c) 2011-12 Jeremy Bass
+*
+* Version 0.1
+*
+* Licensed under the MIT license:
+* http://www.opensource.org/licenses/mit-license.php
+*
+* Credits:
+*   - http://google.com/analytics
+*   - http://lyncd.com: Idea for trackPage method came from this blog post: http://lyncd.com/2009/03/better-google-analytics-javascript/
+*/
 /*
-* jTrack plugin
-*
-* A jQuery plugin that makes it easier to implement Google Analytics tracking,
-* including event and link tracking.
-*
 * Adds the following methods to jQuery:
 * $.jtrack.defaults.debug.run = true;
 * $.jtrack.defaults.debug.v_console = false;
@@ -18,17 +27,6 @@
 * $('a').track() - Adds event tracking to element(s).
 * $.timePageLoad() - Measures the time it takes  an event using the given parameters.
 *
-* Copyright (c) 2011-12 Jeremy Bass
-*
-* Version 0.1
-*
-* Licensed under the MIT license:
-* http://www.opensource.org/licenses/mit-license.php
-*
-* Credits:
-*   - http://google.com/analytics
-*   - http://lyncd.com: 
-*       Idea for trackPage method came from this blog post: http://lyncd.com/2009/03/better-google-analytics-javascript/
 */
 var pageTracker=null;
 var jtrackedOptions=[];
@@ -74,7 +72,7 @@ var jtrackedOptions=[];
 		}else{
 			var s = $.extend({}, {}, options);
 			if(defined(s.load_analytics)){
-				$.fn.trackPage(s.load_analytics.account, defined(s.load_analytics.options)?s.load_analytics.options:null,function(){
+				$.jtrack.trackPage(s.load_analytics.account, defined(s.load_analytics.options)?s.load_analytics.options:null,function(){
 					if(defined(s.trackevents)){
 						$.each(s.trackevents, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
@@ -125,7 +123,7 @@ var jtrackedOptions=[];
    *     - callback  - function to be executed after the Google Analytics code is laoded and initialized
    *
    */
-  $.fn.trackPage = function(account_id, options,callback) {
+  $.jtrack.trackPage = function(account_id, options,callback) {
     var host = (("https:" === document.location.protocol) ? "https://ssl" : "http://www");
     var script;
 
