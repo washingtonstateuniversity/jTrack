@@ -32,7 +32,22 @@ var pageTracker=null;
 var jtrackedOptions=[];
 (function($) {
 	function defined(n){return typeof n!="undefined"}
-	function evaluate(n,t){if(typeof t=="function")t=t(n);else try{t=eval("("+t+"(ele));")}catch(i){}if(t!==!1)return t}
+		function evaluate(ele, obj) {
+		if(typeof obj === 'function') {
+			//alert('is function');
+			obj = obj(ele);
+		}else{
+			try{
+				//alert('thinking it may be a function still');
+				obj = eval("("+obj+"(ele));"); 
+				//obj = (obj)(ele);
+			}catch(err){
+				//Handle errors here
+				//alert('not function');
+			}
+		}
+		if(obj!==false) return obj;
+	}
 	function debug(n){if(defined($.jtrack)&&$.jtrack.defaults.debug.run&&$.jtrack.defaults.debug.v_console){if(jQuery("#vConsole").length<=0){var i=jQuery("body").html(),t=/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi;jQuery("body").html('<div style="margin-right:380px;">'+i.replace(t,"")+"</div>"),jQuery("body").prepend('<div id="vConsole" style="float:right;border:1px solid #333; position:fixed; top: 0px; right:0px; width:350px; height:100%;padding: 0 15px;overflow-y: scroll; background: none repeat scroll 0% 0% #fff" ><h1>vConsole</h1></div>')}jQuery("#vConsole").append(n)}defined($.jtrack)&&$.jtrack.defaults.debug.run&&$.jtrack.defaults.debug.console&&defined(console)&&defined(console.debug)&&console.debug(n)}
 	function dump(n,t){var i="",f,e,r,u;for(t||(t=0),f="",e=0;e<t+1;e++)f+=" ";if(typeof n=="object")for(r in n)u=n[r],typeof u=="object"?(i+=f+"'"+r+"' ...\n",i+=dump(u,t+1)):i+=f+"'"+r+"' => \""+u+'"\n';else i="===>"+n+"<===("+typeof n+")";return i}
   /**
@@ -135,6 +150,14 @@ var jtrackedOptions=[];
       	debug('<hr/><h2>Google Analytics loaded</h2><hr/>');
 		pageTracker = _gat._createTracker(account_id);
 		pageTracker._initData();
+		
+		if(typeof(settings.domainName))pageTracker._setDomainName(settings.domain);
+		if(typeof(settings.cookiePath))pageTracker._setCookiePath(settings.cookiePath);
+		if(typeof(settings.allowLinker))pageTracker._setAllowLinker(settings.allowLinker);
+		
+		
+		
+
 		if(settings.status_code === null || settings.status_code === 200) {
 			pageTracker._trackPageview();
 		} else {
