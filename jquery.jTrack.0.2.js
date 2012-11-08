@@ -7,10 +7,8 @@
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
-*
-* Credits:
-*   - http://google.com/analytics
-*   - http://lyncd.com: Idea for trackPage method came from this blog post: http://lyncd.com/2009/03/better-google-analytics-javascript/
+* Help : https://github.com/jeremyBass/jTrack/wiki/options
+* Credits: http://google.com/analytics
 */
 /*
 * Adds the following methods to jQuery:
