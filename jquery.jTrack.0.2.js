@@ -91,7 +91,7 @@ var jtrackedOptions=[];
 					if(defined(s.trackevents)){
 						$.each(s.trackevents, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
-							$(v.element).track(defined(v.options)?v.options:null);
+							$(v.element.replace("**SELF_DOMAIN**",document.domain)).track(defined(v.options)?v.options:null);
 						});
 					}
 				});
@@ -99,7 +99,7 @@ var jtrackedOptions=[];
 				if(defined(s.trackevents)){
 					$.each(s.trackevents, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
-						$(v.element).track(defined(v.options)?v.options:null);
+						$(v.element.replace("**SELF_DOMAIN**",document.domain)).track(defined(v.options)?v.options:null);
 					});
 				}	
 			}
@@ -111,7 +111,7 @@ var jtrackedOptions=[];
 		action        : function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
 		label         : function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
 		value         : function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():''; },
-		eventTracked  : 'click',
+		eventTracked  : 'mousedown',
 		noninteraction: false,
 		skip_internal : false,
 		overwrites	  : true,
@@ -152,11 +152,10 @@ var jtrackedOptions=[];
 		pageTracker._initData();
 		
 		if(typeof(settings.domainName))pageTracker._setDomainName(settings.domain);
+		if(typeof(settings.domainName) && (!typeof(settings._addIgnoredRef) || typeof(settings._addIgnoredRef) && settings._addIgnoredRef!=false))pageTracker._addIgnoredRef(settings.domain);
 		if(typeof(settings.cookiePath))pageTracker._setCookiePath(settings.cookiePath);
 		if(typeof(settings.allowLinker))pageTracker._setAllowLinker(settings.allowLinker);
-		
-		
-		
+
 
 		if(settings.status_code === null || settings.status_code === 200) {
 			pageTracker._trackPageview();
@@ -318,6 +317,11 @@ var jtrackedOptions=[];
 			if( (jQuery().jquery!='1.7.2' || $.fn.jquery!='1.7.2') ){
 				if(overwrites==='true'){ele.die(tasactedEvent);ele.unbind(tasactedEvent);}
 				ele.live(tasactedEvent, function() {
+					if(mode.indexOf("_social")>-1 ){
+						var network      = evaluate(ele, settings.network);
+						var socialAction = evaluate(ele, settings.socialAction);
+						$.jtrack.trackSocial(network, socialAction);
+					}
 					if(mode.indexOf("_link")>-1){pageTracker._link(ele.attr('href'));}
 					if(!skip && mode.indexOf("event")>-1)$.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
 				return true; });
@@ -326,6 +330,11 @@ var jtrackedOptions=[];
 				ele.on(tasactedEvent, function() {
 					if(mode.indexOf("_link")>-1){debug('<h4>Fired _link for Tracking</h4><h5>for _link</h5>');debug('<pre>'+ele.attr('href')+'</pre>');pageTracker._link(ele.attr('href'));}
 					if(!skip && mode.indexOf("event")>-1 )$.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
+					if(mode.indexOf("_social")>-1 ){
+						var network      = evaluate(ele, settings.network);
+						var socialAction = evaluate(ele, settings.socialAction);
+						$.jtrack.trackSocial(network, socialAction);
+					}
 				return true; });
 			}
 		}
