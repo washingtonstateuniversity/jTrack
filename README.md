@@ -7,12 +7,12 @@ jQuery plugin for Google Tracking.  For a complete list of options and examples 
  
 The default set up is as simple as just adding
  
-<script id="tracker_agent" src="http://images.wsu.edu/javascripts/tracking/bootstrap.js?gacode=UA-XXXXXX-XX" type="text/javascript"></script>
+<script id="tracker_agent" src="http://images.wsu.edu/javascripts/tracking/bootstrap.js?gacode=UA-XXXXXXXX-X" type="text/javascript"></script>
  
 In the page you need to track.  The gacode needs to be adjusted as per account.  This will pull in a default set of rules.  The rules are a json string feed from a .txt file located in some folder.  For example if you are a dev at WSU it's http://images.wsu.edu/javascripts/tracking/configs/.  Use the bootstrap url if you don’t want to create or copy your own local to the site, though since it’s served off a different subdomain and is suggested.  That boot file loads the rules from this url : http://images.wsu.edu/javascripts/tracking/configs/pick.asp?loading=test which would be the .txt that it picks for the rules to obey.  If you use the bootstrap all you have to do to use your own set of rules that may or may not be domain specific, is to use to put the new .txt file in that configs folder and add a query param to the url.
 
 ```html
-<script id="tracker_agent" src=" http://images.wsu.edu/javascripts/tracking/bootstrap.js?gacode=UA-25040747-1&loading=test" type="text/javascript"></script>
+<script id="tracker_agent" src=" http://images.wsu.edu/javascripts/tracking/bootstrap.js?gacode=UA-XXXXXXXX-X&loading=test" type="text/javascript"></script>
 ```
 
 That is all the easy load stuff.  To call the jquery plugin and use your own custom.
