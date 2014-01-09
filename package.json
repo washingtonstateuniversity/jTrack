@@ -1,0 +1,23 @@
+{
+  "name": "jtrack",
+  "version": "0.2.2",
+  "description": "Automates the application of Google analytics including events and indexs all from json",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jeremyBass/jTrack.git"
+  },
+  "author": "jeremyBass",
+  "license": "GDL",
+  "private": true,
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.8.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}
