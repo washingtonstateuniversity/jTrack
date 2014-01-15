@@ -69,6 +69,8 @@ $.jtrack.defaults.debug.v_console = false;
 $.jtrack.defaults.debug.console = true;
 $.jtrack({ load_analytics: { account: GAcode }, trackevents: data });
 ```
+It should be noted that you are able to apply a function as a value.  You will be limited by the quotes as you would normally be assigning the anonymous function to the object property directly.  In other words if you find that you must have complex logic, don't put it in the json file. 
+
  
  
 ###OPTIONS
