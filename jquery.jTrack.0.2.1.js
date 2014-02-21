@@ -421,10 +421,10 @@ var jtrackedOptions=[];
 			jtrackedOptions[marker]["tasactedEvent"]=tasactedEvent;
 
 			function check() {
-				return window.jQuery && jQuery.fn && /^[1-9]\.[7-9]/.test(jQuery.fn.jquery);
+				return !(/^[0-1]\.[1-7]/.test(jQuery.fn.jquery));
 			}
 
-			if( !check() ){
+			if( check() ){
 				if(overwrites==='true'){ele.die(tasactedEvent);ele.unbind(tasactedEvent);}
 				ele.live(tasactedEvent, function(e) {
 					if(mode.indexOf("_link")>-1){
