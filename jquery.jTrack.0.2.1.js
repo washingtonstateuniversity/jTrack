@@ -365,7 +365,7 @@ var jtrackedOptions=[];
 			
 			debug(camp+' of camp');
 			//ok this check sucks it.. fix later
-			if(camp!="" && window.location.toString().indexOf("inquiry?")==-1 ){//&& window.location.toString().indexOf("education.wsu.edu/directory")==-1){
+			if(camp!="" && window.location.toString().indexOf("inquiry?")==-1 && camphref.indexOf("utm_campaign")==-1){//&& window.location.toString().indexOf("education.wsu.edu/directory")==-1){
 				ele.attr('href',camphref + ((camphref.indexOf('?')>-1)?'&':'?') + camp);
 				debug(ele.attr('href')+' of camp');
 				ele.data('tracker','added');
