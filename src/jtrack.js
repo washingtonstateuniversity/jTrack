@@ -167,7 +167,7 @@ var jtrackedOptions=[];
 			callback(pageTracker);
 		}
 	}
-	jQuery.jtrack.load_script = function(src) {
+	jQuery.jtrack.load_script = function(src,account_id,callback) {
 	  jQuery.ajax({
 		type: "GET",
 		url: src,
@@ -216,9 +216,9 @@ var jtrackedOptions=[];
 	}else{
 		// Enable tracking when called or on page load?
 		if(settings.onload === true || settings.onload === null) {
-			jQuery(document).ready(function(){jQuery.jtrack.load_script(src);});
+			jQuery(document).ready(function(){jQuery.jtrack.load_script(src,account_id,callback);});
 		} else {
-			jQuery.jtrack.load_script(src);
+			jQuery.jtrack.load_script(src,account_id,callback);
 		}
 	}
   };
