@@ -206,10 +206,10 @@ var jtrackedOptions=[];
 			type: "GET",
 			url: src,
 			success: function() {  
-                if (!defined(_gat)) {
+				if (!defined(_gat)) {
 					debug('!!!!!! _gat has NOT been defined !!!!!!!');
-                    throw "_gat has not been defined";
-                }  else {
+					throw "_gat has not been defined";
+				}  else {
 					debug('!!!!!! loaded the GA code !!!!!!!');
 			  		init_analytics(account_id,callback); 
 				}
@@ -217,14 +217,14 @@ var jtrackedOptions=[];
 			dataType: "script",
 			cache: true // We want the cached version
 		  });
-		};  
+		};
+		// Enable tracking when called or on page load?
+		if(settings.onload === true || settings.onload === null) {
+			jQuery(document).ready(function(){load_script();});
+		} else {
+		  load_script();
+		}
 	}
-    // Enable tracking when called or on page load?
-    if(settings.onload === true || settings.onload === null) {
-		jQuery(document).ready(function(){load_script();});
-    } else {
-      load_script();
-    }
   };
 
   /**
