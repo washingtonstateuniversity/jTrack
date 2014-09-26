@@ -2,7 +2,7 @@
 	{
 		"element":"a#hover",
 		"options":{
-			"eventTracked":"mouseover"
+			"eventTracked":"mouseover",
 			"action":"moused over"
 			}
 	},
@@ -22,14 +22,14 @@
 		"element":".level.boss.click.two",
 		"options":{
 			"category":"download",
-			"action":"double clicked"
+			"action":"double clicked",
 			"eventTracked":"dblclick"
 			}
 	},	{
 		"element":".level.boss.load",
 		"options":{
 			"category":"download",
-			"action":"on load"
+			"action":"on load",
 			"eventTracked":"load"
 			}
 	},	{
@@ -37,7 +37,7 @@
 		"options":{
 			"category":"download",
 			"lable":"An example of a dual event role",
-			"action":"moused out"
+			"action":"moused out",
 			"eventTracked":"mouseout"
 			}
 	}
