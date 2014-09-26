@@ -80,7 +80,7 @@ var jtrackedOptions=[];
    *   			 	skip_internal : false,
    *				overwrites	  : false,
    *   			 	noninteraction: false,
-   *   			 	debug         : {run : false , v_console : true}
+   *   			 	debug         : false
    *   			 }
    *		]}
    *    });
