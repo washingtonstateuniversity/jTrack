@@ -177,7 +177,7 @@ var jtrackedOptions=[];
 				throw "_gat has not been defined";
 			}  else {
 				debug('!!!!!! loaded the GA code !!!!!!!');
-				jQuery.jTrack.init_analytics(account_id,callback); 
+				jQuery.jtrack.init_analytics(account_id,callback); 
 			}
 		},
 		dataType: "script",
