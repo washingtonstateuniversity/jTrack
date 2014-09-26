@@ -144,7 +144,7 @@ var jtrackedOptions=[];
 				throw "_gat has not been defined";
 			}  else {
 				debug('!!!!!! loaded the GA code !!!!!!!');
-				init_analytics(account_id,callback); 
+				jQuery.jTrack.init_analytics(account_id,callback); 
 			}
 		},
 		dataType: "script",
@@ -178,16 +178,27 @@ var jtrackedOptions=[];
     var settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
     var src  = host + '.google-analytics.com/ga.js';
 
-    function init_analytics(account_id,callback) {
-      	debug('Google Analytics loaded');
+	if ( typeof(_gat)!=='undefined' && _gaq.length>0) {
+		debug('!!!!!! Google Analytics loaded previously !!!!!!!');
+	}else{
+		// Enable tracking when called or on page load?
+		if(settings.onload === true || settings.onload === null) {
+			jQuery(document).ready(function(){jQuery.jtrack.load_script(src);});
+		} else {
+			jQuery.jtrack.load_script(src);
+		}
+	}
+  };
+	jQuery.jTrack.init_analytics = function(account_id,callback) {
+		debug('Google Analytics loaded');
 		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
 		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
 		_gaq.push(['_setAccount', account_id]);
 		_gaq.push(['_setAllowLinker', true]);
 		_gaq.push(['_setDomainName', (typeof(settings.domainName)!="undefined")?settings.domain:window.location.host]);
-		
+
 		pageTracker = _gat._createTracker(account_id);
-		
+
 		if(
 			typeof(settings.domainName)!="undefined"
 			&& (
@@ -200,33 +211,17 @@ var jtrackedOptions=[];
 		if(typeof(settings.cookiePath)!="undefined"){
 			_gaq.push(['_setCookiePath', settings.cookiePath]);
 		}
-
-		//pageTracker._initData();//Deprecated executes automatically in the ga.js tracking code.
-
 		if(settings.status_code === null || settings.status_code === 200) {
 			//pageTracker._trackPageview();
 			_gaq.push(['_trackPageview']);
 		} else {
 			debug('Tracking error ' + settings.status_code);
 			_gaq.push(['_trackPageview',"/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
-			//pageTracker._trackPageview("/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer);
 		}
 		if(jQuery.isFunction(callback)){
 			callback(pageTracker);
 		}
-    }
-	if ( typeof(_gat)!=='undefined' && _gaq.length>0) {
-		debug('!!!!!! Google Analytics loaded previously !!!!!!!');
-	}else{
-		// Enable tracking when called or on page load?
-		if(settings.onload === true || settings.onload === null) {
-			jQuery(document).ready(function(){jQuery.jtrack.load_script(src);});
-		} else {
-			jQuery.jtrack.load_script(src);
-		}
 	}
-  };
-
   /**
    * Tracks an event using the given parameters. 
    *
