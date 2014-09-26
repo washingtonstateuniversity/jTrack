@@ -134,7 +134,7 @@ var jtrackedOptions=[];
 		callback	  : function(){},
 		debug         : false
 	};
-	jQuery.jTrack.init_analytics = function(account_id,callback) {
+	jQuery.jtrack.init_analytics = function(account_id,callback) {
 		debug('Google Analytics loaded');
 		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
 		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
