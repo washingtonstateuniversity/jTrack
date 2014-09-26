@@ -2,7 +2,8 @@
 	{
 		"element":"a#hover",
 		"options":{
-			"action":"mouseover"
+			"eventTracked":"mouseover"
+			"action":"moused over"
 			}
 	},
 	{
@@ -15,26 +16,29 @@
 		"element":".level.boss.click.one",
 		"options":{
 			"category":"download",
-			"action":"click"
+			"action":"clicked"
 			}
 	},	{
 		"element":".level.boss.click.two",
 		"options":{
 			"category":"download",
-			"action":"dblclick"
+			"action":"double clicked"
+			"eventTracked":"dblclick"
 			}
 	},	{
 		"element":".level.boss.load",
 		"options":{
 			"category":"download",
-			"action":"load"
+			"action":"on load"
+			"eventTracked":"load"
 			}
 	},	{
 		"element":"a[href$='.gif']",
 		"options":{
 			"category":"download",
 			"lable":"An example of a dual event role",
-			"action":"mouseout"
+			"action":"moused out"
+			"eventTracked":"mouseout"
 			}
 	}
 	
