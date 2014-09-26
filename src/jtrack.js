@@ -134,7 +134,7 @@ var jtrackedOptions=[];
 		callback	  : function(){},
 		debug         : false
 	};
-	jQuery.jtrack.load_script = function() {
+	jQuery.jtrack.load_script = function(src) {
 	  jQuery.ajax({
 		type: "GET",
 		url: src,
@@ -220,9 +220,9 @@ var jtrackedOptions=[];
 	}else{
 		// Enable tracking when called or on page load?
 		if(settings.onload === true || settings.onload === null) {
-			jQuery(document).ready(function(){jQuery.jtrack.load_script();});
+			jQuery(document).ready(function(){jQuery.jtrack.load_script(src);});
 		} else {
-			jQuery.jtrack.load_script();
+			jQuery.jtrack.load_script(src);
 		}
 	}
   };
