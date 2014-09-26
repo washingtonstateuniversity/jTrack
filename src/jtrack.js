@@ -134,34 +134,35 @@ var jtrackedOptions=[];
 		callback	  : function(){},
 		debug         : false
 	};
+	jQuery.jtrack.settings={};
 	jQuery.jtrack.init_analytics = function(account_id,callback) {
 		debug('Google Analytics loaded');
 		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
 		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
 		_gaq.push(['_setAccount', account_id]);
 		_gaq.push(['_setAllowLinker', true]);
-		_gaq.push(['_setDomainName', (typeof(settings.domainName)!="undefined")?settings.domain:window.location.host]);
+		_gaq.push(['_setDomainName', (typeof(jQuery.jtrack.settings.domainName)!="undefined")?jQuery.jtrack.settings.domain:window.location.host]);
 
 		pageTracker = _gat._createTracker(account_id);
 
 		if(
-			typeof(settings.domainName)!="undefined"
+			typeof(jQuery.jtrack.settings.domainName)!="undefined"
 			&& (
-				typeof(settings._addIgnoredRef)=="undefined"
-				|| typeof(settings._addIgnoredRef)!="undefined" && settings._addIgnoredRef!=false
+				typeof(jQuery.jtrack.settings._addIgnoredRef)=="undefined"
+				|| typeof(jQuery.jtrack.settings._addIgnoredRef)!="undefined" && jQuery.jtrack.settings._addIgnoredRef!=false
 				)
 			){
-			_gaq.push(['_addIgnoredRef', settings.domain]);
+			_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
 		}
 		if(typeof(settings.cookiePath)!="undefined"){
-			_gaq.push(['_setCookiePath', settings.cookiePath]);
+			_gaq.push(['_setCookiePath', jQuery.jtrack.settings.cookiePath]);
 		}
-		if(settings.status_code === null || settings.status_code === 200) {
+		if(jQuery.jtrack.settings.status_code === null || jQuery.jtrack.settings.status_code === 200) {
 			//pageTracker._trackPageview();
 			_gaq.push(['_trackPageview']);
 		} else {
-			debug('Tracking error ' + settings.status_code);
-			_gaq.push(['_trackPageview',"/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
+			debug('Tracking error ' + jQuery.jtrack.settings.status_code);
+			_gaq.push(['_trackPageview',"/" + jQuery.jtrack.settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
 		}
 		if(jQuery.isFunction(callback)){
 			callback(pageTracker);
@@ -208,14 +209,14 @@ var jtrackedOptions=[];
     var script;
 
     // Use default options, if necessary
-    var settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
+    jQuery.jtrack.settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
     var src  = host + '.google-analytics.com/ga.js';
 
 	if ( typeof(_gat)!=='undefined' && _gaq.length>0) {
 		debug('!!!!!! Google Analytics loaded previously !!!!!!!');
 	}else{
 		// Enable tracking when called or on page load?
-		if(settings.onload === true || settings.onload === null) {
+		if(jQuery.jtrack.settings.onload === true || jQuery.jtrack.settings.onload === null) {
 			jQuery(document).ready(function(){jQuery.jtrack.load_script(src,account_id,callback);});
 		} else {
 			jQuery.jtrack.load_script(src,account_id,callback);
