@@ -154,7 +154,7 @@ var jtrackedOptions=[];
 			){
 			_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
 		}
-		if(typeof(settings.cookiePath)!="undefined"){
+		if(typeof(jQuery.jtrack.settings.cookiePath)!="undefined"){
 			_gaq.push(['_setCookiePath', jQuery.jtrack.settings.cookiePath]);
 		}
 		if(jQuery.jtrack.settings.status_code === null || jQuery.jtrack.settings.status_code === 200) {
