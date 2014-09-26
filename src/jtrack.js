@@ -134,6 +134,39 @@ var jtrackedOptions=[];
 		callback	  : function(){},
 		debug         : false
 	};
+	jQuery.jTrack.init_analytics = function(account_id,callback) {
+		debug('Google Analytics loaded');
+		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
+		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
+		_gaq.push(['_setAccount', account_id]);
+		_gaq.push(['_setAllowLinker', true]);
+		_gaq.push(['_setDomainName', (typeof(settings.domainName)!="undefined")?settings.domain:window.location.host]);
+
+		pageTracker = _gat._createTracker(account_id);
+
+		if(
+			typeof(settings.domainName)!="undefined"
+			&& (
+				typeof(settings._addIgnoredRef)=="undefined"
+				|| typeof(settings._addIgnoredRef)!="undefined" && settings._addIgnoredRef!=false
+				)
+			){
+			_gaq.push(['_addIgnoredRef', settings.domain]);
+		}
+		if(typeof(settings.cookiePath)!="undefined"){
+			_gaq.push(['_setCookiePath', settings.cookiePath]);
+		}
+		if(settings.status_code === null || settings.status_code === 200) {
+			//pageTracker._trackPageview();
+			_gaq.push(['_trackPageview']);
+		} else {
+			debug('Tracking error ' + settings.status_code);
+			_gaq.push(['_trackPageview',"/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
+		}
+		if(jQuery.isFunction(callback)){
+			callback(pageTracker);
+		}
+	}
 	jQuery.jtrack.load_script = function(src) {
 	  jQuery.ajax({
 		type: "GET",
@@ -189,39 +222,7 @@ var jtrackedOptions=[];
 		}
 	}
   };
-	jQuery.jTrack.init_analytics = function(account_id,callback) {
-		debug('Google Analytics loaded');
-		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
-		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-		_gaq.push(['_setAccount', account_id]);
-		_gaq.push(['_setAllowLinker', true]);
-		_gaq.push(['_setDomainName', (typeof(settings.domainName)!="undefined")?settings.domain:window.location.host]);
 
-		pageTracker = _gat._createTracker(account_id);
-
-		if(
-			typeof(settings.domainName)!="undefined"
-			&& (
-				typeof(settings._addIgnoredRef)=="undefined"
-				|| typeof(settings._addIgnoredRef)!="undefined" && settings._addIgnoredRef!=false
-				)
-			){
-			_gaq.push(['_addIgnoredRef', settings.domain]);
-		}
-		if(typeof(settings.cookiePath)!="undefined"){
-			_gaq.push(['_setCookiePath', settings.cookiePath]);
-		}
-		if(settings.status_code === null || settings.status_code === 200) {
-			//pageTracker._trackPageview();
-			_gaq.push(['_trackPageview']);
-		} else {
-			debug('Tracking error ' + settings.status_code);
-			_gaq.push(['_trackPageview',"/" + settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
-		}
-		if(jQuery.isFunction(callback)){
-			callback(pageTracker);
-		}
-	}
   /**
    * Tracks an event using the given parameters. 
    *
