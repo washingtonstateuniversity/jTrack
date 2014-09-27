@@ -14,7 +14,7 @@
     "options":{
         "category":"download",
         "action":"clicked",
-        "callback":"function(ele){freezeGif(ele.find('img')[0])}"
+        "callback":"function(ele){ele.find('img').freezeGif()}"
         }
 }, {
     "element":".level.boss.click.two",
