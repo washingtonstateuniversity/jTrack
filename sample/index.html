@@ -97,63 +97,17 @@
     <h2>Level: <em>Boss</em></h2>
     <hr/>
     <hr/>
-    <div style="float:right;">
-        <h3>Json Feed <em>(loaded from track/test.txt)</em></h3>
-    <pre><code id="jsonfeed">
-    </code></pre>
-    </div>
-    <div style="float:left;">
+
       <a href="http://i.imgur.com/dsDO3.gif" class="level boss click one"><span>One Click EX:</span><img src="http://i.imgur.com/dsDO3.gif" /></a><br/>
      <a href=" http://i.imgur.com/YeXDp.gif" class="level boss click two"><span>DBL click EX:</span><img src="http://i.imgur.com/YeXDp.gif" /></a><br/>
       <a href="http://i.imgur.com/Tyz0s.gif" class="level boss load"><span>onLoad EX:</span><img src="http://i.imgur.com/Tyz0s.gif" /></a>
-      </div>
-      
+
       <div style="clear:both;"></div>
      <hr/> 
       
       
     </div>
 
-     <h1>Running code</h1>
-    <script type="text/javascript">
-
-    $(document).ready(function(){
-		$.get('track/test.txt',function(d){$('#jsonfeed').html(d);});
-		eval($('#codeblob').html());
-    });
-    </script>
-
-    <pre><code id="codeblob">
-$(document).ready(function(){
-    /**
-    *  example of a json feed controlling the triggers
-    *  since this is something that is cached this is a 
-    *  super easy way to control may distrobutions with out
-    *  having users that don't know, have to make edits
-    **/
-    $.getJSON('track/test.txt' , function(data){
-        $.jtrack({
-            load_analytics:{account:'UA-25040747-1',options:{onload: true, status_code: 200}},
-            trackevents:data // this can be hard codded here or set do be feed in like so
-        });
-    });
-
-    //few other examples
-    $('.normal a').track();
-    $('.sidebar a').track({
-        category : 'sidebar'
-    });
-    $('.complex a').track({
-        category : function(element) { return element.attr('class').replace('tracked', '') }
-    });
-
-    //this sets the examples from doing anything but the google stuff
-    $('a').click(function(e){
-        e.preventDefault();
-        e.stopPropagation();
-    });
-});
-    </code></pre>
 
 
     <h2>Custom event tracking</h2>
@@ -227,6 +181,51 @@ $(document).ready(function(){
 	<div class="column two">
 
 		<aside>
+			
+     <h1>Running code</h1>
+    <script type="text/javascript">
+
+    $(document).ready(function(){
+		$.get('track/test.txt',function(d){$('#jsonfeed').html(d);});
+		eval($('#codeblob').html());
+    });
+    </script>
+
+    <pre><code id="codeblob">
+$(document).ready(function(){
+    /**
+    *  example of a json feed controlling the triggers
+    *  since this is something that is cached this is a 
+    *  super easy way to control may distrobutions with out
+    *  having users that don't know, have to make edits
+    **/
+    $.getJSON('track/test.txt' , function(data){
+        $.jtrack({
+            load_analytics:{account:'UA-25040747-1',options:{onload: true, status_code: 200}},
+            trackevents:data // this can be hard codded here or set do be feed in like so
+        });
+    });
+
+    //few other examples
+    $('.normal a').track();
+    $('.sidebar a').track({
+        category : 'sidebar'
+    });
+    $('.complex a').track({
+        category : function(element) { return element.attr('class').replace('tracked', '') }
+    });
+
+    //this sets the examples from doing anything but the google stuff
+    $('a').click(function(e){
+        e.preventDefault();
+        e.stopPropagation();
+    });
+});
+    </code></pre>
+        <h3>Json Feed <em>(loaded from track/test.txt)</em></h3>
+    <pre><code id="jsonfeed">
+    </code></pre>
+			
 				<h2>Sidebar</h2>
 				<ul>
 					<li>Fight, fight, fight for Washington State! Win the victory!</li>
