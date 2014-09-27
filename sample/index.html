@@ -24,11 +24,11 @@
 		$.jtrack.defaults.debug = true;
     </script>
 	<style>
-	.level.boss{display:inline-block;border:1px solid #999;width:100; }
-	.level.boss span{display:inline-block;float:left;border:1px solid #999; width:100%;}
-	.level.boss img{min-width: 100%;}
-	code,pre{font-size: .85em; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;line-height: .95em;font-family: monospace;color: rgb(30,10,10);}
-	.inlinecode{display:inline-block;}
+        .level.boss{display:inline-block;border:1px solid #999;width:100; }
+        .level.boss span{display:inline-block;float:left;border:1px solid #999; width:100%;}
+        .level.boss img{min-width: 100%;}
+        code,pre{font-size: .85em; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;line-height: .95em;font-family: monospace;color: rgb(30,10,10);}
+        .inlinecode{display:inline-block;}
 	</style>
 
 </head>
@@ -137,10 +137,20 @@
     <h2>Custom event tracking</h2>
 
     <pre><code>
-$(document).ready(function(){
-  $('a#custom-event').click(function() {
-  	$.jtrack.trackEvent('category', 'action', 'label', 'value')
-  });
+$(function(){
+    $('a#custom-event').click(function() {
+        $.jtrack.trackEvent('category', 'action', 'label', 'value');
+        //or
+        /*
+        $(this).jtrack({
+            category : function(element) {},
+            action : function(element) {},
+            label : function(element) {},
+            value : function(element) {},
+            //more options are available 
+        });
+        */
+    });
 });
     </code></pre>
 
@@ -216,7 +226,7 @@ $(document).ready(function(){
     </script>
 
     <pre><code id="codeblob">
-$(document).ready(function(){
+$(function(){
     /*
     example of a json feed controlling the triggers since this is something that is cached this is a  super easy way to control may distrobutions with out having users that don't know, have to make edits
     */
@@ -235,11 +245,11 @@ $(document).ready(function(){
     });
 
     //few other examples
-    $('.normal a').trackEvent();
-    $('.sidebar a').trackEvent({
+    $('.normal a').jtrack();
+    $('.sidebar a').jtrack({
         category : 'sidebar'
     });
-    $('.complex a').trackEvent({
+    $('.complex a').jtrack({
         category : function(element) {
             return element.removeClass('tracked');
         }
