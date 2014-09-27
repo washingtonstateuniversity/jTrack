@@ -431,60 +431,31 @@ var jtrackedOptions=[];
 			jtrackedOptions[marker]["ele"]=ele;
 			jtrackedOptions[marker]["tasactedEvent"]=tasactedEvent;
 
-			function check() {
-				return !(/^[0-1]\.[1-7]/.test(jQuery.fn.jquery));
-			}
+			if(overwrites==='true'){ele.die(tasactedEvent);ele.unbind(tasactedEvent);}
+			ele.live(tasactedEvent, function(e) {
+				if(mode.indexOf("_link")>-1){
+					e.preventDefault(); e.stopPropagation(); 
+					if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
+				}
+				if(!skip && mode.indexOf("event")>-1)jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
 
-			if( check() ){
-				if(overwrites==='true'){ele.die(tasactedEvent);ele.unbind(tasactedEvent);}
-				ele.live(tasactedEvent, function(e) {
-					if(mode.indexOf("_link")>-1){
-						e.preventDefault(); e.stopPropagation(); 
-						if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
-					}
-					if(!skip && mode.indexOf("event")>-1)jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
-					
-					if(mode.indexOf("_social")>-1 ){
-						var network      = evaluate(ele, settings.network);
-						var socialAction = evaluate(ele, settings.socialAction);
-						jQuery.jtrack.trackSocial(network, socialAction);
-					}
-					if(mode.indexOf("_link")>-1){
-						debug('Fired _link for Tracking for _link');debug(ele.attr('href'));
-						_gaq.push(['_link', ele.attr('href')]); 
-						_gaq.push(function () {
-							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
-							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-							window.location.href = ele.attr('href');
-						});
-						return false;
-					}
-				return true; });
-			}else{
-				if(overwrites==='true'){ele.off(tasactedEvent);ele.unbind(tasactedEvent);}
-				ele.on(tasactedEvent, function(e) {
-					if(mode.indexOf("_link")>-1){
-						e.preventDefault(); e.stopPropagation(); 
-						if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
-					}
-					if(!skip && mode.indexOf("event")>-1 )jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
-					if(mode.indexOf("_social")>-1 ){
-						var network      = evaluate(ele, settings.network);
-						var socialAction = evaluate(ele, settings.socialAction);
-						jQuery.jtrack.trackSocial(network, socialAction);
-					}
-					if(mode.indexOf("_link")>-1){
-						debug('Fired _link for Tracking for _link');debug(ele.attr('href'));
-						_gaq.push(['_link', ele.attr('href')]); 
-						_gaq.push(function () {
-							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
-							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-							window.location.href = ele.attr('href');
-						});
-						return false;
-					}
-				return true; });
-			}
+				if(mode.indexOf("_social")>-1 ){
+					var network      = evaluate(ele, settings.network);
+					var socialAction = evaluate(ele, settings.socialAction);
+					jQuery.jtrack.trackSocial(network, socialAction);
+				}
+				if(mode.indexOf("_link")>-1){
+					debug('Fired _link for Tracking for _link');debug(ele.attr('href'));
+					_gaq.push(['_link', ele.attr('href')]); 
+					_gaq.push(function () {
+						var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
+						var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
+						window.location.href = ele.attr('href');
+					});
+					return false;
+				}
+			return true; });
+			
 		}
     });
   };
