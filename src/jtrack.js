@@ -104,7 +104,7 @@ var jtrackedOptions=[];
 						jQuery.each(s.trackevents, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
 							var selector = v.element.replace("**SELF_DOMAIN**",domain);
-							jQuery(selector).track(defined(v.options)?v.options:null);
+							jQuery(selector).jtrack(defined(v.options)?v.options:null);
 						});
 					}
 				});
@@ -113,7 +113,7 @@ var jtrackedOptions=[];
 					jQuery.each(s.trackevents, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
-						jQuery(selector).track(defined(v.options)?v.options:null);
+						jQuery(selector).jtrack(defined(v.options)?v.options:null);
 					});
 				}	
 			}
@@ -391,7 +391,7 @@ var jtrackedOptions=[];
    *  jQuery('a').jtrack.track()
    *
    */
-  jQuery.fn.track = function(options) {
+  jQuery.fn.jtrack = function(options) {
     // Add event handler to all matching elements
     return jQuery.each(jQuery(this),function() {
 		var ele = jQuery(this);
