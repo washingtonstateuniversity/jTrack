@@ -312,10 +312,10 @@ $(function(){
             trackevents:data
         });
     });
-	$('a.debug').on('click',function(){
+	$('a#debug').on('click',function(){
 		var newstate = $.jtrack.defaults.debug==true?false:true;
 		$.jtrack.defaults.debug = newstate;
-		$(this).find('i').text(newstate?"false":"true");
+		$(this).find('i').text(newstate==true?"false":"true");
 	});
     //few other examples
     $('.normal a').jtrack();
