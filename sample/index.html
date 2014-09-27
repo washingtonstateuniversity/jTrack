@@ -49,7 +49,8 @@
 				"height":height,
 				"min-width":min_width,
 				"min-height":min_height,
-				"position":"relative"
+				"position":"relative",
+				"display":"inline-block",
 			});
 			var freeze = function() {
 					wrapper.prepend(canvas);
@@ -57,14 +58,13 @@
 						"width":width,
 						"height":height,
 						"min-width":min_width,
-						"min-height":min_height,
-						"position":"absolute"
+						"min-height":min_height
 					});
-					canvas[0].getContext('2d').drawImage(img, 0, 0, width, height);
+					canvas.getContext('2d').drawImage(img, 0, 0, width, height);
 					for (i = 0; i < img.attributes.length; i++) {
 						attr = img.attributes[i];
 						if (attr.name !== '"') { // test for invalid attributes
-							canvas[0].setAttribute(attr.name, attr.value);
+							canvas.setAttribute(attr.name, attr.value);
 						}
 					}
 					$(img).css({"position":"absolute","display":"none"});
