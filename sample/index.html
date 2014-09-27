@@ -31,32 +31,53 @@
 		return element;
 	}
 
-	function freezeGif(img) {
-		var width = img.width,
-		height = img.height,
-		canvas = createElement('canvas', function(clone) {
-			clone.width = width;
-			clone.height = height;
-		}),
-		attr,
-		i = 0;
-		var freeze = function() {
-			canvas.getContext('2d').drawImage(img, 0, 0, width, height);
-			for (i = 0; i < img.attributes.length; i++) {
-				attr = img.attributes[i];
-				if (attr.name !== '"') { // test for invalid attributes
-					canvas.setAttribute(attr.name, attr.value);
+	$.fn.freezeGif = {
+		return $.each(this,function(i,v){
+			var img = this;
+			
+			if($(img).parent('.freezeWrapped').length<=0){
+				$(img).wrap('<div class="freezeWrapped">');
+			}
+			var wrapper=$(img).closest('.freezeWrapped');
+			
+			var width = img.width,
+				height = img.height,
+				canvas = createElement('canvas', function(clone) {
+					clone.width = width;
+					clone.height = height;
+				}),
+				attr,
+				i = 0;
+			wrapper.css({"width":width,"height":height,"position":"relative"});
+			var freeze = function() {
+					canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+					for (i = 0; i < img.attributes.length; i++) {
+						attr = img.attributes[i];
+						if (attr.name !== '"') { // test for invalid attributes
+							canvas.setAttribute(attr.name, attr.value);
+						}
+					}
+					$(canvas).css({"position":"absolute"});
+					wrapper.prepend(canvas);
+					$(img).css({"opacity":0});
+					$(img).addClass('frozen');
+				},
+				unfreeze = function() {
+					wrapper.find(canvas).remove();
+					$(img).css({"opacity":1});
+					$(img).removeClass('frozen');
+				};
+			
+			if($(img).is('.frozen')){
+				unfreeze();
+			}else{
+				if (img.complete) {
+					freeze();
+				} else {
+					img.addEventListener('load', freeze, true);
 				}
 			}
-			canvas.style.position = 'absolute';
-			img.parentNode.insertBefore(canvas, img);
-			img.style.opacity = 0;
-		};
-		if (img.complete) {
-			freeze();
-		} else {
-			img.addEventListener('load', freeze, true);
-		}
+		});
 	}
 		
 		
