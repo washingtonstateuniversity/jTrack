@@ -251,7 +251,8 @@ $(function(){
     });
     $('.complex a').jtrack({
         category : function(element) {
-            return element.removeClass('tracked');
+            element.removeClass('tracked');
+            return "A special Cat to use";
         }
     });
 
