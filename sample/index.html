@@ -68,7 +68,7 @@
 					$(img).css({"position":"absolute","display":"none"});
 				},
 				unfreeze = function() {
-					canvas.remove();
+					$(img).find('canvas').remove();
 					$(img).css({"position":"initial","display":"initial"});
 					$(img).removeClass('frozen');
 				};
