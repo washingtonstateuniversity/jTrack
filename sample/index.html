@@ -42,13 +42,23 @@
 			
 			var width = img.width,
 				height = img.height,
-				canvas = createElement('canvas', function(clone) {
-					clone.width = width;
-					clone.height = height;
+				min_width = img.css("min-width"),
+				min_height = img.css("min-height"),
+				canvas = $('<canvas>').css({
+					"width":width,
+					"height":height,
+					"min-width":min_width,
+					"min-height":min_height,
 				}),
 				attr,
 				i = 0;
-			wrapper.css({"width":width,"height":height,"position":"relative"});
+			wrapper.css({
+					"width":width,
+					"height":height,
+					"min-width":min_width,
+					"min-height":min_height,
+					"position":"relative"
+			});
 			var freeze = function() {
 					canvas.getContext('2d').drawImage(img, 0, 0, width, height);
 					for (i = 0; i < img.attributes.length; i++) {
@@ -59,12 +69,12 @@
 					}
 					$(canvas).css({"position":"absolute"});
 					wrapper.prepend(canvas);
-					$(img).css({"opacity":0});
+					$(img).css({"position":"absolute","display":"none"});
 					$(img).addClass('frozen');
 				},
 				unfreeze = function() {
-					wrapper.find(canvas).remove();
-					$(img).css({"opacity":1});
+					canvas.remove();
+					$(img).css({"position":"initial","display":"initial"});
 					$(img).removeClass('frozen');
 				};
 			
