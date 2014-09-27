@@ -37,13 +37,14 @@
 			}
 			var wrapper=$(img).closest('.freezeWrapped');
 			
-			var width = $(img).width,
-				height = $(img).height,
+			var width = img.width,
+				height = img.height,
 				min_width = $(img).css("min-width"),
 				min_height = $(img).css("min-height"),
 				attr,
 				i = 0;
-			var canvas = $('<canvas/>');
+			var canvas = $('<canvas/>').width(width)
+						.height(height);
 			wrapper.css({
 				"width":width,
 				"height":height,
