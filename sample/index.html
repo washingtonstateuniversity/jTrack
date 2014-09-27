@@ -36,7 +36,7 @@
 			var img = this;
 			
 			if($(img).parent('.freezeWrapped').length<=0){
-				$(img).wrap('<div class="freezeWrapped">');
+				$(img).wrap('<div class="freezeWrapped"/>');
 			}
 			var wrapper=$(img).closest('.freezeWrapped');
 			
@@ -44,30 +44,31 @@
 				height = img.height,
 				min_width = img.css("min-width"),
 				min_height = img.css("min-height"),
-				canvas = $('<canvas>').css({
-					"width":width,
-					"height":height,
-					"min-width":min_width,
-					"min-height":min_height,
-				}),
+				canvas = $('<canvas/>'),
 				attr,
 				i = 0;
 			wrapper.css({
-					"width":width,
-					"height":height,
-					"min-width":min_width,
-					"min-height":min_height,
-					"position":"relative"
+				"width":width,
+				"height":height,
+				"min-width":min_width,
+				"min-height":min_height,
+				"position":"relative"
 			});
 			var freeze = function() {
-					canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+					canvas[0].getContext('2d').drawImage(img, 0, 0, width, height);
 					for (i = 0; i < img.attributes.length; i++) {
 						attr = img.attributes[i];
 						if (attr.name !== '"') { // test for invalid attributes
-							canvas.setAttribute(attr.name, attr.value);
+							canvas[0].setAttribute(attr.name, attr.value);
 						}
 					}
-					$(canvas).css({"position":"absolute"});
+					$(canvas).css({
+						"width":width,
+						"height":height,
+						"min-width":min_width,
+						"min-height":min_height,
+						"position":"absolute"
+					});
 					wrapper.prepend(canvas);
 					$(img).css({"position":"absolute","display":"none"});
 					$(img).addClass('frozen');
