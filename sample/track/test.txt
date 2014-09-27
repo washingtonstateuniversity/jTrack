@@ -13,21 +13,24 @@
     "element":".level.boss.click.one",
     "options":{
         "category":"download",
-        "action":"clicked"
+        "action":"clicked",
+        "callback":"function(ele){freezeGif(ele.find('img')[0])}"
         }
 }, {
     "element":".level.boss.click.two",
     "options":{
         "category":"download",
         "action":"double clicked",
-        "eventTracked":"dblclick"
+        "eventTracked":"dblclick",
+        "callback":"function(ele){freezeGif(ele.find('img')[0])}"
         }
 }, {
     "element":".level.boss.load",
     "options":{
         "category":"download",
         "action":"on load",
-        "eventTracked":"load"
+        "eventTracked":"load",
+        "callback":"function(ele){freezeGif(ele.find('img')[0])}"
         }
 }, {
     "element":"a[href$='.gif']",
