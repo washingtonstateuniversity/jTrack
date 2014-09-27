@@ -53,7 +53,7 @@
    
     
     <hr/><hr/>
-    <h4 style="color:rgb(255,184,28)">Note: all clicks are supressed to keep only the GA events and actions </h4>
+    <h4 style="color:rgb(255,184,28)">Note: all clicks are suppressed to keep only the GA events and actions </h4>
     <hr/>
     <h2>Deferred loading of Google Analytics</h2>
     <code>
@@ -235,13 +235,13 @@ $(document).ready(function(){
     });
 
     //few other examples
-    $('.normal a').track();
-    $('.sidebar a').track({
+    $('.normal a').trackEvent();
+    $('.sidebar a').trackEvent({
         category : 'sidebar'
     });
-    $('.complex a').track({
+    $('.complex a').trackEvent({
         category : function(element) {
-            return element.attr('class').replace('tracked', '');
+            return element.removeClass('tracked');
         }
     });
 
