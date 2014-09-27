@@ -26,6 +26,7 @@
 	<style>
 	.level.boss{display:inline-block;border:1px solid #999;width:150px; }
 	.level.boss span{display:inline-block;float:left;border:1px solid #999; width:100%;}
+	code{word-wrap: break-word;font-size: .75em;}
 	</style>
 
 </head>
@@ -193,16 +194,20 @@ $(document).ready(function(){
 
     <pre><code id="codeblob">
 $(document).ready(function(){
-    /**
-    *  example of a json feed controlling the triggers
-    *  since this is something that is cached this is a 
-    *  super easy way to control may distrobutions with out
-    *  having users that don't know, have to make edits
-    **/
+    /*
+    example of a json feed controlling the triggers since this is something that is cached this is a  super easy way to control may distrobutions with out having users that don't know, have to make edits
+    */
     $.getJSON('track/test.txt' , function(data){
         $.jtrack({
-            load_analytics:{account:'UA-25040747-1',options:{onload: true, status_code: 200}},
-            trackevents:data // this can be hard codded here or set do be feed in like so
+            load_analytics:{
+                account:'UA-25040747-1',
+                options:{
+                    onload: true,
+                    status_code: 200
+                }
+            },
+            // this can be hard codded here or set do be feed in like so
+            trackevents:data
         });
     });
 
@@ -212,7 +217,9 @@ $(document).ready(function(){
         category : 'sidebar'
     });
     $('.complex a').track({
-        category : function(element) { return element.attr('class').replace('tracked', '') }
+        category : function(element) {
+            return element.attr('class').replace('tracked', '');
+        }
     });
 
     //this sets the examples from doing anything but the google stuff
