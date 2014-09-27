@@ -250,8 +250,12 @@ var jtrackedOptions=[];
 	
 		pageTracker._trackEvent(category, action, label,value, noninteraction);
 		//_gaq.push(_event);
-		if(jQuery.isFunction(callback)){
-			callback(ele);
+		if(typeof(callback)!=="undefined"){
+			if(jQuery.isFunction(callback)){
+				callback(ele);
+			}else{
+				evaluate(ele,callback);
+			}
 		}
 		debug('Fired event for Tracking for _event');
 		debug(dump(_event));
@@ -419,7 +423,7 @@ var jtrackedOptions=[];
 			var noninteraction	= evaluate(ele, settings.noninteraction);
 				noninteraction	= (noninteraction == 'undefined') ? 'false' : noninteraction;
 			var _link			= settings._link;
-			var callback		= evaluate(ele, settings.callback);
+			var callback		= settings.callback;
 
 			ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
 			var tasactedEvent = eventTracked + '.' + (alias=="undefined" || alias==null ? 'jtrack': alias);
