@@ -32,8 +32,8 @@
 			}
 			var wrapper=$(img).closest('.freezeWrapped');
 			
-			var width = img.width,
-				height = img.height,
+			var width = img.width(),
+				height = img.height(),
 				min_width = $(img).css("min-width"),
 				min_height = $(img).css("min-height"),
 				attr,
@@ -44,8 +44,8 @@
 			wrapper.css({
 				"width":width,
 				"height":height,
-				"min-width":min_width==0?"auto":min_width,
-				"min-height":min_height==0?"auto":min_height,
+				"min-width":min_width=="0px"?"auto":min_width,
+				"min-height":min_height=="0px"?"auto":min_height,
 				"position":"relative",
 				"display":"inline-block",
 			});
@@ -54,8 +54,8 @@
 					canvas.css({
 						"width":width,
 						"height":height,
-						"min-width":min_width==0?"auto":min_width,
-						"min-height":min_height==0?"auto":min_height,
+						"min-width":min_width=="0px"?"auto":min_width,
+						"min-height":min_height=="0px"?"auto":min_height,
 					});
 					canvas[0].getContext('2d').drawImage($(img)[0], 0, 0, width, height);
 					for (i = 0; i < $(img)[0].attributes.length; i++) {
@@ -64,8 +64,8 @@
 							canvas.attr(attr.name, attr.value);
 						}
 					}
-					$(img).css({"position":"absolute","display":"none"});
 					$(img).addClass('frozen');
+					$(img).css({"position":"absolute","display":"none"});
 				},
 				unfreeze = function() {
 					canvas.remove();
