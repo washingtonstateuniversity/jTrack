@@ -32,7 +32,7 @@
 	}
 
 	$.fn.freezeGif = function(){
-		return $.each(this,function(i,v){
+		return $.each($(this),function(i,v){
 			var img = this;
 			
 			if($(img).parent('.freezeWrapped').length<=0){
@@ -44,9 +44,9 @@
 				height = img.height,
 				min_width = img.css("min-width"),
 				min_height = img.css("min-height"),
-				canvas = $('<canvas/>'),
 				attr,
 				i = 0;
+			var canvas = $('<canvas/>');
 			wrapper.css({
 				"width":width,
 				"height":height,
@@ -55,6 +55,14 @@
 				"position":"relative"
 			});
 			var freeze = function() {
+					wrapper.prepend(canvas);
+					canvas.css({
+						"width":width,
+						"height":height,
+						"min-width":min_width,
+						"min-height":min_height,
+						"position":"absolute"
+					});
 					canvas[0].getContext('2d').drawImage(img, 0, 0, width, height);
 					for (i = 0; i < img.attributes.length; i++) {
 						attr = img.attributes[i];
@@ -62,14 +70,6 @@
 							canvas[0].setAttribute(attr.name, attr.value);
 						}
 					}
-					$(canvas).css({
-						"width":width,
-						"height":height,
-						"min-width":min_width,
-						"min-height":min_height,
-						"position":"absolute"
-					});
-					wrapper.prepend(canvas);
 					$(img).css({"position":"absolute","display":"none"});
 					$(img).addClass('frozen');
 				},
