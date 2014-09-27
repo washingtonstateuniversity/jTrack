@@ -1,48 +1,40 @@
-[
-	{
-		"element":"a#hover",
-		"options":{
-			"eventTracked":"mouseover",
-			"action":"moused over"
-			}
-	},
-	{
-		"element":".footer a",
-		"options":{
-			"category":"footer"
-			}
-	},
-	{
-		"element":".level.boss.click.one",
-		"options":{
-			"category":"download",
-			"action":"clicked"
-			}
-	},	{
-		"element":".level.boss.click.two",
-		"options":{
-			"category":"download",
-			"action":"double clicked",
-			"eventTracked":"dblclick"
-			}
-	},	{
-		"element":".level.boss.load",
-		"options":{
-			"category":"download",
-			"action":"on load",
-			"eventTracked":"load"
-			}
-	},	{
-		"element":"a[href$='.gif']",
-		"options":{
-			"category":"download",
-			"lable":"An example of a dual event role",
-			"action":"moused out",
-			"eventTracked":"mouseout"
-			}
-	}
-	
-	
-	
-	
-]
+[{
+    "element":"a#hover",
+    "options":{
+        "eventTracked":"mouseover",
+        "action":"moused over"
+        }
+}, {
+    "element":".footer a",
+    "options":{
+        "category":"footer"
+        }
+}, {
+    "element":".level.boss.click.one",
+    "options":{
+        "category":"download",
+        "action":"clicked"
+        }
+}, {
+    "element":".level.boss.click.two",
+    "options":{
+        "category":"download",
+        "action":"double clicked",
+        "eventTracked":"dblclick"
+        }
+}, {
+    "element":".level.boss.load",
+    "options":{
+        "category":"download",
+        "action":"on load",
+        "eventTracked":"load"
+        }
+}, {
+    "element":"a[href$='.gif']",
+    "options":{
+        "category":"download",
+        "lable":"An example of a dual event role",
+        "action":"moused out",
+        "eventTracked":"mouseout"
+        }
+}]
