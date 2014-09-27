@@ -27,7 +27,8 @@
 	.level.boss{display:inline-block;border:1px solid #999;width:100; }
 	.level.boss span{display:inline-block;float:left;border:1px solid #999; width:100%;}
 	.level.boss img{min-width: 100%;}
-	code,pre{font-size: .75em; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;line-height: .95em;font-family: monospace;color: rgb(30,10,10);}
+	code,pre{font-size: .85em; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;line-height: .95em;font-family: monospace;color: rgb(30,10,10);}
+	.inlinecode{display:inline-block;}
 	</style>
 
 </head>
@@ -52,7 +53,7 @@
    
     
     <hr/><hr/>
-    <h4>Note: all clicks are supressed to keep only the GA events and actions </h4>
+    <h4 style="color:rgb(255,184,28)">Note: all clicks are supressed to keep only the GA events and actions </h4>
     <hr/>
     <h2>Deferred loading of Google Analytics</h2>
     <code>
@@ -68,47 +69,64 @@
 &lt;/script&gt;
     </pre>
     </code>
-    <h2>Internal/external link tracking</h2>
-    <div class="normal">
-      <a href="/abcdef">Internal link</a><br/>
-      <a href="http://www.complex.com">External link</a><br/>
-      <a href="http://beastieboys.com/" target="_blank">External link in new window</a><br/>
-      <a href="#">Named link</a><br/>
-      <a href="javascript:void(0)">JavaScript link</a>
-    </div>
+		
+	<blockquote>Why have a choice? Why postpone the GA from loading before the page loads? If you only want to count when a user truly saw the page, then that <code class="inlinecode">onload</code> option is the way to go. This approach will help reduce false click traffic. </blockquote>
+		
 
-    <h2>Metadata extraction using callbacks</h2>
-    <div class="sidebar">
-      <a href="http://www.sidebar.com">Sidebar link</a>
-    </div>          
-
-    <div class="footer">
-      <a href="http://www.footer.com">Footer link</a>
-    </div>
-
-    <div class="complex">
-      <a href="http://www.complex.com" class="complex">Complex link</a>
-    </div>
-    
+	<h2>General link tracking tests</h2>
+	<div class="row halves gutter narrow pad-bottom short"> 
+		<div class="column one">
+			<h4>Internal/external link tracking</h4>
+			<div class="normal">
+			  <a href="/abcdef">Internal link</a><br/>
+			  <a href="http://www.complex.com">External link</a><br/>
+			  <a href="http://beastieboys.com/" target="_blank">External link in new window</a><br/>
+			  <a href="#">Named link</a><br/>
+			  <a href="javascript:void(0)">JavaScript link</a>
+			</div>
+		</div>
+		<div class="column two">
+			<h4>Metadata extraction using callbacks</h4>
+			<div class="sidebar">
+			  <a href="http://www.sidebar.com">Sidebar link</a>
+			</div>
+			<div class="footer">
+			  <a href="http://www.footer.com">Footer link</a>
+			</div>
+			<div class="complex">
+			  <a href="http://www.complex.com" class="complex">Complex link</a>
+			</div>
+		</div>
+	</div>
     
     <h3>Mouse over event tracking</h3>
     <a href="http://www.google.com" id="hover">Hover over me</a>
     
     <div>
     <hr/><hr/>
-    <h2>Level: <em>Boss</em></h2>
+    <h2>Test Level: <em>Boss</em></h2>
     <hr/>
     <hr/>
-        <div class="row thrids gutter pad-bottom tall">
-            
-             <div class="column one">
-      <a href="http://i.imgur.com/dsDO3.gif" class="level boss click one"><span>One Click EX:</span><img src="http://i.imgur.com/dsDO3.gif" /></a>
-            </div><div class="column two">
-     <a href=" http://i.imgur.com/YeXDp.gif" class="level boss click two"><span>DBL click EX:</span><img src="http://i.imgur.com/YeXDp.gif" /></a>
-            </div><div class="column three">
-      <a href="http://i.imgur.com/Tyz0s.gif" class="level boss load"><span>onLoad EX:</span><img src="http://i.imgur.com/Tyz0s.gif" /></a>
-            </div>
-        </div>
+	<div class="row thirds gutter narrow pad-bottom short"> 
+		 <div class="column one">
+			<a href="http://i.imgur.com/dsDO3.gif" class="level boss click one">
+				<span>One Click EX:</span>
+				<img src="http://i.imgur.com/dsDO3.gif" />
+			 </a>
+		</div>
+		<div class="column two">
+			<a href=" http://i.imgur.com/YeXDp.gif" class="level boss click two">
+				<span>DBL click EX:</span>
+				<img src="http://i.imgur.com/YeXDp.gif" />
+			</a>
+		</div>
+		<div class="column three">
+			<a href="http://i.imgur.com/Tyz0s.gif" class="level boss load">
+				<span>onLoad EX:</span>
+				<img src="http://i.imgur.com/Tyz0s.gif" />
+			</a>
+		</div>
+	</div>
      <hr/> 
       
       
@@ -126,7 +144,7 @@ $(document).ready(function(){
 });
     </code></pre>
 
-	
+<hr/>
 	<h2>Extended test</h2>
 <p><strong>Internal  links</strong> <br />
   From  the left nav </p>
