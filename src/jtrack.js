@@ -236,7 +236,7 @@ var jtrackedOptions=[];
    *  noninteraction - A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation..
    *
    */
-  jQuery.jtrack.trackEvent = function(pageTracker,category, action, label, value, noninteraction) {
+  jQuery.jtrack.trackEvent = function(ele,pageTracker,category, action, label, value, noninteraction,callback) {
     if(!defined(pageTracker)) {
 		debug('FATAL: pageTracker is not defined'); // blocked by whatever
     } else {
@@ -250,7 +250,9 @@ var jtrackedOptions=[];
 	
 		pageTracker._trackEvent(category, action, label,value, noninteraction);
 		//_gaq.push(_event);
-		
+		if(jQuery.isFunction(callback)){
+			callback(ele);
+		}
 		debug('Fired event for Tracking for _event');
 		debug(dump(_event));
     }
@@ -434,10 +436,12 @@ var jtrackedOptions=[];
 			ele.on(tasactedEvent, function(e) {
 				if(mode.indexOf("_link")>-1){
 					e.preventDefault(); e.stopPropagation(); 
-					if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
+					if(!skip_campaign){
+						jQuery.jtrack.make_forced_camp(ele,mode);
+					}
 				}
 				if(!skip && mode.indexOf("event")>-1 ){
-					jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
+					jQuery.jtrack.trackEvent(ele,pageTracker,category, action, label, value,noninteraction,callback);
 				}
 				if(mode.indexOf("_social")>-1 ){
 					var network      = evaluate(ele, settings.network);
