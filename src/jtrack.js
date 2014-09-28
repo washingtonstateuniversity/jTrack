@@ -436,8 +436,14 @@ var jtrackedOptions=[];
 			jtrackedOptions[marker]["ele"]=ele;
 			jtrackedOptions[marker]["tasactedEvent"]=tasactedEvent;
 
-			if(overwrites==='true'){ele.off(tasactedEvent);ele.unbind(tasactedEvent);}
+			if(overwrites==='true'){
+				ele.off(tasactedEvent);
+				ele.unbind(tasactedEvent);
+				debug('overwriting '+tasactedEvent);
+			}
+			debug('setting event '+tasactedEvent);
 			ele.on(tasactedEvent, function(e) {
+				debug('doing event '+tasactedEvent);
 				if(mode.indexOf("_link")>-1){
 					e.preventDefault(); e.stopPropagation(); 
 					if(!skip_campaign){
