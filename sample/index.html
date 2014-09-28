@@ -328,7 +328,7 @@ $(function(){
 
 
     //this sets the examples from doing anything but the google stuff
-    $('a').click(function(e){
+    $('a').on('click',function(e){
         e.preventDefault();
         e.stopPropagation();
     });
