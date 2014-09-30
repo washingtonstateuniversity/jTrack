@@ -465,7 +465,7 @@ var jtrackedOptions=[];
 					_gaq.push(function () {
 						var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
 						var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-						if(ele.attr('target')!=""){
+						if( ele.attr('target')!="" && ele.attr('target')!="_self" ){
 							window.open(
 								ele.attr('href'),
 								ele.attr('target') // <- This is what makes it open in a new window/tab.
