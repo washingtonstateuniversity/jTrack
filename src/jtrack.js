@@ -465,7 +465,14 @@ var jtrackedOptions=[];
 					_gaq.push(function () {
 						var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
 						var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-						window.location.href = ele.attr('href');
+						if(ele.attr('target')!=""){
+							window.open(
+								ele.attr('href'),
+								ele.attr('target') // <- This is what makes it open in a new window/tab.
+							);
+						}else{
+							window.location.href = ele.attr('href');
+						}
 					});
 					return false;
 				}
