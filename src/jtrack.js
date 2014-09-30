@@ -104,7 +104,7 @@ var jtrackedOptions=[];
 						jQuery.each(s.trackevents, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
 							var selector = v.element.replace("**SELF_DOMAIN**",domain);
-							jQuery(selector).track(defined(v.options)?v.options:null);
+							jQuery(selector).jtrack(defined(v.options)?v.options:null);
 						});
 					}
 				});
@@ -113,7 +113,7 @@ var jtrackedOptions=[];
 					jQuery.each(s.trackevents, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
-						jQuery(selector).track(defined(v.options)?v.options:null);
+						jQuery(selector).jtrack(defined(v.options)?v.options:null);
 					});
 				}	
 			}
@@ -236,7 +236,7 @@ var jtrackedOptions=[];
    *  noninteraction - A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation..
    *
    */
-  jQuery.jtrack.trackEvent = function(pageTracker,category, action, label, value, noninteraction) {
+  jQuery.jtrack.trackEvent = function(ele,pageTracker,category, action, label, value, noninteraction,callback) {
     if(!defined(pageTracker)) {
 		debug('FATAL: pageTracker is not defined'); // blocked by whatever
     } else {
@@ -250,7 +250,13 @@ var jtrackedOptions=[];
 	
 		pageTracker._trackEvent(category, action, label,value, noninteraction);
 		//_gaq.push(_event);
-		
+		if(typeof(callback)!=="undefined"){
+			if(jQuery.isFunction(callback)){
+				callback(ele);
+			}else{
+				evaluate(ele,callback);
+			}
+		}
 		debug('Fired event for Tracking for _event');
 		debug(dump(_event));
     }
@@ -297,8 +303,7 @@ var jtrackedOptions=[];
   };
 
 
-  jQuery.jtrack.make_campaign_str = function(callback){
-	  
+	jQuery.jtrack.make_campaign_str = function(callback){
 		function readCookie(name) {
 			var nameEQ = name + "=";
 			var ca = document.cookie.split(';');
@@ -363,9 +368,8 @@ var jtrackedOptions=[];
 			callback(str);
 			return false;
 		}
-		
-	  return str;
-  };
+		return str;
+	};
 
 	jQuery.jtrack.make_forced_camp=function(ele,mode){
 		if(mode.indexOf("_link")>-1 && ele.data('tracker') != 'added'){
@@ -391,35 +395,36 @@ var jtrackedOptions=[];
    *  jQuery('a').jtrack.track()
    *
    */
-  jQuery.fn.track = function(options) {
+  jQuery.fn.jtrack = function(options) {
     // Add event handler to all matching elements
     return jQuery.each(jQuery(this),function() {
-		var ele = jQuery(this);
-		var settings = jQuery.extend({}, jQuery.jtrack.defaults, options);
-		var overwrites    = evaluate(ele, settings.overwrites); // this will let one element over any from before
-			overwrites = (overwrites == 'undefined') ? 'true' : overwrites;	
+		var ele			= jQuery(this);
+		var settings	= jQuery.extend({}, jQuery.jtrack.defaults, options);
+		var overwrites	= evaluate(ele, settings.overwrites); // this will let one element over any from before
+			overwrites	= (overwrites == 'undefined') ? 'true' : overwrites;
 			
 		// Prevent an element from being tracked multiple times.
 		if (ele.is('.tracked') && overwrites==='false') {
 			return false;
 		} else {
-			var mode = settings.mode;
-			var alias = evaluate(ele, settings.alias);
-			var category = evaluate(ele, settings.category);
-			var action   = evaluate(ele, settings.action);
-			var eventTracked    = evaluate(ele, settings.eventTracked);
-				action   = action==''?eventTracked:action;
-			var label    = evaluate(ele, settings.label);
-			var value    = evaluate(ele, settings.value);
-				value    = isNaN(value)?1:value;
-			var skip_internal    = evaluate(ele, settings.skip_internal);
-			var skip_campaign    = evaluate(ele, settings.skip_campaign);
-			var noninteraction = evaluate(ele, settings.noninteraction);
-				noninteraction = (noninteraction == 'undefined') ? 'false' : noninteraction;
-			var _link=settings._link;
-			var callback = evaluate(ele, settings.callback);
+			ele.addClass('tracked');
 
-			ele.addClass('tracked');	
+			var mode			= settings.mode;
+			var alias			= evaluate(ele, settings.alias);
+			var category		= evaluate(ele, settings.category);
+			var action			= evaluate(ele, settings.action);
+			var eventTracked	= evaluate(ele, settings.eventTracked);
+				action			= action==''?eventTracked:action;
+			var label			= evaluate(ele, settings.label);
+			var value			= evaluate(ele, settings.value);
+				value			= isNaN(value)?1:value;
+			var skip_internal	= evaluate(ele, settings.skip_internal);
+			var skip_campaign	= evaluate(ele, settings.skip_campaign);
+			var noninteraction	= evaluate(ele, settings.noninteraction);
+				noninteraction	= (noninteraction == 'undefined') ? 'false' : noninteraction;
+			var _link			= settings._link;
+			var callback		= settings.callback;
+
 			ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
 			var tasactedEvent = eventTracked + '.' + (alias=="undefined" || alias==null ? 'jtrack': alias);
 			var message = "user '" + tasactedEvent + "'(eventTracked)\r\t can overwrite '" + overwrites + (alias==null?"":"'\r\t under alias:'"+alias) + "'\r\t under Category:'" + category + "'\r\t with Action:'" + action + "'\r\t for Label:'" + label + "'\r\t having Value:'" + value + "'\r\t obeying Noninteraction:'" + noninteraction + "'";
@@ -431,60 +436,49 @@ var jtrackedOptions=[];
 			jtrackedOptions[marker]["ele"]=ele;
 			jtrackedOptions[marker]["tasactedEvent"]=tasactedEvent;
 
-			function check() {
-				return !(/^[0-1]\.[1-7]/.test(jQuery.fn.jquery));
+			if(overwrites==='true'){
+				ele.off(tasactedEvent);
+				ele.unbind(tasactedEvent);
+				debug('overwriting '+tasactedEvent);
 			}
-
-			if( check() ){
-				if(overwrites==='true'){ele.die(tasactedEvent);ele.unbind(tasactedEvent);}
-				ele.live(tasactedEvent, function(e) {
-					if(mode.indexOf("_link")>-1){
-						e.preventDefault(); e.stopPropagation(); 
-						if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
+			debug('setting event '+tasactedEvent);
+			ele.on(tasactedEvent, function(e) {
+				debug('doing event '+tasactedEvent);
+				if(mode.indexOf("_link")>-1){
+					e.preventDefault(); e.stopPropagation(); 
+					if(!skip_campaign){
+						jQuery.jtrack.make_forced_camp(ele,mode);
 					}
-					if(!skip && mode.indexOf("event")>-1)jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
-					
-					if(mode.indexOf("_social")>-1 ){
-						var network      = evaluate(ele, settings.network);
-						var socialAction = evaluate(ele, settings.socialAction);
-						jQuery.jtrack.trackSocial(network, socialAction);
-					}
-					if(mode.indexOf("_link")>-1){
-						debug('Fired _link for Tracking for _link');debug(ele.attr('href'));
-						_gaq.push(['_link', ele.attr('href')]); 
-						_gaq.push(function () {
-							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
-							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
+				}
+				if(!skip && mode.indexOf("event")>-1 ){
+					jQuery.jtrack.trackEvent(ele,pageTracker,category, action, label, value,noninteraction,callback);
+				}
+				if(mode.indexOf("_social")>-1 ){
+					var network      = evaluate(ele, settings.network);
+					var socialAction = evaluate(ele, settings.socialAction);
+					jQuery.jtrack.trackSocial(network, socialAction);
+				}
+				if(mode.indexOf("_link")>-1){
+					debug('Fired _link for Tracking for _link');
+					debug(ele.attr('href'));
+					_gaq.push(['_link', ele.attr('href')]); 
+					_gaq.push(function () {
+						var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
+						var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
+						if(ele.attr('target')!=""){
+							window.open(
+								ele.attr('href'),
+								ele.attr('target') // <- This is what makes it open in a new window/tab.
+							);
+						}else{
 							window.location.href = ele.attr('href');
-						});
-						return false;
-					}
-				return true; });
-			}else{
-				if(overwrites==='true'){ele.off(tasactedEvent);ele.unbind(tasactedEvent);}
-				ele.on(tasactedEvent, function(e) {
-					if(mode.indexOf("_link")>-1){
-						e.preventDefault(); e.stopPropagation(); 
-						if(!skip_campaign)jQuery.jtrack.make_forced_camp(ele,mode);
-					}
-					if(!skip && mode.indexOf("event")>-1 )jQuery.jtrack.trackEvent(pageTracker,category, action, label, value,noninteraction,callback);
-					if(mode.indexOf("_social")>-1 ){
-						var network      = evaluate(ele, settings.network);
-						var socialAction = evaluate(ele, settings.socialAction);
-						jQuery.jtrack.trackSocial(network, socialAction);
-					}
-					if(mode.indexOf("_link")>-1){
-						debug('Fired _link for Tracking for _link');debug(ele.attr('href'));
-						_gaq.push(['_link', ele.attr('href')]); 
-						_gaq.push(function () {
-							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
-							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-							window.location.href = ele.attr('href');
-						});
-						return false;
-					}
-				return true; });
-			}
+						}
+					});
+					return false;
+				}
+				return true;
+			});
+			
 		}
     });
   };
