@@ -156,9 +156,9 @@ var jtrackedOptions=[];
 					});
 				}	
 			}
+			jQuery.jtrack.clearCampaignUrl();
 			if(s.clearCampaignUrls){
-				jQuery.jtrack.clearCampaignUrl();
-
+				
 			}
 		}
 	};
@@ -439,8 +439,11 @@ var jtrackedOptions=[];
 	* If truned on then this will clear any url params 
 	*/
 	jQuery.jtrack.clearCampaignUrl = function() {
-		if(window.location.indexOf('utm_source=')>-1){
-			window.history.pushState("", "", window.location);
+		var currentHref = window.location.href;
+		if(currentHref.indexOf('utm_source=')>-1){
+			var currentUrl = currentHref.split(window.location.host)[1];
+			currentUrl = currentHref.split('?')[0];
+			window.history.pushState(null, jQuery(document).find("title").text(), currentUrl);
 		}
 	};
 
