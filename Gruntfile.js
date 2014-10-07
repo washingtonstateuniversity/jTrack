@@ -1,5 +1,4 @@
 module.exports = function(grunt) {
-
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -13,7 +12,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            src: ['Gruntfile.js', 'src/*.js', 'src/config.js', 'tests/*.js'],
+            src: ['src/*.js', 'src/config.js', 'tests/*.js'],
             options: {
                 smarttabs: true,
                 curly: true,
@@ -33,8 +32,14 @@ module.exports = function(grunt) {
                     requirejs: true,
                     describe: true,
                     expect: true,
-                    it: true
-                }
+                    it: true,
+					_gat: true,
+					jQuery: true,
+					console: true,
+					module: true,
+					document: true,
+					window:true
+				}
             }
         },
         watch: {
