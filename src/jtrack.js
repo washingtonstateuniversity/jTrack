@@ -138,7 +138,6 @@ var jtrackedOptions=[];
 			var domain = typeof(s.domainName)!=="undefined" && s.domainName!=="" ? s.domainName : window.location.host;
 
 			if(defined(s.analytics)){
-				
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
 				jQuery.jtrack.accounts = s.analytics.accounts;
 				
@@ -237,7 +236,7 @@ var jtrackedOptions=[];
 			
 		});
 		if(jQuery.isFunction(callback)){
-			callback(pageTracker);
+			callback();
 		}
 	};
 	jQuery.jtrack.load_script = function(callback) {
