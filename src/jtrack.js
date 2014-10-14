@@ -154,14 +154,20 @@ var jtrackedOptions=[];
 							  url: s.events,
 							  success: function(loadeddata){
 									data = loadeddata;
+									jQuery.each(data, function(i, v) { 
+										//debug('<h4>appling: '+value.element+'</h4>');
+										var selector = v.element.replace("**SELF_DOMAIN**",domain);
+										jQuery(selector).jtrack(defined(v.options)?v.options:null);
+									});
 								}
 							});
+						}else{
+							jQuery.each(data, function(i, v) { 
+								//debug('<h4>appling: '+value.element+'</h4>');
+								var selector = v.element.replace("**SELF_DOMAIN**",domain);
+								jQuery(selector).jtrack(defined(v.options)?v.options:null);
+							});
 						}
-						jQuery.each(data, function(i, v) { 
-							//debug('<h4>appling: '+value.element+'</h4>');
-							var selector = v.element.replace("**SELF_DOMAIN**",domain);
-							jQuery(selector).jtrack(defined(v.options)?v.options:null);
-						});
 					}
 				});
 			}else{
