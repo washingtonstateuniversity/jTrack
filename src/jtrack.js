@@ -133,9 +133,13 @@ var jtrackedOptions=[];
 			jOps=jtrackedOptions[options];
 			(jOps.ele).triggerHandler(jOps.tasactedEvent);
 		}else{
-			var s = jQuery.extend({}, {}, options);
+			var s = jQuery.extend({}, {
+							debug : false, //bool
+							clearCampaignUrls:true, //bool
+							domainName : window.location.host
+						}, options);
 
-			var domain = typeof(s.domainName)!=="undefined" && s.domainName!=="" ? s.domainName : window.location.host;
+			var domain = s.domainName;
 
 			if(defined(s.analytics)){
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
@@ -169,9 +173,9 @@ var jtrackedOptions=[];
 					});
 				}	
 			}
-			jQuery.jtrack.clearCampaignUrl();
+			
 			if(s.clearCampaignUrls){
-				
+				jQuery.jtrack.clearCampaignUrl();
 			}
 		}
 	};
