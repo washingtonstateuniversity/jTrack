@@ -153,8 +153,9 @@ var jtrackedOptions=[];
 							  url: s.events,
 							  success: function(loadeddata){
 									data = loadeddata;
+									debug(data);
 									jQuery.each(data, function(i, v) { 
-										//debug('<h4>appling: '+value.element+'</h4>');
+										debug('appling: '+v.element);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
 										jQuery(selector).jtrack(defined(v.options)?v.options:null);
 									});
@@ -162,7 +163,7 @@ var jtrackedOptions=[];
 							});
 						}else{
 							jQuery.each(data, function(i, v) { 
-								//debug('<h4>appling: '+value.element+'</h4>');
+								debug('appling: '+v.element);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
 								jQuery(selector).jtrack(defined(v.options)?v.options:null);
 							});
