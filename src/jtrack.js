@@ -154,7 +154,7 @@ var jtrackedOptions=[];
 									jQuery.each(data, function(i, v) { 
 										debug('appling: '+v.element);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
-										jQuery(selector).jtrack(defined(v.options)?v.options:null);
+										jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
 									});
 								}
 							});
@@ -162,7 +162,7 @@ var jtrackedOptions=[];
 							jQuery.each(s.events, function(i, v) { 
 								debug('appling: '+v.element);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
-								jQuery(selector).jtrack(defined(v.options)?v.options:null);
+								jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
 							});
 						}
 					}
@@ -322,7 +322,7 @@ var jtrackedOptions=[];
 			val = value!==null ? {'eventValue': value} : {}
 			
 			_eventObj = jQuery.extend({},cat,act,lab,val);
-			ga('send', 'event', _eventObj);
+			ga(ns+'send', 'event', _eventObj);
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
 					callback(ele);
@@ -487,7 +487,7 @@ var jtrackedOptions=[];
 	*  jQuery('a').jtrack.track()
 	*
 	*/
-	jQuery.fn.jtrack = function(options) {
+	jQuery.fn.jtrack = function(options,ns) {
 		// Add event handler to all matching elements
 		return jQuery.each(jQuery(this),function() {
 			var ele			= jQuery(this);
@@ -541,12 +541,12 @@ var jtrackedOptions=[];
 						}
 					}
 					if(!skip && mode.indexOf("event")>-1 ){
-						jQuery.jtrack.trackEvent(ele,category, action, label, value,callback);
+						jQuery.jtrack.trackEvent(ele,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
 						var network      = evaluate(ele, settings.network);
 						var socialAction = evaluate(ele, settings.socialAction);
-						jQuery.jtrack.trackSocial(network, socialAction);
+						jQuery.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
 						debug('Fired _link for Tracking for _link');
