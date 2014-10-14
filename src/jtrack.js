@@ -318,7 +318,7 @@ var jtrackedOptions=[];
 			if(label!==null){_event.push(label);}
 			if(value!==null){_event.push(value);}
 			if(noninteraction!==null){ _event.push(noninteraction);}
-
+			/*
 			pageTracker._trackEvent(category, action, label,value, noninteraction);
 			//_gaq.push(_event);
 			if(typeof(callback)!=="undefined"){
@@ -327,7 +327,7 @@ var jtrackedOptions=[];
 				}else{
 					evaluate(ele,callback);
 				}
-			}
+			}*/
 			debug('Fired event for Tracking for _event');
 			debug(dump(_event));
 		}
@@ -353,7 +353,7 @@ var jtrackedOptions=[];
 		if(socialAction!==null){ _event.push(socialAction);}
 		if(opt_target!==null){_event.push(opt_target);}
 		if(opt_pagePath!==null){_event.push(opt_pagePath);}
-		pageTracker._trackSocial(network, socialAction, opt_target, opt_pagePath);
+		/////////pageTracker._trackSocial(network, socialAction, opt_target, opt_pagePath);
 		//pageTracker.push(_event);
 		//debug('<h4>Fired event for Social Tracking</h4><h5>for _event</h5>');
 		//debug('<pre>'+dump(_event)+'</pre>');	
@@ -534,7 +534,7 @@ var jtrackedOptions=[];
 				debug('setting event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
 					debug('doing event '+tasactedEvent);
-					if(mode.indexOf("_link")>-1){
+					/*if(mode.indexOf("_link")>-1){
 						e.preventDefault(); e.stopPropagation(); 
 						if(!skip_campaign){
 							jQuery.jtrack.make_forced_camp(ele,mode);
@@ -565,7 +565,7 @@ var jtrackedOptions=[];
 							}
 						});
 						return false;
-					}
+					}*/
 					return true;
 				});
 
