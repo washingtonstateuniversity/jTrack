@@ -232,7 +232,7 @@ var jtrackedOptions=[];
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
-			ga('create', account_id, opt=={}?'auto':opt);
+			ga('create', acc.id, opt=={}?'auto':opt);
 			if(autoLink!={}){
 				ga(ns+'require', 'linker');
 				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
