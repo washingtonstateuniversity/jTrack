@@ -212,32 +212,27 @@ var jtrackedOptions=[];
 			autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
 			sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
 			namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : 'auto';
-	
+			ns				= jQuery.isPlainObject(options) ? namedSpace.name+'.' : '';
 			opt=$.extend({},cookieDomain,cookiePath,autoLink,sampleRate);
 			
 			ga('create', account_id, jQuery.jtrack.settings.namedSpace,opt);
 			if(autoLink!={}){
-				ga('require', 'linker');
+				ga(ns+'require', 'linker');
 				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
-					ga('linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
+					ga(ns+'linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
 				}
 			}
 			if(jQuery.jtrack.settings.linkid){
-				ga('require', 'linkid', 'linkid.js');
+				ga(ns+'require', 'linkid', 'linkid.js');
 			}
 			if(jQuery.jtrack.settings.displayfeatures){
-				ga('require', 'displayfeatures');
+				ga(ns+'require', 'displayfeatures');
 			}
-			ga('send', 'pageview');
+			ga(ns+'send', 'pageview');
 			if(jQuery.jtrack.settings.ecommerce){
-				ga('require', 'ecommerce');
+				ga(ns+'require', 'ecommerce');
 			}
-	
-			if(
-				typeof(jQuery.jtrack.settings.domainName)!=="undefined" && ( typeof(jQuery.jtrack.settings._addIgnoredRef)==="undefined" || typeof(jQuery.jtrack.settings._addIgnoredRef)!=="undefined" && jQuery.jtrack.settings._addIgnoredRef!==false )
-				){
-				_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
-			}
+			
 		});
 		if(jQuery.isFunction(callback)){
 			callback(pageTracker);
