@@ -255,7 +255,7 @@ var jtrackedOptions=[];
 				ga(ns+'require', 'ecommerce');
 			}
 			if(jQuery.isFunction(callback)){
-				callback(ns);
+				ga(function(){callback(ns);});
 			}
 		});
 	};
