@@ -55,7 +55,7 @@ var jtrackedOptions=[];
 		if(obj!==false){ return obj; }
 	}
 	function debug(n){
-		return defined(jQuery.jtrack) && jQuery.jtrack.defaults.debug && defined(window.console) && defined(window.console.debug) && window.console.debug(n);
+		return defined(jQuery.jtrack) && jQuery.jtrack.eventdefaults.debug && defined(window.console) && defined(window.console.debug) && window.console.debug(n);
 	}
 	// @if DEBUG
 	/* for debug only. remove when done */
@@ -179,8 +179,10 @@ var jtrackedOptions=[];
 			}
 		}
 	};
-	
 	jQuery.jtrack.defaults = {
+		debug : false
+	};
+	jQuery.jtrack.eventdefaults = {
 		mode			: "event", // this is a CSV str ie: "event,_link"
 		category		: function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
 		action			: function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
@@ -489,7 +491,7 @@ var jtrackedOptions=[];
 		// Add event handler to all matching elements
 		return jQuery.each(jQuery(this),function() {
 			var ele			= jQuery(this);
-			var settings	= jQuery.extend({}, jQuery.jtrack.defaults, options);
+			var settings	= jQuery.extend({}, jQuery.jtrack.eventdefaults, options);
 			var overwrites	= evaluate(ele, settings.overwrites); // this will let one element over any from before
 				overwrites	= (overwrites === 'undefined') ? 'true' : overwrites;
 
