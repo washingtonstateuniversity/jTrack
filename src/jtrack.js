@@ -208,21 +208,13 @@ var jtrackedOptions=[];
 		}
 	};
 	jQuery.jtrack.load_script = function(src,account_id,callback) {
-	  jQuery.ajax({
-		type: "GET",
-		url: src,
-		success: function() {  
-			if (!defined(_gat)) {
-				debug('!!!!!! _gat has NOT been defined !!!!!!!');
-				throw "_gat has not been defined";
-			}  else {
-				debug('!!!!!! loaded the GA code !!!!!!!');
-				jQuery.jtrack.init_analytics(account_id,callback); 
-			}
-		},
-		dataType: "script",
-		cache: true // We want the cached version
-	  });
+	  	//for now just use the default
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
+		if(jQuery.isFunction(callback)){callback();}
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		
 	};
 	/**
 	* Enables Google Analytics tracking on the page from which it's called. 
@@ -244,21 +236,24 @@ var jtrackedOptions=[];
 	*
 	*/
 	jQuery.fn.trackPage = function(account_id, options,callback) {
-		var host = (("https:" === document.location.protocol) ? "https://ssl" : "http://www");
 		var script;
+
+
+
+
+
 
 		// Use default options, if necessary
 		jQuery.jtrack.settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
-		var src  = host + '.google-analytics.com/ga.js';
 
-		if ( typeof(_gat)!=='undefined' && _gaq.length>0) {
+		if ( typeof(ga)!=='undefined' && ga.length>0) {
 			debug('!!!!!! Google Analytics loaded previously !!!!!!!');
 		}else{
 			// Enable tracking when called or on page load?
 			if(jQuery.jtrack.settings.onload === true || jQuery.jtrack.settings.onload === null) {
-				jQuery(document).ready(function(){jQuery.jtrack.load_script(src,account_id,callback);});
+				jQuery(document).ready(function(){jQuery.jtrack.load_script(account_id,callback);});
 			} else {
-				jQuery.jtrack.load_script(src,account_id,callback);
+				jQuery.jtrack.load_script(account_id,callback);
 			}
 		}
 	};
