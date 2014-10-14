@@ -141,7 +141,7 @@ var jtrackedOptions=[];
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
 				jQuery.jtrack.accounts = s.analytics.accounts;
 				
-				jQuery.fn.trackPage(function(){
+				jQuery.fn.trackPage(function(ns){
 					if(defined(s.events)){
 						var data = s.events;
 						if(!jQuery.isPlainObject(s.events)){
@@ -222,7 +222,7 @@ var jtrackedOptions=[];
 			cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
 			cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
 			autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
-			sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
+			sampleRate		= jQuery.jtrack.settings.sampleRate ? {'sampleRate': jQuery.jtrack.settings.sampleRate} : {};
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
