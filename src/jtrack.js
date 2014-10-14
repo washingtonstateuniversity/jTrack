@@ -254,11 +254,10 @@ var jtrackedOptions=[];
 			if(jQuery.jtrack.settings.ecommerce){
 				ga(ns+'require', 'ecommerce');
 			}
-			
+			if(jQuery.isFunction(callback)){
+				callback(ns);
+			}
 		});
-		if(jQuery.isFunction(callback)){
-			callback();
-		}
 	};
 	jQuery.jtrack.load_script = function(callback) {
 	  	//for now just use the default
