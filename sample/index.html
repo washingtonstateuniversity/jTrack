@@ -297,23 +297,23 @@ $(function(){
     */
 	$.jtrack.defaults.debug = false;
 
-	$.jtrack({
-		analytics:{
-			accounts:[
-			{
-				id:'UA-25040747-1',
-				settings:{
-					namedSpace:'WSUTestGlobal',
-				}
-			}
-			],
-			defaults:{
-				autoLinkDomains:['wsu.edu'],
-				ecommerce:true,
-			}
-		},
-		events:'track/test.txt'
-	});
+    $.jtrack({
+        analytics:{
+            accounts:[
+            {
+                id:'UA-25040747-1',
+                settings:{
+                    namedSpace:'WSUTestGlobal',
+                }
+            }
+            ],
+            defaults:{
+                autoLinkDomains:['wsu.edu'],
+                ecommerce:true,
+            }
+        },
+        events:'track/test.txt'
+    });
 	
 	
 	$('a#debug').on('click',function(){
