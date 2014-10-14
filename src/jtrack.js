@@ -146,14 +146,14 @@ var jtrackedOptions=[];
 				
 				jQuery.fn.trackPage(function(ns){
 					if(defined(s.events)){
-						var data = s.events;
 						if(!jQuery.isPlainObject(s.events)){
+							window.console.debug('queue up events from '+s.events);
 							jQuery.ajax({
 							  dataType: "jsonp",
 							  url: s.events,
-							  success: function(loadeddata){
-									data = loadeddata;
+							  success: function(data){
 									debug(data);
+									window.console.debug(data);
 									jQuery.each(data, function(i, v) { 
 										debug('appling: '+v.element);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
@@ -162,7 +162,7 @@ var jtrackedOptions=[];
 								}
 							});
 						}else{
-							jQuery.each(data, function(i, v) { 
+							jQuery.each(s.events, function(i, v) { 
 								debug('appling: '+v.element);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
 								jQuery(selector).jtrack(defined(v.options)?v.options:null);
