@@ -138,9 +138,13 @@ var jtrackedOptions=[];
 			var domain = typeof(s.domainName)!=="undefined" && s.domainName!=="" ? s.domainName : window.location.host;
 
 			if(defined(s.analytics)){
-				jQuery.fn.trackPage(s.load_analytics.account, defined( s.load_analytics.options )?s.load_analytics.options:null,function(){
-					if(defined(s.trackevents)){
-						jQuery.each(s.trackevents, function(i, v) { 
+				
+				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
+				jQuery.jtrack.accounts = s.analytics.accounts;
+				
+				jQuery.fn.trackPage(function(){
+					if(defined(s.events)){
+						jQuery.each(s.events, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
 							var selector = v.element.replace("**SELF_DOMAIN**",domain);
 							jQuery(selector).jtrack(defined(v.options)?v.options:null);
@@ -149,7 +153,7 @@ var jtrackedOptions=[];
 				});
 			}else{
 				if(defined(s.events)){
-					jQuery.each(s.trackevents, function(i, v) { 
+					jQuery.each(s.events, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
 						jQuery(selector).jtrack(defined(v.options)?v.options:null);
@@ -162,6 +166,7 @@ var jtrackedOptions=[];
 			}
 		}
 	};
+	
 	jQuery.jtrack.defaults = {
 		mode			: "event", // this is a CSV str ie: "event,_link"
 		category		: function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
@@ -176,7 +181,9 @@ var jtrackedOptions=[];
 		alias			: null,
 		callback		: function(){}
 	};
-	jQuery.jtrack.settings={
+	jQuery.jtrack.accounts={};
+	jQuery.jtrack.settings={};
+	jQuery.jtrack.defaultsettings={
 		namedSpace:false,//{'name': 'myTracker'}
 		
 		cookieName:false,
@@ -192,50 +199,56 @@ var jtrackedOptions=[];
 		ecommerce:false,
 		linkid:true
 	};
-	jQuery.jtrack.init_analytics = function(account_id,callback) {
+	
+	jQuery.jtrack.init_analytics = function(callback) {
 		debug('Google Analytics loaded');
-
-		cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
-		cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
-		autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
-		sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
-		namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : 'auto';
-
-		opt=$.extend({},cookieDomain,cookiePath,autoLink,sampleRate);
 		
-		ga('create', account_id, jQuery.jtrack.settings.namedSpace,opt);
-		if(autoLink!={}){
-			ga('require', 'linker');
-			if(jQuery.jtrack.settings.autoLinkDomains.length>0){
-				ga('linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
+		$.each(jQuery.jtrack.accounts,function(idx,acc){
+			
+			jQuery.jtrack.settings = $.extend({},jQuery.jtrack.defaultsettings,acc.settings);
+			
+			cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
+			cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
+			autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
+			sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
+			namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : 'auto';
+	
+			opt=$.extend({},cookieDomain,cookiePath,autoLink,sampleRate);
+			
+			ga('create', account_id, jQuery.jtrack.settings.namedSpace,opt);
+			if(autoLink!={}){
+				ga('require', 'linker');
+				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
+					ga('linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
+				}
 			}
-		}
-		if(jQuery.jtrack.settings.linkid){
-			ga('require', 'linkid', 'linkid.js');
-		}
-		if(jQuery.jtrack.settings.displayfeatures){
-			ga('require', 'displayfeatures');
-		}
-		ga('send', 'pageview');
-		if(jQuery.jtrack.settings.ecommerce){
-			ga('require', 'ecommerce');
-		}
-
-		if(
-			typeof(jQuery.jtrack.settings.domainName)!=="undefined" && ( typeof(jQuery.jtrack.settings._addIgnoredRef)==="undefined" || typeof(jQuery.jtrack.settings._addIgnoredRef)!=="undefined" && jQuery.jtrack.settings._addIgnoredRef!==false )
-			){
-			_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
-		}
+			if(jQuery.jtrack.settings.linkid){
+				ga('require', 'linkid', 'linkid.js');
+			}
+			if(jQuery.jtrack.settings.displayfeatures){
+				ga('require', 'displayfeatures');
+			}
+			ga('send', 'pageview');
+			if(jQuery.jtrack.settings.ecommerce){
+				ga('require', 'ecommerce');
+			}
+	
+			if(
+				typeof(jQuery.jtrack.settings.domainName)!=="undefined" && ( typeof(jQuery.jtrack.settings._addIgnoredRef)==="undefined" || typeof(jQuery.jtrack.settings._addIgnoredRef)!=="undefined" && jQuery.jtrack.settings._addIgnoredRef!==false )
+				){
+				_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
+			}
+		});
 		if(jQuery.isFunction(callback)){
 			callback(pageTracker);
 		}
 	};
-	jQuery.jtrack.load_script = function(account_id,callback) {
+	jQuery.jtrack.load_script = function(callback) {
 	  	//for now just use the default
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-		jQuery.jtrack.init_analytics(account_id,callback);
+		jQuery.jtrack.init_analytics(callback);
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		
 	};
@@ -258,20 +271,16 @@ var jtrackedOptions=[];
 	*     - callback  - function to be executed after the Google Analytics code is laoded and initialized
 	*
 	*/
-	jQuery.fn.trackPage = function(account_id, options,callback) {
+	jQuery.fn.trackPage = function(callback) {
 		var script;
-
-		// Use default options, if necessary
-		jQuery.jtrack.settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
-
 		if ( typeof(ga)!=='undefined' && ga.length>0) {
 			debug('!!!!!! Google Analytics loaded previously !!!!!!!');
 		}else{
 			// Enable tracking when called or on page load?
 			if(jQuery.jtrack.settings.onload === true || jQuery.jtrack.settings.onload === null) {
-				jQuery(document).ready(function(){jQuery.jtrack.load_script(account_id,callback);});
+				jQuery(document).ready(function(){jQuery.jtrack.load_script(callback);});
 			} else {
-				jQuery.jtrack.load_script(account_id,callback);
+				jQuery.jtrack.load_script(callback);
 			}
 		}
 	};
