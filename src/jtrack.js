@@ -312,19 +312,20 @@ var jtrackedOptions=[];
 	*  value - An integer that you can use to provide numerical data about the user event.
 	*
 	*/
-	jQuery.jtrack.trackEvent = function(ele,pageTracker,category, action, label, value, callback) {
-		if(!defined(pageTracker)) {
-			debug('FATAL: pageTracker is not defined'); // blocked by whatever
+	jQuery.jtrack.trackEvent = function(ele,category, action, label, value, callback) {
+		if(!defined(ga)) {
+			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 
-			var _event = ['_trackEvent'];
-			if(category!==null){_event.push(category);}
-			if(action!==null){_event.push(action);}
-			if(label!==null){_event.push(label);}
-			if(value!==null){_event.push(value);}
+			var _event = {},cat,act,lab,val,_eventObj;
 			
-			pageTracker._trackEvent(category, action, label,value);
-			//_gaq.push(_event);
+			cat = category!==null ? {'eventCategory': category} : {};
+			act = action!==null ? {'eventAction': action} : {}
+			lab = label!==null ? {'eventLabel': label} : {}
+			val = value!==null ? {'eventValue': value} : {}
+			
+			_eventObj = jQuery.extend({},cat,act,lab,val);
+
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
 					callback(ele);
@@ -543,7 +544,7 @@ var jtrackedOptions=[];
 						}
 					}
 					if(!skip && mode.indexOf("event")>-1 ){
-						jQuery.jtrack.trackEvent(ele,pageTracker,category, action, label, value,callback);
+						jQuery.jtrack.trackEvent(ele,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
 						var network      = evaluate(ele, settings.network);
@@ -553,7 +554,7 @@ var jtrackedOptions=[];
 					if(mode.indexOf("_link")>-1){
 						debug('Fired _link for Tracking for _link');
 						debug(ele.attr('href'));
-						_gaq.push(['_link', ele.attr('href')]); 
+						/*_gaq.push(['_link', ele.attr('href')]); 
 						_gaq.push(function () {
 							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
 							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
@@ -567,6 +568,7 @@ var jtrackedOptions=[];
 							}
 						});
 						return false;
+						*/
 					}
 					return true;
 				});
