@@ -309,7 +309,7 @@ var jtrackedOptions=[];
 	*  value - An integer that you can use to provide numerical data about the user event.
 	*
 	*/
-	jQuery.jtrack.trackEvent = function(ele,category, action, label, value, callback) {
+	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
 		if(!defined(ga)) {
 			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
