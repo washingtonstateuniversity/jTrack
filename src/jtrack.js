@@ -137,7 +137,7 @@ var jtrackedOptions=[];
 
 			var domain = typeof(s.domainName)!=="undefined" && s.domainName!=="" ? s.domainName : window.location.host;
 
-			if(defined(s.load_analytics)){
+			if(defined(s.analytics)){
 				jQuery.fn.trackPage(s.load_analytics.account, defined( s.load_analytics.options )?s.load_analytics.options:null,function(){
 					if(defined(s.trackevents)){
 						jQuery.each(s.trackevents, function(i, v) { 
@@ -148,7 +148,7 @@ var jtrackedOptions=[];
 					}
 				});
 			}else{
-				if(defined(s.trackevents)){
+				if(defined(s.events)){
 					jQuery.each(s.trackevents, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
@@ -174,45 +174,68 @@ var jtrackedOptions=[];
 		overwrites		: true,
 		skip_campaign	: false,
 		alias			: null,
-		callback		: function(){},
-		debug			: false
+		callback		: function(){}
 	};
-	jQuery.jtrack.settings={};
+	jQuery.jtrack.settings={
+		namedSpace:false,//{'name': 'myTracker'}
+		
+		cookieName:false,
+		cookieDomain:window.location.host,
+		cookieExpires:false,
+		cookiePath:'/',
+		
+		autoLink:true,
+		autoLinkDomains:[],
+		
+		sampleRate:false,
+		displayfeatures:false,
+		ecommerce:false,
+		linkid:true
+	};
 	jQuery.jtrack.init_analytics = function(account_id,callback) {
 		debug('Google Analytics loaded');
-		var pluginUrl =  '//www.google-analytics.com/plugins/ga/inpage_linkid.js';
-		_gaq.push(['_require', 'inpage_linkid', pluginUrl]);
-		_gaq.push(['_setAccount', account_id]);
-		_gaq.push(['_setAllowLinker', true]);
-		_gaq.push(['_setDomainName', (typeof(jQuery.jtrack.settings.domainName)!=="undefined")?jQuery.jtrack.settings.domain:window.location.host]);
 
-		pageTracker = _gat._createTracker(account_id);
+		cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
+		cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
+		autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
+		sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
+		namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : 'auto';
+
+		opt=$.extend({},cookieDomain,cookiePath,autoLink,sampleRate);
+		
+		ga('create', account_id, jQuery.jtrack.settings.namedSpace,opt);
+		if(autoLink!={}){
+			ga('require', 'linker');
+			if(jQuery.jtrack.settings.autoLinkDomains.length>0){
+				ga('linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
+			}
+		}
+		if(jQuery.jtrack.settings.linkid){
+			ga('require', 'linkid', 'linkid.js');
+		}
+		if(jQuery.jtrack.settings.displayfeatures){
+			ga('require', 'displayfeatures');
+		}
+		ga('send', 'pageview');
+		if(jQuery.jtrack.settings.ecommerce){
+			ga('require', 'ecommerce');
+		}
 
 		if(
 			typeof(jQuery.jtrack.settings.domainName)!=="undefined" && ( typeof(jQuery.jtrack.settings._addIgnoredRef)==="undefined" || typeof(jQuery.jtrack.settings._addIgnoredRef)!=="undefined" && jQuery.jtrack.settings._addIgnoredRef!==false )
 			){
 			_gaq.push(['_addIgnoredRef', jQuery.jtrack.settings.domain]);
 		}
-		if(typeof(jQuery.jtrack.settings.cookiePath)!=="undefined"){
-			_gaq.push(['_setCookiePath', jQuery.jtrack.settings.cookiePath]);
-		}
-		if(jQuery.jtrack.settings.status_code === null || jQuery.jtrack.settings.status_code === 200) {
-			//pageTracker._trackPageview();
-			_gaq.push(['_trackPageview']);
-		} else {
-			debug('Tracking error ' + jQuery.jtrack.settings.status_code);
-			_gaq.push(['_trackPageview',"/" + jQuery.jtrack.settings.status_code + ".html?page=" + document.location.pathname + document.location.search + "&from=" + document.referrer]);
-		}
 		if(jQuery.isFunction(callback)){
 			callback(pageTracker);
 		}
 	};
-	jQuery.jtrack.load_script = function(src,account_id,callback) {
+	jQuery.jtrack.load_script = function(account_id,callback) {
 	  	//for now just use the default
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-		if(jQuery.isFunction(callback)){callback();}
+		jQuery.jtrack.init_analytics(account_id,callback);
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 		
 	};
@@ -237,11 +260,6 @@ var jtrackedOptions=[];
 	*/
 	jQuery.fn.trackPage = function(account_id, options,callback) {
 		var script;
-
-
-
-
-
 
 		// Use default options, if necessary
 		jQuery.jtrack.settings = jQuery.extend({}, {onload: true, status_code: 200}, options);
