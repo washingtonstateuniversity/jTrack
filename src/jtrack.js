@@ -203,9 +203,9 @@ var jtrackedOptions=[];
 	jQuery.jtrack.init_analytics = function(callback) {
 		debug('Google Analytics loaded');
 		
-		$.each(jQuery.jtrack.accounts,function(idx,acc){
+		jQuery.each(jQuery.jtrack.accounts,function(idx,acc){
 			
-			jQuery.jtrack.settings = $.extend({},jQuery.jtrack.defaultsettings,acc.settings);
+			jQuery.jtrack.settings = jQuery.extend({},jQuery.jtrack.defaultsettings,acc.settings);
 			
 			cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
 			cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
