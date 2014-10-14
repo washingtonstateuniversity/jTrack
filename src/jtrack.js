@@ -147,13 +147,10 @@ var jtrackedOptions=[];
 				jQuery.fn.trackPage(function(ns){
 					if(defined(s.events)){
 						if(!jQuery.isPlainObject(s.events)){
-							window.console.debug('queue up events from '+s.events);
 							jQuery.ajax({
 							  dataType: "jsonp",
 							  url: s.events,
 							  success: function(data){
-									debug(data);
-									window.console.debug(data);
 									jQuery.each(data, function(i, v) { 
 										debug('appling: '+v.element);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
@@ -325,7 +322,7 @@ var jtrackedOptions=[];
 			val = value!==null ? {'eventValue': value} : {}
 			
 			_eventObj = jQuery.extend({},cat,act,lab,val);
-
+			ga('send', 'event', _eventObj);
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
 					callback(ele);
