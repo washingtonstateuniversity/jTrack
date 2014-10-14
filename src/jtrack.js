@@ -117,7 +117,6 @@ var jtrackedOptions=[];
 	*				eventTracked	: 'click',
 	*				skip_internal	: false,
 	*				overwrites		: false,
-	*				noninteraction	: false,
 	*				debug			: false
 	*			}
 	*		]}
@@ -195,7 +194,6 @@ var jtrackedOptions=[];
 		label			: function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
 		value			: function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():''; },
 		eventTracked	: 'click',
-		noninteraction	: false,
 		skip_internal	: false,
 		overwrites		: true,
 		skip_campaign	: false,
@@ -312,10 +310,9 @@ var jtrackedOptions=[];
 	*  action - A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object
 	*  label - An optional string to provide additional dimensions to the event data
 	*  value - An integer that you can use to provide numerical data about the user event.
-	*  noninteraction - A boolean that when set to true, indicates that the event hit will not be used in bounce-rate calculation..
 	*
 	*/
-	jQuery.jtrack.trackEvent = function(ele,pageTracker,category, action, label, value, noninteraction,callback) {
+	jQuery.jtrack.trackEvent = function(ele,pageTracker,category, action, label, value, callback) {
 		if(!defined(pageTracker)) {
 			debug('FATAL: pageTracker is not defined'); // blocked by whatever
 		} else {
@@ -325,9 +322,8 @@ var jtrackedOptions=[];
 			if(action!==null){_event.push(action);}
 			if(label!==null){_event.push(label);}
 			if(value!==null){_event.push(value);}
-			if(noninteraction!==null){ _event.push(noninteraction);}
-			/*
-			pageTracker._trackEvent(category, action, label,value, noninteraction);
+			
+			pageTracker._trackEvent(category, action, label,value);
 			//_gaq.push(_event);
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
@@ -335,7 +331,7 @@ var jtrackedOptions=[];
 				}else{
 					evaluate(ele,callback);
 				}
-			}*/
+			}
 			debug('Fired event for Tracking for _event');
 			debug(dump(_event));
 		}
@@ -518,14 +514,12 @@ var jtrackedOptions=[];
 					value			= isNaN(value)?1:value;
 				var skip_internal	= evaluate(ele, settings.skip_internal);
 				var skip_campaign	= evaluate(ele, settings.skip_campaign);
-				var noninteraction	= evaluate(ele, settings.noninteraction);
-					noninteraction	= (noninteraction === 'undefined') ? 'false' : noninteraction;
 				var _link			= settings._link;
 				var callback		= settings.callback;
 
 				ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
 				var tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
-				var message = "user '" + tasactedEvent + "'(eventTracked)\r\t can overwrite '" + overwrites + (alias===null?"":"'\r\t under alias:'"+alias) + "'\r\t under Category:'" + category + "'\r\t with Action:'" + action + "'\r\t for Label:'" + label + "'\r\t having Value:'" + value + "'\r\t obeying Noninteraction:'" + noninteraction + "'";
+				var message = "user '" + tasactedEvent + "'(eventTracked)\r\t can overwrite '" + overwrites + (alias===null?"":"'\r\t under alias:'"+alias) + "'\r\t under Category:'" + category + "'\r\t with Action:'" + action + "'\r\t for Label:'" + label + "'\r\t having Value:'" + value + "'";
 				var skip = skip_internal && (ele[0].hostname === location.hostname);
 				//debug('<pre>&#149;&nbsp; '+ (skip?'Skipping ':'Tracking ') + message+'</pre>');
 
@@ -542,14 +536,14 @@ var jtrackedOptions=[];
 				debug('setting event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
 					debug('doing event '+tasactedEvent);
-					/*if(mode.indexOf("_link")>-1){
+					if(mode.indexOf("_link")>-1){
 						e.preventDefault(); e.stopPropagation(); 
 						if(!skip_campaign){
 							jQuery.jtrack.make_forced_camp(ele,mode);
 						}
 					}
 					if(!skip && mode.indexOf("event")>-1 ){
-						jQuery.jtrack.trackEvent(ele,pageTracker,category, action, label, value,noninteraction,callback);
+						jQuery.jtrack.trackEvent(ele,pageTracker,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
 						var network      = evaluate(ele, settings.network);
@@ -573,7 +567,7 @@ var jtrackedOptions=[];
 							}
 						});
 						return false;
-					}*/
+					}
 					return true;
 				});
 
