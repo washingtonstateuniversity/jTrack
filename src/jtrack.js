@@ -223,7 +223,7 @@ var jtrackedOptions=[];
 			jQuery.jtrack.settings = jQuery.extend( {}, jQuery.jtrack.defaultsettings, acc.settings );
 			
 			namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : {};
-			ns				= jQuery.isPlainObject(options) ? namedSpace.name + '.' : '';
+			ns				= jQuery.isPlainObject(namedSpace) ? namedSpace.name + '.' : '';
 			
 			cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
 			cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
