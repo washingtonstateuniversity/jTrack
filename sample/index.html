@@ -285,7 +285,7 @@ $(function(){
     <script type="text/javascript">
 
     $(document).ready(function(){
-		$.get('track/test.txt',function(d){$('#jsonfeed').html(d);});
+		$.get('track/test.json',function(d){$('#jsonfeed').html(d);});
 		eval($('#codeblob').html());
     });
     </script>
@@ -312,7 +312,7 @@ $(function(){
                 ecommerce:true,
             }
         },
-        events:'track/test.txt'
+        events:'track/test.json'
     });
 	
 	
