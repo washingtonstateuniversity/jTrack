@@ -205,17 +205,19 @@ var jtrackedOptions=[];
 		
 		jQuery.each(jQuery.jtrack.accounts,function(idx,acc){
 			
-			jQuery.jtrack.settings = jQuery.extend({},jQuery.jtrack.defaultsettings,acc.settings);
+			jQuery.jtrack.settings = jQuery.extend( {}, jQuery.jtrack.defaultsettings, acc.settings );
+			
+			namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : {};
+			ns				= jQuery.isPlainObject(options) ? namedSpace.name + '.' : '';
 			
 			cookiePath		= jQuery.jtrack.settings.cookiePath ? {'cookiePath' : jQuery.jtrack.settings.cookiePath} : {};
 			cookieDomain	= jQuery.jtrack.settings.cookieDomain ? {'cookieDomain' : jQuery.jtrack.settings.cookieDomain} : {};
 			autoLink		= jQuery.jtrack.settings.autoLink ? {'allowLinker' : true} : {};
 			sampleRate		= jQuery.jtrack.settings.autoLink ? {'sampleRate': 5} : {};
-			namedSpace		= jQuery.jtrack.settings.namedSpace ? {'name': jQuery.jtrack.settings.namedSpace} : 'auto';
-			ns				= jQuery.isPlainObject(options) ? namedSpace.name+'.' : '';
-			opt=$.extend({},cookieDomain,cookiePath,autoLink,sampleRate);
 			
-			ga('create', account_id, jQuery.jtrack.settings.namedSpace,opt);
+			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
+			
+			ga('create', account_id, opt=={}?'auto':opt);
 			if(autoLink!={}){
 				ga(ns+'require', 'linker');
 				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
