@@ -143,7 +143,17 @@ var jtrackedOptions=[];
 				
 				jQuery.fn.trackPage(function(){
 					if(defined(s.events)){
-						jQuery.each(s.events, function(i, v) { 
+						var data = s.events;
+						if(!jQuery.isPlainObject(s.events)){
+							jQuery.ajax({
+							  dataType: "jsonp",
+							  url: s.events,
+							  success: function(loadeddata){
+									data = loadeddata;
+								}
+							});
+						}
+						jQuery.each(data, function(i, v) { 
 							//debug('<h4>appling: '+value.element+'</h4>');
 							var selector = v.element.replace("**SELF_DOMAIN**",domain);
 							jQuery(selector).jtrack(defined(v.options)?v.options:null);
