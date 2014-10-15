@@ -235,25 +235,32 @@ var jtrackedOptions=[];
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
 			ga('create', acc.id, opt=={}?'auto':opt);
+			
 			if(autoLink!={}){
 				ga(ns+'require', 'linker');
 				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
 					ga(ns+'linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
 				}
 			}
+			
 			if(jQuery.jtrack.settings.linkid){
 				ga(ns+'require', 'linkid', 'linkid.js');
 			}
+			
 			if(jQuery.jtrack.settings.displayfeatures){
 				ga(ns+'require', 'displayfeatures');
 			}
+			
 			ga(ns+'send', 'pageview');
+			
 			if(jQuery.jtrack.settings.ecommerce){
 				ga(ns+'require', 'ecommerce');
 			}
+			
 			if(jQuery.isFunction(callback)){
 				ga(function(){callback(ns);});
 			}
+			
 		});
 	};
 	jQuery.jtrack.load_script = function(callback) {
@@ -303,13 +310,13 @@ var jtrackedOptions=[];
 	*
 	* The trackEvent method takes four arguments:
 	*
-	*  ele      - Object  :: jQuery target object
-	*  ns       - String  :: the name space of the ga tracker
-	*  category - String  :: Specifies the event category. Must not be empty.
-	*  action   - String  :: Specifies the event action. Must not be empty.
-	*  label    - String  :: Optional / Specifies the event label.
-	*  value    - Integer :: Optional / Specifies the event value. Values must be non-negative.
-	*  callback - Function:: Optional 
+	* ele      - Object  :: jQuery target object
+	* ns       - String  :: the name space of the ga tracker
+	* category - String  :: Specifies the event category. Must not be empty.
+	* action   - String  :: Specifies the event action. Must not be empty.
+	* label    - String  :: Optional / Specifies the event label.
+	* value    - Integer :: Optional / Specifies the event value. Values must be non-negative.
+	* callback - Function:: Optional 
 	*
 	*/
 	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
@@ -331,7 +338,7 @@ var jtrackedOptions=[];
 					evaluate(ele,callback);
 				}
 			}
-			debug('Fired '+ns+'send for Tracking with _eventObj : '+dump(_eventObj));
+			debug('Fired '+ns+'send for Tracking');
 		}
 	};
 
@@ -346,33 +353,53 @@ var jtrackedOptions=[];
 	* target  - String  :: Specifies the target of a social interaction. This value is typically a URL but can be any text.
 	*
 	*/
-  jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
-	if(!defined(ga)) {
-	  debug('FATAL: pageTracker is not defined'); // blocked by whatever
-	} else {
-		var net,act,tar;
+	jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
+		if(!defined(ga)) {
+			debug('FATAL: ga is not defined'); // blocked by whatever
+		} else {
+			var net,act,tar;
+			
+			net = network!==null ? {'socialNetwork': network} : {};
+			act = action!==null ? {'socialAction': action} : {};
+			tar = target!==null ? {'socialTarget': target} : {};
+			ga(ns+'send', 'social', jQuery.extend({},net,act,tar) );
 		
-		net = network!==null ? {'socialNetwork': network} : {};
-		act = action!==null ? {'socialAction': action} : {};
-		tar = target!==null ? {'socialTarget': target} : {};
-		ga(ns+'send', 'social', jQuery.extend({},net,act,tar) );
+			debug('Fired '+ns+'send for Social Tracking');	
+		}
+	};
 
-		debug('Fired '+ns+'send for Social Tracking with _socialObj : '+dump(_socialObj));	
-	}
-  };
+	/**
+	* Tracks a pageview using the given uri.
+	*
+	*/
+	jQuery.jtrack.trackPageview = function(pageTracker,uri) {
+		if(!defined(pageTracker)) {
+			debug('FATAL: pageTracker is not defined');
+		} else {
+			pageTracker._trackPageview(uri);
+			debug('Fired event for _trackPageview for '+uri+'');
+		}
+	};
 
-  /**
-   * Tracks a pageview using the given uri.
-   *
-   */
-  jQuery.jtrack.trackPageview = function(pageTracker,uri) {
-	if(!defined(pageTracker)) {
-	  //debug('<h1>FATAL: pageTracker is not defined</h1>');
-	} else {
-	  pageTracker._trackPageview(uri);
-		debug('Fired event for _trackPageview for '+uri+'');
-	}
-  };
+	/**
+	* Tracks a pageview using the given uri.
+	*
+	*/
+	jQuery.jtrack.hit = function(ele, ns, hitType, hitPage) {
+		if(!defined(ga)) {
+			debug('FATAL: ga is not defined');
+		} else {
+			var type,page;
+			
+			type = hitType!==null ? {'hitType': hitType} : {};
+			page = hitPage!==null ? {'page': hitPage} : {};
+			ga(ns+'send', jQuery.extend({},type,page) );
+	
+			debug('Fired '+ns+'send for hitType Tracking');	
+		}
+	};
+
+
 
 
 	jQuery.jtrack.make_campaign_str = function(callback){
