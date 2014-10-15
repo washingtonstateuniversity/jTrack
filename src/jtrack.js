@@ -213,7 +213,10 @@ var jtrackedOptions=[];
 		autoLinkDomains	: [],
 		
 		location		: null,
-		host			: null,
+		hostname		: null,
+		
+		experimentID	: null,
+		expVar			: null,
 		
 		sampleRate		: false,
 		displayfeatures	: false,
@@ -244,7 +247,12 @@ var jtrackedOptions=[];
 			if(jQuery.jtrack.settings.hostname!==null){
 				ga('set', 'hostname', jQuery.jtrack.settings.hostname);
 			}
-
+			
+			if(jQuery.jtrack.settings.experimentID!==null){
+				ga('set', 'expId', jQuery.jtrack.settings.experimentID);
+				ga('set', 'expVar', jQuery.jtrack.settings.expVar);
+			}
+			
 			
 			ga('create', acc.id, opt=={}?'auto':opt);
 			
