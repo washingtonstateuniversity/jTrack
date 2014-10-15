@@ -196,6 +196,7 @@ var jtrackedOptions=[];
 		overwrites		: true,
 		skip_campaign	: false,
 		alias			: null,
+		nonInteraction	: null,
 		callback		: function(){}
 	};
 	jQuery.jtrack.accounts={};
@@ -539,6 +540,7 @@ var jtrackedOptions=[];
 				var skip_internal	= evaluate(ele, settings.skip_internal);
 				var skip_campaign	= evaluate(ele, settings.skip_campaign);
 				var _link			= settings._link;
+				var nonInteraction	= settings.nonInteraction;
 				var callback		= settings.callback;
 
 				ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
@@ -559,6 +561,11 @@ var jtrackedOptions=[];
 				}
 				debug('setting event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
+					
+					if(nonInteraction!==null){
+						ga('set', 'nonInteraction', nonInteraction);
+					}
+					
 					debug('doing event '+tasactedEvent);
 					if(mode.indexOf("_link")>-1){
 						e.preventDefault(); e.stopPropagation(); 
