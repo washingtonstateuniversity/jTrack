@@ -317,9 +317,9 @@ var jtrackedOptions=[];
 			var _event = {},cat,act,lab,val,_eventObj;
 			
 			cat = category!==null ? {'eventCategory': category} : {};
-			act = action!==null ? {'eventAction': action} : {}
-			lab = label!==null ? {'eventLabel': label} : {}
-			val = value!==null ? {'eventValue': value} : {}
+			act = action!==null ? {'eventAction': action} : {};
+			lab = label!==null ? {'eventLabel': label} : {};
+			val = value!==null ? {'eventValue': value} : {};
 			
 			_eventObj = jQuery.extend({},cat,act,lab,val);
 			ga(ns+'send', 'event', _eventObj);
@@ -330,8 +330,7 @@ var jtrackedOptions=[];
 					evaluate(ele,callback);
 				}
 			}
-			debug('Fired event for Tracking for _event');
-			debug(dump(_event));
+			debug('Fired '+ns+'send for Tracking with _eventObj : '+dump(_eventObj));
 		}
 	};
 
@@ -339,26 +338,27 @@ var jtrackedOptions=[];
 	* Tracks socialnetworks using the given parameters. 
 	*
 	* The trackSocial method takes four arguments:
-	*
-	* network      - name of the network, e.g. facebook, tweeter
-	* socialAction - action, e.g. like/unlike
-	* opt_target   - Optional: A string representing the URL (or resource) which receives the action.
-	* opt_pagePath - Optional: A string representing the page by path (including parameters) from which the action occurred.
+	* ele          - jQuery target object
+	* ns           - the name space of the ga tracker
+	* network      - Specifies the social network, for example `facebook`, `google plus`, or `twitter`
+	* action       - Specifies the social interaction action. For example on Google Plus when a user clicks the +1 button, the social action is `plus`.
+	* target       - Specifies the target of a social interaction. This value is typically a URL but can be any text.
 	*
 	*/
-  jQuery.jtrack.trackSocial = function(network, socialAction, opt_target, opt_pagePath) {
+  jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
 	if(!defined(pageTracker)) {
 	  debug('FATAL: pageTracker is not defined'); // blocked by whatever
 	} else {
-		var _event = ['_trackSocial'];
-		if(network!==null){_event.push(network);}
-		if(socialAction!==null){ _event.push(socialAction);}
-		if(opt_target!==null){_event.push(opt_target);}
-		if(opt_pagePath!==null){_event.push(opt_pagePath);}
-		/////////pageTracker._trackSocial(network, socialAction, opt_target, opt_pagePath);
-		//pageTracker.push(_event);
-		//debug('<h4>Fired event for Social Tracking</h4><h5>for _event</h5>');
-		//debug('<pre>'+dump(_event)+'</pre>');	
+		var _event = {},cat,act,lab,val,_eventObj;
+		
+		net = network!==null ? {'socialNetwork': network} : {};
+		act = action!==null ? {'socialAction': action} : {};
+		tar = target!==null ? {'socialTarget': target} : {};
+		
+		_socialObj = jQuery.extend({},net,act,tar);
+		ga(ns+'send', 'social', _socialObj);
+
+		debug('Fired '+ns+'send for Social Tracking with _socialObj : '+dump(_socialObj));	
 	}
   };
 
