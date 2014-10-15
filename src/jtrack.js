@@ -244,32 +244,34 @@ var jtrackedOptions=[];
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
+
+			
+			ga('create', acc.id, opt=={}?'auto':opt);
+			
 			if(jQuery.jtrack.settings.location!==null){
-				ga('set', 'location', jQuery.jtrack.settings.location);
+				ga(ns+'set', 'location', jQuery.jtrack.settings.location);
 			}
 			if(jQuery.jtrack.settings.hostname!==null){
-				ga('set', 'hostname', jQuery.jtrack.settings.hostname);
+				ga(ns+'set', 'hostname', jQuery.jtrack.settings.hostname);
 			}
 			
 			if(jQuery.jtrack.settings.experimentID!==null){
-				ga('set', 'expId', jQuery.jtrack.settings.experimentID);
-				ga('set', 'expVar', jQuery.jtrack.settings.expVar);
+				ga(ns+'set', 'expId', jQuery.jtrack.settings.experimentID);
+				ga(ns+'set', 'expVar', jQuery.jtrack.settings.expVar);
 			}
 
 			if(jQuery.jtrack.settings.dimension.length>0){
 				jQuery.each(jQuery.jtrack.settings.dimension,function(idx,obj){
-					ga('set', obj.name, obj.val);
+					ga(ns+'set', obj.name, obj.val);
 				});
 				
 			}
 			if(jQuery.jtrack.settings.metrics.length>0){
 				jQuery.each(jQuery.jtrack.settings.metrics,function(idx,obj){
-					ga('set', obj.name, obj.val);
+					ga(ns+'set', obj.name, obj.val);
 				});
 				
 			}
-			
-			ga('create', acc.id, opt=={}?'auto':opt);
 			
 			if(autoLink!={}){
 				ga(ns+'require', 'linker');
