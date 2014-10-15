@@ -303,26 +303,27 @@ var jtrackedOptions=[];
 	*
 	* The trackEvent method takes four arguments:
 	*
-	*  category - The name you supply for the group of objects you want to track
-	*  action - A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object
-	*  label - An optional string to provide additional dimensions to the event data
-	*  value - An integer that you can use to provide numerical data about the user event.
+	*  ele      - Object  :: jQuery target object
+	*  ns       - String  :: the name space of the ga tracker
+	*  category - String  :: Specifies the event category. Must not be empty.
+	*  action   - String  :: Specifies the event action. Must not be empty.
+	*  label    - String  :: Optional / Specifies the event label.
+	*  value    - Integer :: Optional / Specifies the event value. Values must be non-negative.
+	*  callback - Function:: Optional 
 	*
 	*/
 	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
 		if(!defined(ga)) {
 			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
-
-			var _event = {},cat,act,lab,val,_eventObj;
+			var cat,act,lab,val;
 			
 			cat = category!==null ? {'eventCategory': category} : {};
 			act = action!==null ? {'eventAction': action} : {};
 			lab = label!==null ? {'eventLabel': label} : {};
 			val = value!==null ? {'eventValue': value} : {};
-			
-			_eventObj = jQuery.extend({},cat,act,lab,val);
-			ga(ns+'send', 'event', _eventObj);
+
+			ga(ns+'send', 'event', jQuery.extend({},cat,act,lab,val));
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
 					callback(ele);
@@ -338,25 +339,23 @@ var jtrackedOptions=[];
 	* Tracks socialnetworks using the given parameters. 
 	*
 	* The trackSocial method takes four arguments:
-	* ele          - jQuery target object
-	* ns           - the name space of the ga tracker
-	* network      - Specifies the social network, for example `facebook`, `google plus`, or `twitter`
-	* action       - Specifies the social interaction action. For example on Google Plus when a user clicks the +1 button, the social action is `plus`.
-	* target       - Specifies the target of a social interaction. This value is typically a URL but can be any text.
+	* ele     - Object  :: jQuery target object
+	* ns      - String  :: the name space of the ga tracker
+	* network - String  :: Specifies the social network, for example `facebook`, `google plus`, or `twitter`
+	* action  - String  :: Specifies the social interaction action. For example on Google Plus when a user clicks the +1 button, the social action is `plus`.
+	* target  - String  :: Specifies the target of a social interaction. This value is typically a URL but can be any text.
 	*
 	*/
   jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
-	if(!defined(pageTracker)) {
+	if(!defined(ga)) {
 	  debug('FATAL: pageTracker is not defined'); // blocked by whatever
 	} else {
-		var _event = {},cat,act,lab,val,_eventObj;
+		var net,act,tar;
 		
 		net = network!==null ? {'socialNetwork': network} : {};
 		act = action!==null ? {'socialAction': action} : {};
 		tar = target!==null ? {'socialTarget': target} : {};
-		
-		_socialObj = jQuery.extend({},net,act,tar);
-		ga(ns+'send', 'social', _socialObj);
+		ga(ns+'send', 'social', jQuery.extend({},net,act,tar) );
 
 		debug('Fired '+ns+'send for Social Tracking with _socialObj : '+dump(_socialObj));	
 	}
