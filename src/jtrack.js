@@ -213,6 +213,7 @@ var jtrackedOptions=[];
 		autoLinkDomains	: [],
 		
 		location		: null,
+		host			: null,
 		
 		sampleRate		: false,
 		displayfeatures	: false,
@@ -240,6 +241,11 @@ var jtrackedOptions=[];
 			if(jQuery.jtrack.settings.location!==null){
 				ga('set', 'location', jQuery.jtrack.settings.location);
 			}
+			if(jQuery.jtrack.settings.hostname!==null){
+				ga('set', 'hostname', jQuery.jtrack.settings.hostname);
+			}
+
+			
 			ga('create', acc.id, opt=={}?'auto':opt);
 			
 			if(autoLink!={}){
