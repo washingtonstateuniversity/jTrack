@@ -202,20 +202,22 @@ var jtrackedOptions=[];
 	jQuery.jtrack.accounts={};
 	jQuery.jtrack.settings={};
 	jQuery.jtrack.defaultsettings={
-		namedSpace:false,//{'name': 'myTracker'}
+		namedSpace		: false,
 		
-		cookieName:false,
-		cookieDomain:window.location.host,
-		cookieExpires:false,
-		cookiePath:'/',
+		cookieName		: false,
+		cookieDomain	: window.location.host,
+		cookieExpires	: false,
+		cookiePath		: '/',
 		
-		autoLink:true,
-		autoLinkDomains:[],
+		autoLink		: true,
+		autoLinkDomains	: [],
 		
-		sampleRate:false,
-		displayfeatures:false,
-		ecommerce:false,
-		linkid:true
+		location		: null,
+		
+		sampleRate		: false,
+		displayfeatures	: false,
+		ecommerce		: false,
+		linkid			: true
 	};
 	
 	jQuery.jtrack.init_analytics = function(callback) {
@@ -235,6 +237,9 @@ var jtrackedOptions=[];
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
+			if(jQuery.jtrack.settings.location!==null){
+				ga('set', 'location', jQuery.jtrack.settings.location);
+			}
 			ga('create', acc.id, opt=={}?'auto':opt);
 			
 			if(autoLink!={}){
