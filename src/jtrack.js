@@ -196,25 +196,35 @@ var jtrackedOptions=[];
 		overwrites		: true,
 		skip_campaign	: false,
 		alias			: null,
+		nonInteraction	: null,
 		callback		: function(){}
 	};
 	jQuery.jtrack.accounts={};
 	jQuery.jtrack.settings={};
 	jQuery.jtrack.defaultsettings={
-		namedSpace:false,//{'name': 'myTracker'}
+		namedSpace		: false,// String
 		
-		cookieName:false,
-		cookieDomain:window.location.host,
-		cookieExpires:false,
-		cookiePath:'/',
+		cookieName		: false,// String
+		cookieDomain	: window.location.host,// String
+		cookieExpires	: false,// String
+		cookiePath		: '/',// String
 		
-		autoLink:true,
-		autoLinkDomains:[],
+		autoLink		: true,// Bool
+		autoLinkDomains	: [],// Array(String)
 		
-		sampleRate:false,
-		displayfeatures:false,
-		ecommerce:false,
-		linkid:true
+		dimension		: [],// Array(Objects) {'name':'foo','val':'bar'}
+		metrics			: [],// Array(Objects) {'name':'foo','val':'bar'}
+		
+		location		: null,// String
+		hostname		: null,// String
+		
+		experimentID	: null,// String
+		expVar			: null,// Int
+		
+		sampleRate		: false,// Int
+		displayfeatures	: false,// Bool
+		ecommerce		: false,// Bool
+		linkid			: true// Bool
 	};
 	
 	jQuery.jtrack.init_analytics = function(callback) {
@@ -234,26 +244,60 @@ var jtrackedOptions=[];
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 			
+
+			
 			ga('create', acc.id, opt=={}?'auto':opt);
+			
+			if(jQuery.jtrack.settings.location!==null){
+				ga(ns+'set', 'location', jQuery.jtrack.settings.location);
+			}
+			if(jQuery.jtrack.settings.hostname!==null){
+				ga(ns+'set', 'hostname', jQuery.jtrack.settings.hostname);
+			}
+			
+			if(jQuery.jtrack.settings.experimentID!==null){
+				ga(ns+'set', 'expId', jQuery.jtrack.settings.experimentID);
+				ga(ns+'set', 'expVar', jQuery.jtrack.settings.expVar);
+			}
+
+			if(jQuery.jtrack.settings.dimension.length>0){
+				jQuery.each(jQuery.jtrack.settings.dimension,function(idx,obj){
+					ga(ns+'set', obj.name, obj.val);
+				});
+				
+			}
+			if(jQuery.jtrack.settings.metrics.length>0){
+				jQuery.each(jQuery.jtrack.settings.metrics,function(idx,obj){
+					ga(ns+'set', obj.name, obj.val);
+				});
+				
+			}
+			
 			if(autoLink!={}){
 				ga(ns+'require', 'linker');
 				if(jQuery.jtrack.settings.autoLinkDomains.length>0){
 					ga(ns+'linker:autoLink', jQuery.jtrack.settings.autoLinkDomains);
 				}
 			}
+			
 			if(jQuery.jtrack.settings.linkid){
 				ga(ns+'require', 'linkid', 'linkid.js');
 			}
+			
 			if(jQuery.jtrack.settings.displayfeatures){
 				ga(ns+'require', 'displayfeatures');
 			}
+			
 			ga(ns+'send', 'pageview');
+			
 			if(jQuery.jtrack.settings.ecommerce){
 				ga(ns+'require', 'ecommerce');
 			}
+			
 			if(jQuery.isFunction(callback)){
 				ga(function(){callback(ns);});
 			}
+			
 		});
 	};
 	jQuery.jtrack.load_script = function(callback) {
@@ -303,26 +347,27 @@ var jtrackedOptions=[];
 	*
 	* The trackEvent method takes four arguments:
 	*
-	*  category - The name you supply for the group of objects you want to track
-	*  action - A string that is uniquely paired with each category, and commonly used to define the type of user interaction for the web object
-	*  label - An optional string to provide additional dimensions to the event data
-	*  value - An integer that you can use to provide numerical data about the user event.
+	* ele      - Object  :: jQuery target object
+	* ns       - String  :: the name space of the ga tracker
+	* category - String  :: Specifies the event category. Must not be empty.
+	* action   - String  :: Specifies the event action. Must not be empty.
+	* label    - String  :: Optional / Specifies the event label.
+	* value    - Integer :: Optional / Specifies the event value. Values must be non-negative.
+	* callback - Function:: Optional 
 	*
 	*/
 	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
 		if(!defined(ga)) {
 			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
-
-			var _event = {},cat,act,lab,val,_eventObj;
+			var cat,act,lab,val;
 			
 			cat = category!==null ? {'eventCategory': category} : {};
-			act = action!==null ? {'eventAction': action} : {}
-			lab = label!==null ? {'eventLabel': label} : {}
-			val = value!==null ? {'eventValue': value} : {}
-			
-			_eventObj = jQuery.extend({},cat,act,lab,val);
-			ga(ns+'send', 'event', _eventObj);
+			act = action!==null ? {'eventAction': action} : {};
+			lab = label!==null ? {'eventLabel': label} : {};
+			val = value!==null ? {'eventValue': value} : {};
+
+			ga(ns+'send', 'event', jQuery.extend({},cat,act,lab,val));
 			if(typeof(callback)!=="undefined"){
 				if(jQuery.isFunction(callback)){
 					callback(ele);
@@ -330,8 +375,7 @@ var jtrackedOptions=[];
 					evaluate(ele,callback);
 				}
 			}
-			debug('Fired event for Tracking for _event');
-			debug(dump(_event));
+			debug('Fired '+ns+'send for Tracking');
 		}
 	};
 
@@ -339,41 +383,60 @@ var jtrackedOptions=[];
 	* Tracks socialnetworks using the given parameters. 
 	*
 	* The trackSocial method takes four arguments:
-	*
-	* network      - name of the network, e.g. facebook, tweeter
-	* socialAction - action, e.g. like/unlike
-	* opt_target   - Optional: A string representing the URL (or resource) which receives the action.
-	* opt_pagePath - Optional: A string representing the page by path (including parameters) from which the action occurred.
+	* ele     - Object  :: jQuery target object
+	* ns      - String  :: the name space of the ga tracker
+	* network - String  :: Specifies the social network, for example `facebook`, `google plus`, or `twitter`
+	* action  - String  :: Specifies the social interaction action. For example on Google Plus when a user clicks the +1 button, the social action is `plus`.
+	* target  - String  :: Specifies the target of a social interaction. This value is typically a URL but can be any text.
 	*
 	*/
-  jQuery.jtrack.trackSocial = function(network, socialAction, opt_target, opt_pagePath) {
-	if(!defined(pageTracker)) {
-	  debug('FATAL: pageTracker is not defined'); // blocked by whatever
-	} else {
-		var _event = ['_trackSocial'];
-		if(network!==null){_event.push(network);}
-		if(socialAction!==null){ _event.push(socialAction);}
-		if(opt_target!==null){_event.push(opt_target);}
-		if(opt_pagePath!==null){_event.push(opt_pagePath);}
-		/////////pageTracker._trackSocial(network, socialAction, opt_target, opt_pagePath);
-		//pageTracker.push(_event);
-		//debug('<h4>Fired event for Social Tracking</h4><h5>for _event</h5>');
-		//debug('<pre>'+dump(_event)+'</pre>');	
-	}
-  };
+	jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
+		if(!defined(ga)) {
+			debug('FATAL: ga is not defined'); // blocked by whatever
+		} else {
+			var net,act,tar;
+			
+			net = network!==null ? {'socialNetwork': network} : {};
+			act = action!==null ? {'socialAction': action} : {};
+			tar = target!==null ? {'socialTarget': target} : {};
+			ga(ns+'send', 'social', jQuery.extend({},net,act,tar) );
+		
+			debug('Fired '+ns+'send for Social Tracking');	
+		}
+	};
 
-  /**
-   * Tracks a pageview using the given uri.
-   *
-   */
-  jQuery.jtrack.trackPageview = function(pageTracker,uri) {
-	if(!defined(pageTracker)) {
-	  //debug('<h1>FATAL: pageTracker is not defined</h1>');
-	} else {
-	  pageTracker._trackPageview(uri);
-		debug('Fired event for _trackPageview for '+uri+'');
-	}
-  };
+	/**
+	* Tracks a pageview using the given uri.
+	*
+	*/
+	jQuery.jtrack.trackPageview = function(pageTracker,uri) {
+		if(!defined(pageTracker)) {
+			debug('FATAL: pageTracker is not defined');
+		} else {
+			pageTracker._trackPageview(uri);
+			debug('Fired event for _trackPageview for '+uri+'');
+		}
+	};
+
+	/**
+	* Tracks a pageview using the given uri.
+	*
+	*/
+	jQuery.jtrack.hit = function(ele, ns, hitType, hitPage) {
+		if(!defined(ga)) {
+			debug('FATAL: ga is not defined');
+		} else {
+			var type,page;
+			
+			type = hitType!==null ? {'hitType': hitType} : {};
+			page = hitPage!==null ? {'page': hitPage} : {};
+			ga(ns+'send', jQuery.extend({},type,page) );
+	
+			debug('Fired '+ns+'send for hitType Tracking');	
+		}
+	};
+
+
 
 
 	jQuery.jtrack.make_campaign_str = function(callback){
@@ -513,6 +576,7 @@ var jtrackedOptions=[];
 				var skip_internal	= evaluate(ele, settings.skip_internal);
 				var skip_campaign	= evaluate(ele, settings.skip_campaign);
 				var _link			= settings._link;
+				var nonInteraction	= settings.nonInteraction;
 				var callback		= settings.callback;
 
 				ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
@@ -533,6 +597,11 @@ var jtrackedOptions=[];
 				}
 				debug('setting event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
+					
+					if(nonInteraction!==null){
+						ga('set', 'nonInteraction', nonInteraction);
+					}
+					
 					debug('doing event '+tasactedEvent);
 					if(mode.indexOf("_link")>-1){
 						e.preventDefault(); e.stopPropagation(); 
