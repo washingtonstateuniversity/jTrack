@@ -202,26 +202,29 @@ var jtrackedOptions=[];
 	jQuery.jtrack.accounts={};
 	jQuery.jtrack.settings={};
 	jQuery.jtrack.defaultsettings={
-		namedSpace		: false,
+		namedSpace		: false,// String
 		
-		cookieName		: false,
-		cookieDomain	: window.location.host,
-		cookieExpires	: false,
-		cookiePath		: '/',
+		cookieName		: false,// String
+		cookieDomain	: window.location.host,// String
+		cookieExpires	: false,// String
+		cookiePath		: '/',// String
 		
-		autoLink		: true,
-		autoLinkDomains	: [],
+		autoLink		: true,// Bool
+		autoLinkDomains	: [],// Array(String)
 		
-		location		: null,
-		hostname		: null,
+		dimension		: [],// Array(Objects) {'name':'foo','val':'bar'}
+		metrics			: [],// Array(Objects) {'name':'foo','val':'bar'}
 		
-		experimentID	: null,
-		expVar			: null,
+		location		: null,// String
+		hostname		: null,// String
 		
-		sampleRate		: false,
-		displayfeatures	: false,
-		ecommerce		: false,
-		linkid			: true
+		experimentID	: null,// String
+		expVar			: null,// Int
+		
+		sampleRate		: false,// Int
+		displayfeatures	: false,// Bool
+		ecommerce		: false,// Bool
+		linkid			: true// Bool
 	};
 	
 	jQuery.jtrack.init_analytics = function(callback) {
@@ -252,7 +255,19 @@ var jtrackedOptions=[];
 				ga('set', 'expId', jQuery.jtrack.settings.experimentID);
 				ga('set', 'expVar', jQuery.jtrack.settings.expVar);
 			}
-			
+
+			if(jQuery.jtrack.settings.dimension.length>0){
+				jQuery.each(jQuery.jtrack.settings.dimension,function(idx,obj){
+					ga('set', obj.name, obj.val);
+				});
+				
+			}
+			if(jQuery.jtrack.settings.metrics.length>0){
+				jQuery.each(jQuery.jtrack.settings.metrics,function(idx,obj){
+					ga('set', obj.name, obj.val);
+				});
+				
+			}
 			
 			ga('create', acc.id, opt=={}?'auto':opt);
 			
