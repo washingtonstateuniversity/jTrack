@@ -36,7 +36,7 @@ var _gaq = _gaq || [];
 var jtrackOp=[];
 (function(jQuery) {
 	function _def(n){ return typeof n!=="undefined"; }
-	function evaluate(ele, obj) {
+	function _eval(ele, obj) {
 		if(typeof obj === 'function') {
 			//alert('is function');
 			obj = obj(ele);
@@ -360,7 +360,7 @@ var jtrackOp=[];
 				if(jQuery.isFunction(callback)){
 					callback(ele);
 				}else{
-					evaluate(ele,callback);
+					_eval(ele,callback);
 				}
 			}
 			debug('Fired '+ns+'send for Tracking');
@@ -543,7 +543,7 @@ var jtrackOp=[];
 		return jQuery.each(jQuery(this),function() {
 			var ele			= jQuery(this);
 			var settings	= jQuery.extend({}, jQuery.jtrack.eventdefaults, options);
-			var overwrites	= evaluate(ele, settings.overwrites); // this will let one element over any from before
+			var overwrites	= _eval(ele, settings.overwrites); // this will let one element over any from before
 				overwrites	= (overwrites === 'undefined') ? 'true' : overwrites;
 
 			// Prevent an element from being tracked multiple times.
@@ -553,16 +553,16 @@ var jtrackOp=[];
 				ele.addClass('tracked');
 
 				var mode			= settings.mode;
-				var alias			= evaluate(ele, settings.alias);
-				var category		= evaluate(ele, settings.category);
-				var action			= evaluate(ele, settings.action);
-				var eventTracked	= evaluate(ele, settings.eventTracked);
+				var alias			= _eval(ele, settings.alias);
+				var category		= _eval(ele, settings.category);
+				var action			= _eval(ele, settings.action);
+				var eventTracked	= _eval(ele, settings.eventTracked);
 					action			= action===''?eventTracked:action;
-				var label			= evaluate(ele, settings.label);
-				var value			= evaluate(ele, settings.value);
+				var label			= _eval(ele, settings.label);
+				var value			= _eval(ele, settings.value);
 					value			= isNaN(value)?1:value;
-				var skip_internal	= evaluate(ele, settings.skip_internal);
-				var skip_campaign	= evaluate(ele, settings.skip_campaign);
+				var skip_internal	= _eval(ele, settings.skip_internal);
+				var skip_campaign	= _eval(ele, settings.skip_campaign);
 				var _link			= settings._link;
 				var nonInteraction	= settings.nonInteraction;
 				var callback		= settings.callback;
@@ -601,8 +601,8 @@ var jtrackOp=[];
 						jQuery.jtrack.trackEvent(ele,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
-						var network      = evaluate(ele, settings.network);
-						var socialAction = evaluate(ele, settings.socialAction);
+						var network      = _eval(ele, settings.network);
+						var socialAction = _eval(ele, settings.socialAction);
 						jQuery.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
