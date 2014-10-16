@@ -144,23 +144,23 @@ var jtrackedOptions=[];
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
 				jQuery.jtrack.accounts = s.analytics.accounts;
 				
-				jQuery.fn.trackPage(function(ns){
-					if(defined(s.events)){
-						if(!jQuery.isPlainObject(s.events)){
+				jQuery.fn.trackPage(function(events,ns){
+					if(events!=="undefined"){
+						if(!jQuery.isPlainObject(events)){
 							jQuery.ajax({
 							  dataType: "jsonp",
-							  url: s.events,
+							  url: events,
 							  success: function(data){
 									jQuery.each(data, function(i, v) { 
-										debug('appling: '+v.element);
+										debug('appling: '+v.element+' for scope '+ns);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
 										jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
 									});
 								}
 							});
 						}else{
-							jQuery.each(s.events, function(i, v) { 
-								debug('appling: '+v.element);
+							jQuery.each(events, function(i, v) { 
+								debug('appling: '+v.element+' for scope '+ns);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
 								jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
 							});
@@ -201,6 +201,7 @@ var jtrackedOptions=[];
 	};
 	jQuery.jtrack.accounts={};
 	jQuery.jtrack.settings={};
+	jQuery.jtrack.events={};
 	jQuery.jtrack.defaultsettings={
 		namedSpace		: false,// String
 		
@@ -224,7 +225,9 @@ var jtrackedOptions=[];
 		sampleRate		: false,// Int
 		displayfeatures	: false,// Bool
 		ecommerce		: false,// Bool
-		linkid			: true// Bool
+		linkid			: true,// Bool
+		
+		events			: false,// Bool
 	};
 	
 	jQuery.jtrack.init_analytics = function(callback) {
@@ -293,9 +296,12 @@ var jtrackedOptions=[];
 			if(jQuery.jtrack.settings.ecommerce){
 				ga(ns+'require', 'ecommerce');
 			}
-			
-			if(jQuery.isFunction(callback)){
-				ga(function(){callback(ns);});
+			debug(jQuery.jtrack.settings);
+			if(jQuery.isFunction(callback) && jQuery.jtrack.settings.events!==false){
+				var _addEvent=callback(jQuery.jtrack.settings.events,ns);
+				ga(function(){
+					_addEvent();
+				});
 			}
 			
 		});
