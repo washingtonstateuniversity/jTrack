@@ -1,6 +1,6 @@
 {
   "name": "jtrack",
-  "version": "0.2.2",
+  "version": "1.0.0-beta",
   "description": "Automates the application of Google analytics including events and indexs all from json",
   "main": "Gruntfile.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:jeremyBass/jTrack.git"
+    "url": "git@github.com:washingtonstateuniversity/jTrack.git"
   },
   "author": "jeremyBass",
   "license": "GDL",
