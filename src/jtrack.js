@@ -201,7 +201,6 @@ var jtrackOp=[];
 	};
 	jQuery.jtrack.accounts={};
 	jQuery.jtrack.settings={};
-	jQuery.jtrack.events={};
 	jQuery.jtrack.defaultsettings={
 		namedSpace		: false,// String
 		
@@ -248,9 +247,7 @@ var jtrackOp=[];
 			sampleRate		= setting.sampleRate ? {'sampleRate': setting.sampleRate} : {};
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
-			
 
-			
 			ga('create', acc.id, opt=={}?'auto':opt);
 			
 			if(setting.location!==null){
