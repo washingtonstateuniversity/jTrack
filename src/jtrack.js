@@ -55,7 +55,7 @@ var jtrackOp=[];
 		if(obj!==false){ return obj; }
 	}
 	function debug(n){
-		return _def(jQuery.jtrack) && jQuery.jtrack.defaults.debug && _def(window.console) && _def(window.console.debug) && window.console.debug(n);
+		return _def(window.console) && _def(window.console.debug) && window.console.debug(n);
 	}
 	// @if DEBUG
 	/* for debug only. remove when done */
