@@ -35,7 +35,7 @@ var pageTracker=null;
 var _gaq = _gaq || [];
 var jtrackOp=[];
 (function(jQuery) {
-	function defined(n){ return typeof n!=="undefined"; }
+	function _def(n){ return typeof n!=="undefined"; }
 	function evaluate(ele, obj) {
 		if(typeof obj === 'function') {
 			//alert('is function');
@@ -55,7 +55,7 @@ var jtrackOp=[];
 		if(obj!==false){ return obj; }
 	}
 	function debug(n){
-		return defined(jQuery.jtrack) && jQuery.jtrack.defaults.debug && defined(window.console) && defined(window.console.debug) && window.console.debug(n);
+		return _def(jQuery.jtrack) && jQuery.jtrack.defaults.debug && _def(window.console) && _def(window.console.debug) && window.console.debug(n);
 	}
 	// @if DEBUG
 	/* for debug only. remove when done */
@@ -140,7 +140,7 @@ var jtrackOp=[];
 
 			var domain = s.domainName;
 
-			if(defined(s.analytics)){
+			if(_def(s.analytics)){
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
 				jQuery.jtrack.accounts = s.analytics.accounts;
 				
@@ -154,7 +154,7 @@ var jtrackOp=[];
 									jQuery.each(data, function(i, v) { 
 										debug('appling: '+v.element+' for scope '+ns);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
-										jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
+										jQuery(selector).jtrack(_def(v.options)?v.options:null,ns);
 									});
 								}
 							});
@@ -162,17 +162,17 @@ var jtrackOp=[];
 							jQuery.each(events, function(i, v) { 
 								debug('appling: '+v.element+' for scope '+ns);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
-								jQuery(selector).jtrack(defined(v.options)?v.options:null,ns);
+								jQuery(selector).jtrack(_def(v.options)?v.options:null,ns);
 							});
 						}
 					}
 				});
 			}else{
-				if(defined(s.events)){
+				if(_def(s.events)){
 					jQuery.each(s.events, function(i, v) { 
 						//debug('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
-						jQuery(selector).jtrack(defined(v.options)?v.options:null);
+						jQuery(selector).jtrack(_def(v.options)?v.options:null);
 					});
 				}	
 			}
@@ -345,7 +345,7 @@ var jtrackOp=[];
 	*
 	*/
 	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
-		if(!defined(ga)) {
+		if(!_def(ga)) {
 			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var cat,act,lab,val;
@@ -379,7 +379,7 @@ var jtrackOp=[];
 	*
 	*/
 	jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
-		if(!defined(ga)) {
+		if(!_def(ga)) {
 			debug('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var net,act,tar;
@@ -398,7 +398,7 @@ var jtrackOp=[];
 	*
 	*/
 	jQuery.jtrack.trackPageview = function(pageTracker,uri) {
-		if(!defined(pageTracker)) {
+		if(!_def(pageTracker)) {
 			debug('FATAL: pageTracker is not defined');
 		} else {
 			pageTracker._trackPageview(uri);
@@ -411,7 +411,7 @@ var jtrackOp=[];
 	*
 	*/
 	jQuery.jtrack.hit = function(ele, ns, hitType, hitPage) {
-		if(!defined(ga)) {
+		if(!_def(ga)) {
 			debug('FATAL: ga is not defined');
 		} else {
 			var type,page;
