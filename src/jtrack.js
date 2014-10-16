@@ -20,19 +20,13 @@
 *
 * Copyright (c) 2011-12 Jeremy Bass
 *
-* Version 0.1
+* Version 1.0.0
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
 *
-* Credits:
-*   - http://google.com/analytics
-*   - http://lyncd.com: 
-*       Idea for trackPage method came from this blog post: http://lyncd.com/2009/03/better-google-analytics-javascript/
+* Credits: This new version is a fully new version and credits it's self, past versions are crediting in there notes
 */
-
-var pageTracker=null;
-var _gaq = _gaq || [];
 var jtrackOp=[];
 (function(jQuery) {
 	function _def(n){ return typeof n!=="undefined"; }
