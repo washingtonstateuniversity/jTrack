@@ -127,18 +127,18 @@ var jtrackOp=[];
 	*</script>
 	**/
 	jQuery.jtrack =	function ini(options){
-		var jOps={};
+		var jOps={},s,domain;
 		if(!jQuery.isPlainObject(options)){
 			jOps=jtrackOp[options];
 			(jOps.ele).triggerHandler(jOps.tasactedEvent);
 		}else{
-			var s = jQuery.extend({}, {
+			s = jQuery.extend({}, {
 							debug : false, //bool
 							clearCampaignUrls:true, //bool
 							domainName : window.location.host
 						}, options);
 
-			var domain = s.domainName;
+			domain = s.domainName;
 
 			if(_def(s.analytics)){
 				jQuery.jtrack.defaultsettings = jQuery.extend({}, jQuery.jtrack.defaultsettings, s.analytics.defaults);
@@ -541,9 +541,13 @@ var jtrackOp=[];
 	jQuery.fn.jtrack = function(options,ns) {
 		// Add event handler to all matching elements
 		return jQuery.each(jQuery(this),function() {
-			var ele			= jQuery(this);
-			var settings	= jQuery.extend({}, jQuery.jtrack.eventdefaults, options);
-			var overwrites	= _eval(ele, settings.overwrites); // this will let one element over any from before
+			var ele,settings,overwrites,mode,alias,category,action,eventTracked,label,value,skip_internal,
+			skip_campaign,_link,nonInteraction,callback,tasactedEvent,skip,marker,network,socialAction;
+			
+			
+			ele			= jQuery(this);
+			settings	= jQuery.extend({}, jQuery.jtrack.eventdefaults, options);
+			overwrites	= _eval(ele, settings.overwrites); // this will let one element over any from before
 				overwrites	= (overwrites === 'undefined') ? 'true' : overwrites;
 
 			// Prevent an element from being tracked multiple times.
@@ -552,28 +556,28 @@ var jtrackOp=[];
 			} else {
 				ele.addClass('tracked');
 
-				var mode			= settings.mode;
-				var alias			= _eval(ele, settings.alias);
-				var category		= _eval(ele, settings.category);
-				var action			= _eval(ele, settings.action);
-				var eventTracked	= _eval(ele, settings.eventTracked);
+				mode			= settings.mode;
+				alias			= _eval(ele, settings.alias);
+				category		= _eval(ele, settings.category);
+				action			= _eval(ele, settings.action);
+				eventTracked	= _eval(ele, settings.eventTracked);
 					action			= action===''?eventTracked:action;
-				var label			= _eval(ele, settings.label);
-				var value			= _eval(ele, settings.value);
+				label			= _eval(ele, settings.label);
+				value			= _eval(ele, settings.value);
 					value			= isNaN(value)?1:value;
-				var skip_internal	= _eval(ele, settings.skip_internal);
-				var skip_campaign	= _eval(ele, settings.skip_campaign);
-				var _link			= settings._link;
-				var nonInteraction	= settings.nonInteraction;
-				var callback		= settings.callback;
+				skip_internal	= _eval(ele, settings.skip_internal);
+				skip_campaign	= _eval(ele, settings.skip_campaign);
+				_link			= settings._link;
+				nonInteraction	= settings.nonInteraction;
+				callback		= settings.callback;
 
 				ele.attr( 'role' , eventTracked+'_'+action+'_'+category); 
-				var tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
-				var message = "user '" + tasactedEvent + "'(eventTracked)\r\t can overwrite '" + overwrites + (alias===null?"":"'\r\t under alias:'"+alias) + "'\r\t under Category:'" + category + "'\r\t with Action:'" + action + "'\r\t for Label:'" + label + "'\r\t having Value:'" + value + "'";
-				var skip = skip_internal && (ele[0].hostname === location.hostname);
-				//_d('<pre>&#149;&nbsp; '+ (skip?'Skipping ':'Tracking ') + message+'</pre>');
+				tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
+				
+				skip = skip_internal && (ele[0].hostname === location.hostname);
+				_d(skip?'Skipping ':'Tracking ');
 
-				var marker = (alias==="undefined" || alias===null)?eventTracked:alias;
+				marker = (alias==="undefined" || alias===null)?eventTracked:alias;
 				jtrackOp[marker]=[];
 				jtrackOp[marker]["ele"]=ele;
 				jtrackOp[marker]["tasactedEvent"]=tasactedEvent;
@@ -601,8 +605,8 @@ var jtrackOp=[];
 						jQuery.jtrack.trackEvent(ele,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
-						var network      = _eval(ele, settings.network);
-						var socialAction = _eval(ele, settings.socialAction);
+						network      = _eval(ele, settings.network);
+						socialAction = _eval(ele, settings.socialAction);
 						jQuery.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
