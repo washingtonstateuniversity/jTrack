@@ -152,7 +152,7 @@ var jtrackOp=[];
 							  url: events,
 							  success: function(data){
 									jQuery.each(data, function(i, v) { 
-										debug('appling: '+v.element+' for scope '+ns);
+										_d('appling: '+v.element+' for scope '+ns);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
 										jQuery(selector).jtrack(_def(v.options)?v.options:null,ns);
 									});
@@ -160,7 +160,7 @@ var jtrackOp=[];
 							});
 						}else{
 							jQuery.each(events, function(i, v) { 
-								debug('appling: '+v.element+' for scope '+ns);
+								_d('appling: '+v.element+' for scope '+ns);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
 								jQuery(selector).jtrack(_def(v.options)?v.options:null,ns);
 							});
@@ -170,7 +170,7 @@ var jtrackOp=[];
 			}else{
 				if(_def(s.events)){
 					jQuery.each(s.events, function(i, v) { 
-						//debug('<h4>appling: '+value.element+'</h4>');
+						//_d('<h4>appling: '+value.element+'</h4>');
 						var selector = v.element.replace("**SELF_DOMAIN**",domain);
 						jQuery(selector).jtrack(_def(v.options)?v.options:null);
 					});
@@ -230,7 +230,7 @@ var jtrackOp=[];
 	};
 	
 	jQuery.jtrack.init_analytics = function(callback) {
-		debug('Google Analytics loaded');
+		_d('Google Analytics loaded');
 		
 		jQuery.each(jQuery.jtrack.accounts,function(idx,acc){
 			var setting,namedSpace,ns,cookiePath,cookieDomain,autoLink,sampleRate,opt,_addEvent;
@@ -319,7 +319,7 @@ var jtrackOp=[];
 	jQuery.fn.trackPage = function(callback) {
 		var script;
 		if ( typeof(ga)!=='undefined' && ga.length>0) {
-			debug('!!!!!! Google Analytics loaded previously !!!!!!!');
+			_d('!!!!!! Google Analytics loaded previously !!!!!!!');
 		}else{
 			// Enable tracking when called or on page load?
 			if(jQuery.jtrack.settings.onload === true || jQuery.jtrack.settings.onload === null) {
@@ -346,7 +346,7 @@ var jtrackOp=[];
 	*/
 	jQuery.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
 		if(!_def(ga)) {
-			debug('FATAL: ga is not defined'); // blocked by whatever
+			_d('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var cat,act,lab,val;
 			
@@ -363,7 +363,7 @@ var jtrackOp=[];
 					_eval(ele,callback);
 				}
 			}
-			debug('Fired '+ns+'send for Tracking');
+			_d('Fired '+ns+'send for Tracking');
 		}
 	};
 
@@ -380,7 +380,7 @@ var jtrackOp=[];
 	*/
 	jQuery.jtrack.trackSocial = function(ele, ns, network, action, target) {
 		if(!_def(ga)) {
-			debug('FATAL: ga is not defined'); // blocked by whatever
+			_d('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var net,act,tar;
 			
@@ -389,7 +389,7 @@ var jtrackOp=[];
 			tar = target!==null ? {'socialTarget': target} : {};
 			ga(ns+'send', 'social', jQuery.extend({},net,act,tar) );
 		
-			debug('Fired '+ns+'send for Social Tracking');	
+			_d('Fired '+ns+'send for Social Tracking');	
 		}
 	};
 
@@ -399,10 +399,10 @@ var jtrackOp=[];
 	*/
 	jQuery.jtrack.trackPageview = function(pageTracker,uri) {
 		if(!_def(pageTracker)) {
-			debug('FATAL: pageTracker is not defined');
+			_d('FATAL: pageTracker is not defined');
 		} else {
 			pageTracker._trackPageview(uri);
-			debug('Fired event for _trackPageview for '+uri+'');
+			_d('Fired event for _trackPageview for '+uri+'');
 		}
 	};
 
@@ -412,7 +412,7 @@ var jtrackOp=[];
 	*/
 	jQuery.jtrack.hit = function(ele, ns, hitType, hitPage) {
 		if(!_def(ga)) {
-			debug('FATAL: ga is not defined');
+			_d('FATAL: ga is not defined');
 		} else {
 			var type,page;
 			
@@ -420,7 +420,7 @@ var jtrackOp=[];
 			page = hitPage!==null ? {'page': hitPage} : {};
 			ga(ns+'send', jQuery.extend({},type,page) );
 	
-			debug('Fired '+ns+'send for hitType Tracking');	
+			_d('Fired '+ns+'send for hitType Tracking');	
 		}
 	};
 
@@ -511,11 +511,11 @@ var jtrackOp=[];
 			var camp = jQuery.jtrack.make_campaign_str();
 			//alert(camp);
 
-			debug(camp+' of campaign');
+			_d(camp+' of campaign');
 			//ok this check sucks it.. fix later
 			if(camp!=="" && window.location.toString().indexOf("inquiry?")===-1 && camphref.indexOf("utm_campaign")===-1){//&& window.location.toString().indexOf("education.wsu.edu/directory")==-1){
 				ele.attr('href',camphref + ((camphref.indexOf('?')>-1)?'&':'?') + camp);
-				debug(ele.attr('href')+' of camp');
+				_d(ele.attr('href')+' of camp');
 				ele.data('tracker','added');
 			}
 		}
@@ -571,7 +571,7 @@ var jtrackOp=[];
 				var tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
 				var message = "user '" + tasactedEvent + "'(eventTracked)\r\t can overwrite '" + overwrites + (alias===null?"":"'\r\t under alias:'"+alias) + "'\r\t under Category:'" + category + "'\r\t with Action:'" + action + "'\r\t for Label:'" + label + "'\r\t having Value:'" + value + "'";
 				var skip = skip_internal && (ele[0].hostname === location.hostname);
-				//debug('<pre>&#149;&nbsp; '+ (skip?'Skipping ':'Tracking ') + message+'</pre>');
+				//_d('<pre>&#149;&nbsp; '+ (skip?'Skipping ':'Tracking ') + message+'</pre>');
 
 				var marker = (alias==="undefined" || alias===null)?eventTracked:alias;
 				jtrackOp[marker]=[];
@@ -581,16 +581,16 @@ var jtrackOp=[];
 				if(overwrites==='true'){
 					ele.off(tasactedEvent);
 					ele.unbind(tasactedEvent);
-					debug('overwriting '+tasactedEvent);
+					_d('overwriting '+tasactedEvent);
 				}
-				debug('setting event '+tasactedEvent);
+				_d('setting event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
 					
 					if(nonInteraction!==null){
 						ga('set', 'nonInteraction', nonInteraction);
 					}
 					
-					debug('doing event '+tasactedEvent);
+					_d('doing event '+tasactedEvent);
 					if(mode.indexOf("_link")>-1){
 						e.preventDefault(); e.stopPropagation(); 
 						if(!skip_campaign){
@@ -606,8 +606,8 @@ var jtrackOp=[];
 						jQuery.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
-						debug('Fired _link for Tracking for _link');
-						debug(ele.attr('href'));
+						_d('Fired _link for Tracking for _link');
+						_d(ele.attr('href'));
 						/*_gaq.push(['_link', ele.attr('href')]); 
 						_gaq.push(function () {
 							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
