@@ -33,7 +33,7 @@
 
 var pageTracker=null;
 var _gaq = _gaq || [];
-var jtrackedOptions=[];
+var jtrackOp=[];
 (function(jQuery) {
 	function defined(n){ return typeof n!=="undefined"; }
 	function evaluate(ele, obj) {
@@ -129,7 +129,7 @@ var jtrackedOptions=[];
 	jQuery.jtrack =	function ini(options){
 		var jOps={};
 		if(!jQuery.isPlainObject(options)){
-			jOps=jtrackedOptions[options];
+			jOps=jtrackOp[options];
 			(jOps.ele).triggerHandler(jOps.tasactedEvent);
 		}else{
 			var s = jQuery.extend({}, {
@@ -317,21 +317,6 @@ var jtrackedOptions=[];
 	};
 	/**
 	* Enables Google Analytics tracking on the page from which it's called. 
-	*
-	* Usage:
-	*  <script type="text/javascript">
-	*    jQuery.fn.trackPage('UA-xxx-xxx', options);
-	*  </script>
-	*
-	* Parameters:
-	*   account_id - Your Google Analytics account ID.
-	*   options - An object containing one or more optional parameters:
-	*     - onload - boolean - If false, the Google Analytics code is loaded
-	*       when this method is called instead of on window.onload.
-	*     - status_code - The HTTP status code of the current server response.
-	*       If this is set to something other than 200 then the page is tracked
-	*       as an error page. For more details: http://www.google.com/support/analytics/bin/answer.py?hl=en&answer=86927
-	*     - callback  - function to be executed after the Google Analytics code is laoded and initialized
 	*
 	*/
 	jQuery.fn.trackPage = function(callback) {
@@ -592,9 +577,9 @@ var jtrackedOptions=[];
 				//debug('<pre>&#149;&nbsp; '+ (skip?'Skipping ':'Tracking ') + message+'</pre>');
 
 				var marker = (alias==="undefined" || alias===null)?eventTracked:alias;
-				jtrackedOptions[marker]=[];
-				jtrackedOptions[marker]["ele"]=ele;
-				jtrackedOptions[marker]["tasactedEvent"]=tasactedEvent;
+				jtrackOp[marker]=[];
+				jtrackOp[marker]["ele"]=ele;
+				jtrackOp[marker]["tasactedEvent"]=tasactedEvent;
 
 				if(overwrites==='true'){
 					ele.off(tasactedEvent);
