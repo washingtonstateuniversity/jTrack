@@ -188,7 +188,7 @@ var jtrackOp=[];
 		eventTracked	: 'click',
 		skip_internal	: false,
 		overwrites		: true,
-		skip_campaign	: false,
+		
 		alias			: null,
 		nonInteraction	: null,
 		callback		: function(){}
@@ -221,6 +221,7 @@ var jtrackOp=[];
 		linkid			: true,// Bool
 		
 		events			: false,// Bool
+		force_campaign	: false,
 	};
 	
 	$.jtrack.init_analytics = function(callback) {
@@ -498,22 +499,6 @@ var jtrackOp=[];
 		return str;
 	};
 
-	$.jtrack.make_forced_camp=function(ele,mode){
-		if(mode.indexOf("_link")>-1 && ele.data('tracker') !== 'added'){
-			var camphref = ele.attr('href');
-			//alert(camphref);
-			var camp = $.jtrack.make_campaign_str();
-			//alert(camp);
-
-			_d(camp+' of campaign');
-			//ok this check sucks it.. fix later
-			if(camp!=="" && window.location.toString().indexOf("inquiry?")===-1 && camphref.indexOf("utm_campaign")===-1){//&& window.location.toString().indexOf("education.wsu.edu/directory")==-1){
-				ele.attr('href',camphref + ((camphref.indexOf('?')>-1)?'&':'?') + camp);
-				_d(ele.attr('href')+' of camp');
-				ele.data('tracker','added');
-			}
-		}
-	};
 	/**
 	* If truned on then this will clear any url params 
 	*/
