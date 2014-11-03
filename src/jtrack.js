@@ -590,8 +590,8 @@ var jtrackOp=[];
 					
 					_d('doing event '+tasactedEvent);
 					if(mode.indexOf("_link")>-1){
-						e.preventDefault(); e.stopPropagation(); 
 						if(!skip_campaign){
+							e.preventDefault(); e.stopPropagation(); 
 							$.jtrack.make_forced_camp(ele,mode);
 						}
 					}
@@ -604,8 +604,10 @@ var jtrackOp=[];
 						$.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
+						if(!skip_campaign){
 						_d('Fired _link for Tracking for _link');
 						_d(ele.attr('href'));
+						
 						/*_gaq.push(['_link', ele.attr('href')]); 
 						_gaq.push(function () {
 							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
@@ -621,6 +623,7 @@ var jtrackOp=[];
 						});
 						return false;
 						*/
+						}
 					}
 					return true;
 				});
