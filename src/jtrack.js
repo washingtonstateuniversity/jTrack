@@ -50,7 +50,7 @@ var ga;
 		if(obj!==false){ return obj; }
 	}
 	function _d(n){
-		return _def(window.console) && _def(window.console.debug) && window.console.debug(n);
+		return ($.jtrack.defaults.debug===true) && _def(window.console) && _def(window.console.debug) && window.console.debug(n);
 	}
 	// @if DEBUG
 	/* for debug only. remove when done */
@@ -138,8 +138,9 @@ var ga;
 			if(_def(s.analytics)){
 				$.jtrack.defaultsettings = $.extend({}, $.jtrack.defaultsettings, s.analytics.defaults);
 				$.jtrack.accounts = s.analytics.accounts;
-				
-				$.fn.trackPage(function(events,ns){
+				var ga_name = s.analytics.ga_name;
+				window[ga_name]=undefined;
+				$.fn.trackPage(ga_name,function(events,ns){
 					if(events!=="undefined"){
 						if(!$.isPlainObject(events)){
 							$.ajax({
@@ -149,7 +150,7 @@ var ga;
 									$.each(data, function(i, v) { 
 										_d('appling: '+v.element+' for scope '+ns);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
-										$(selector).jtrack(_def(v.options)?v.options:null,ns);
+										$(selector).jtrack(_def(v.options)?v.options:null,ga_name,ns);
 									});
 								}
 							});
@@ -157,7 +158,7 @@ var ga;
 							$.each(events, function(i, v) { 
 								_d('appling: '+v.element+' for scope '+ns);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
-								$(selector).jtrack(_def(v.options)?v.options:null,ns);
+								$(selector).jtrack(_def(v.options)?v.options:null,ga_name,ns);
 							});
 						}
 					}
@@ -197,6 +198,7 @@ var ga;
 	$.jtrack.accounts={};
 	$.jtrack.settings={};
 	$.jtrack.defaultsettings={
+		ga_name			: 'ga',
 		namedSpace		: false,// String
 		
 		cookieName		: false,// String
@@ -225,13 +227,15 @@ var ga;
 		force_campaign	: false,
 	};
 	
-	$.jtrack.init_analytics = function(callback) {
+	$.jtrack.init_analytics = function(ga_name,callback) {
 		_d('Google Analytics loaded');
-		
+		var jga = window[ga_name];
 		$.each($.jtrack.accounts,function(idx,acc){
 			var setting,namedSpace,ns,cookiePath,cookieDomain,autoLink,sampleRate,opt,_addEvent;
 			$.jtrack.settings = $.extend( {}, $.jtrack.defaultsettings, acc.settings );
 			setting = $.jtrack.settings; // we are doing this to decrease the download size.  balance
+			
+			
 			
 			
 			namedSpace		= setting.namedSpace ? {'name': setting.namedSpace} : {};
@@ -242,48 +246,114 @@ var ga;
 			autoLink		= setting.autoLink ? {'allowLinker' : true} : {};
 			sampleRate		= setting.sampleRate ? {'sampleRate': setting.sampleRate} : {};
 			
+			var clientId=false;
+			var ga_cid_hash=false;
+			// Let's check if LocalStorage is available
+			if(typeof(Storage) !== "undefined") {
+				// We only want to read the CID from the localStorage if the _ga cookie is not present
+				// If _ga is not present, we will want to check if it's saved in our localStorage
+				if(!document.cookie.match(new RegExp('_ga=([^;]+)'))){
+					ga_cid_hash = localStorage.getItem('ua_cid');
+				}else{
+					ga_cid_hash=(location.search.split('_ga=')[1]||'').split('&')[0];
+					localStorage.setItem('ua_cid',clientId);	
+				}
+			}
+			
+			if(ga_cid_hash!==false){
+				clientId = ga_cid_hash;
+			}else{
+				jga(function(tracker) {
+					var _tracker=false;
+					if( ns!=="" && _tracker!==false ){
+						_tracker = ga.get(ns);
+						_d(_tracker);
+					}
+					if( ns!=="" && typeof(_tracker)=== "undefined" ){
+						_tracker = ga.getAll()[idx];
+						_d(_tracker);
+					}
+					if( _tracker!==false ){
+						tracker=_tracker;
+					}
+					clientId = typeof(tracker) !== "undefined" ? tracker.get('clientId') : false;
+				});
+			}
+
+			if(clientId!==false){
+				jga('set', 'clientId', clientId);
+			}
+			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 
-			ga('create', acc.id, opt==={}?'auto':opt);
+
+			jga('create', acc.id, opt==={}?'auto':opt);
 			
+
+
+			if(typeof(Storage) !== "undefined") {
+				jga(function(tracker) {
+					var _tracker=false;
+					if( ns!=="" && _tracker!==false ){
+						_tracker = ga.get(ns);
+						_d(_tracker);
+					}
+					if( ns!=="" && typeof(_tracker)=== "undefined" ){
+						_tracker = ga.getAll()[idx];
+						_d(_tracker);
+					}
+					if( _tracker!==false ){
+						tracker=_tracker;
+					}
+					// This will be ran right after GA has been loaded, 
+					// We'll check for a saved clientId in our localStorage, if not present, we will grab
+					// the current GA clientID and we will save it 
+					if(!localStorage.getItem('ua_cid')) {
+						var clientId = tracker.get('clientId');
+						localStorage.setItem('ua_cid',clientId);
+					}
+				});
+			}
+
+
 			if(setting.location!==null){
-				ga(ns+'set', 'location', setting.location);
+				jga(ns+'set', 'location', setting.location);
 			}
 			if(setting.hostname!==null){
-				ga(ns+'set', 'hostname', setting.hostname);
+				jga(ns+'set', 'hostname', setting.hostname);
 			}
 			
 			if(setting.experimentID!==null){
-				ga(ns+'set', 'expId', setting.experimentID);
-				ga(ns+'set', 'expVar', setting.expVar);
+				jga(ns+'set', 'expId', setting.experimentID);
+				jga(ns+'set', 'expVar', setting.expVar);
 			}
 
 			if(setting.dimension.length>0){
 				$.each(setting.dimension,function(idx,obj){
-					ga(ns+'set', obj.name, obj.val);
+					jga(ns+'set', obj.name, obj.val);
 				});
 				
 			}
 			if(setting.metrics.length>0){
 				$.each(setting.metrics,function(idx,obj){
-					ga(ns+'set', obj.name, obj.val);
+					jga(ns+'set', obj.name, obj.val);
 				});
 				
 			}
 			
 			if(autoLink!=={}){
-				ga(ns+'require', 'linker');
+				jga(ns+'require', 'linker');
 				if(setting.autoLinkDomains.length>0){
-					ga(ns+'linker:autoLink', setting.autoLinkDomains);
+					jga(ns+'linker:autoLink', setting.autoLinkDomains);
 				}
 			}
 			
 			if(setting.linkid){
-				ga(ns+'require', 'linkid', 'linkid.js');
+				jga(ns+'require', 'linkid', 'linkid.js');
 			}
 			
 			if(setting.displayfeatures){
-				ga(ns+'require', 'displayfeatures');
+				jga(ns+'require', 'displayfeatures');
 			}
 			
 			
@@ -291,60 +361,61 @@ var ga;
 				if($.isPlainObject(setting.force_campaign)){
 					//replace with loop later
 					if(setting.force_campaign.campaignName){
-						ga('set', 'campaignName', setting.force_campaign.campaignName);
+						jga('set', 'campaignName', setting.force_campaign.campaignName);
 					}
 					if(setting.force_campaign.campaignSource){
-						ga('set', 'campaignSource', setting.force_campaign.campaignSource);
+						jga('set', 'campaignSource', setting.force_campaign.campaignSource);
 					}
 					if(setting.force_campaign.campaignMedium){
-						ga('set', 'campaignMedium', setting.force_campaign.campaignMedium);
+						jga('set', 'campaignMedium', setting.force_campaign.campaignMedium);
 					}
 					if(setting.force_campaign.campaignKeyword){
-						ga('set', 'campaignKeyword', setting.force_campaign.campaignKeyword);
+						jga('set', 'campaignKeyword', setting.force_campaign.campaignKeyword);
 					}
 					if(setting.force_campaign.campaignContent){
-						ga('set', 'campaignContent', setting.force_campaign.campaignContent);
+						jga('set', 'campaignContent', setting.force_campaign.campaignContent);
 					}
 				}
 			}
 
-			ga(ns+'send', 'pageview');
+			jga(ns+'send', 'pageview');
 			
 			if(setting.ecommerce){
-				ga(ns+'require', 'ecommerce');
+				jga(ns+'require', 'ecommerce');
 			}
 			
 			if($.isFunction(callback) && setting.events!==false){
-				ga(function(){
+				jga(function(){
 					callback(setting.events,ns);
 				});
 			}
 		});
 	};
-	$.jtrack.load_script = function(callback) {
+	$.jtrack.load_script = function(ga_name,callback) {
 		/* jshint ignore:start */ //Googles code doesn't lint
 		//for now just use the default
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-		$.jtrack.init_analytics(callback);
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		$.jtrack.init_analytics(ga_name,callback);
+		})(window,document,'script','//www.google-analytics.com/analytics.js',ga_name);
 		/* jshint ignore:end */
 	};
 	/**
 	* Enables Google Analytics tracking on the page from which it's called. 
 	*
 	*/
-	$.fn.trackPage = function(callback) {
+	$.fn.trackPage = function(ga_name,callback) {
 		var script;
-		if ( typeof(ga)!=='undefined' && ga.length>0) {
+		var jga = window[ga_name];
+		if ( typeof(jga)!=='undefined' && jga.length>0) {
 			_d('!!!!!! Google Analytics loaded previously !!!!!!!');
 		}else{
 			// Enable tracking when called or on page load?
 			if($.jtrack.settings.onload === true || $.jtrack.settings.onload === null) {
-				$(document).ready(function(){$.jtrack.load_script(callback);});
+				$(document).ready(function(){$.jtrack.load_script(ga_name,callback);});
 			} else {
-				$.jtrack.load_script(callback);
+				$.jtrack.load_script(ga_name,callback);
 			}
 		}
 	};
@@ -363,8 +434,9 @@ var ga;
 	* callback - Function:: Optional 
 	*
 	*/
-	$.jtrack.trackEvent = function(ele,ns,category, action, label, value, callback) {
-		if(!_def(ga)) {
+	$.jtrack.trackEvent = function(ele,ga_name,ns,category, action, label, value, callback) {
+		var jga = window[ga_name];
+		if(!_def(jga)) {
 			_d('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var cat,act,lab,val;
@@ -374,7 +446,7 @@ var ga;
 			lab = label!==null ? {'eventLabel': label} : {};
 			val = value!==null ? {'eventValue': value} : {};
 
-			ga(ns+'send', 'event', $.extend({},cat,act,lab,val));
+			jga(ns+'send', 'event', $.extend({},cat,act,lab,val));
 			if(typeof(callback)!=="undefined"){
 				if($.isFunction(callback)){
 					callback(ele);
@@ -397,8 +469,9 @@ var ga;
 	* target  - String  :: Specifies the target of a social interaction. This value is typically a URL but can be any text.
 	*
 	*/
-	$.jtrack.trackSocial = function(ele, ns, network, action, target) {
-		if(!_def(ga)) {
+	$.jtrack.trackSocial = function(ele,ga_name,ns, network, action, target) {
+		var jga = window[ga_name];
+		if(!_def(jga)) {
 			_d('FATAL: ga is not defined'); // blocked by whatever
 		} else {
 			var net,act,tar;
@@ -406,7 +479,7 @@ var ga;
 			net = network!==null ? {'socialNetwork': network} : {};
 			act = action!==null ? {'socialAction': action} : {};
 			tar = target!==null ? {'socialTarget': target} : {};
-			ga(ns+'send', 'social', $.extend({},net,act,tar) );
+			jga(ns+'send', 'social', $.extend({},net,act,tar) );
 		
 			_d('Fired '+ns+'send for Social Tracking');	
 		}
@@ -463,9 +536,10 @@ var ga;
 	*  $('a').jtrack.track()
 	*
 	*/
-	$.fn.jtrack = function(options,ns) {
+	$.fn.jtrack = function(options,ga_name,ns) {
 		// Add event handler to all matching elements
 		return $.each($(this),function() {
+			var jga = window[ga_name];
 			var ele,settings,overwrites,mode,alias,category,action,eventTracked,label,value,skip_internal,
 			_link,nonInteraction,callback,tasactedEvent,skip,marker,network,socialAction;
 			
@@ -504,6 +578,7 @@ var ga;
 				marker = (alias==="undefined" || alias===null)?eventTracked:alias;
 				jtrackOp[marker]=[];
 				jtrackOp[marker]["ele"]=ele;
+
 				jtrackOp[marker]["tasactedEvent"]=tasactedEvent;
 
 				if(overwrites==='true'){
@@ -515,18 +590,18 @@ var ga;
 				ele.on(tasactedEvent, function(e) {
 					
 					if(nonInteraction!==null){
-						ga('set', 'nonInteraction', nonInteraction);
+						jga('set', 'nonInteraction', nonInteraction);
 					}
 					
 					_d('doing event '+tasactedEvent);
 
 					if(!skip && mode.indexOf("event")>-1 ){
-						$.jtrack.trackEvent(ele,ns,category, action, label, value,callback);
+						$.jtrack.trackEvent(ele,ga_name,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
 						network      = _eval(ele, settings.network);
 						socialAction = _eval(ele, settings.socialAction);
-						$.jtrack.trackSocial(ele,ns,network,socialAction);
+						$.jtrack.trackSocial(ele,ga_name,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
 						_d('Fired _link for Tracking for _link');
@@ -534,7 +609,7 @@ var ga;
 						var target = e.target || e.srcElement;
 						
 						if (target && target.href) {
-							ga(ns+'linker:decorate', target);
+							jga(ns+'linker:decorate', target);
 						}
 					}
 					return true;
