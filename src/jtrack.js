@@ -598,14 +598,12 @@ var jtrackOp=[];
 						$.jtrack.trackSocial(ele,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
-						if(!skip_campaign){
-							_d('Fired _link for Tracking for _link');
-                           // Cross browser hoops.
-							var target = e.target || e.srcElement;
-							
-							if (target && target.href) {
-								ga(ns+'linker:decorate', target);
-							}
+						_d('Fired _link for Tracking for _link');
+					   // Cross browser hoops.
+						var target = e.target || e.srcElement;
+						
+						if (target && target.href) {
+							ga(ns+'linker:decorate', target);
 						}
 					}
 					return true;
