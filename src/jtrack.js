@@ -604,7 +604,7 @@ var jtrackOp=[];
 							var target = e.target || e.srcElement;
 							
 							if (target && target.href) {
-								ga('linker:decorate', target);
+								ga(ns+'linker:decorate', target);
 							}
 						}
 					}
