@@ -254,52 +254,57 @@ var ga;
 				// If _ga is not present, we will want to check if it's saved in our localStorage
 				if(!document.cookie.match(new RegExp('_ga=([^;]+)'))){
 					ga_cid_hash = localStorage.getItem('ua_cid');
+				}else{
+					ga_cid_hash=(location.search.split('_ga=')[1]||'').split('&')[0];
+					localStorage.setItem('ua_cid',clientId);	
 				}
 			}
-			
-			
-			jga(function(tracker) {
-				var _tracker=false;
-				if( ns!=="" && _tracker!==false ){
-					_tracker = ga.get(ns);
-					_d(_tracker);
-				}
-				if( ns!=="" && _tracker=== "undefined" ){
-					_tracker = ga.getAll()[0];
-					_d(_tracker);
-				}
-				if( _tracker!==false ){
-					tracker=_tracker;
-				}
-				clientId = typeof(tracker) !== "undefined" ? tracker.get('clientId') : false;
-			});
 			
 			if(ga_cid_hash!==false){
 				clientId = ga_cid_hash;
+			}else{
+				jga(function(tracker) {
+					var _tracker=false;
+					if( ns!=="" && _tracker!==false ){
+						_tracker = ga.get(ns);
+						_d(_tracker);
+					}
+					if( ns!=="" && typeof(_tracker)=== "undefined" ){
+						_tracker = ga.getAll()[idx];
+						_d(_tracker);
+					}
+					if( _tracker!==false ){
+						tracker=_tracker;
+					}
+					clientId = typeof(tracker) !== "undefined" ? tracker.get('clientId') : false;
+				});
+			}
+
+			if(clientId!==false){
+				jga('set', 'clientId', clientId);
 			}
 			
-			
-			_clientId		= clientId!==false? {'clientId': clientId}:{};
-			
-			
-			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate,_clientId);
-			
+			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
+
 
 			jga('create', acc.id, opt==={}?'auto':opt);
+			
+
+
 			if(typeof(Storage) !== "undefined") {
 				jga(function(tracker) {
-				var _tracker=false;
-				if( ns!=="" && _tracker!==false ){
-					_tracker = ga.get(ns);
-					_d(_tracker);
-				}
-				if( ns!=="" && _tracker=== "undefined" ){
-					_tracker = ga.getAll()[0];
-					_d(_tracker);
-				}
-				if( _tracker!==false ){
-					tracker=_tracker;
-				}
+					var _tracker=false;
+					if( ns!=="" && _tracker!==false ){
+						_tracker = ga.get(ns);
+						_d(_tracker);
+					}
+					if( ns!=="" && typeof(_tracker)=== "undefined" ){
+						_tracker = ga.getAll()[idx];
+						_d(_tracker);
+					}
+					if( _tracker!==false ){
+						tracker=_tracker;
+					}
 					// This will be ran right after GA has been loaded, 
 					// We'll check for a saved clientId in our localStorage, if not present, we will grab
 					// the current GA clientID and we will save it 
