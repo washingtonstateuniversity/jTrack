@@ -50,7 +50,7 @@ var ga;
 		if(obj!==false){ return obj; }
 	}
 	function _d(n){
-		return _def(window.console) && _def(window.console.debug) && window.console.debug(n);
+		return ($.jtrack.defaults.debug===true) && _def(window.console) && _def(window.console.debug) && window.console.debug(n);
 	}
 	// @if DEBUG
 	/* for debug only. remove when done */
