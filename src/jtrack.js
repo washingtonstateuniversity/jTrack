@@ -242,10 +242,71 @@ var ga;
 			autoLink		= setting.autoLink ? {'allowLinker' : true} : {};
 			sampleRate		= setting.sampleRate ? {'sampleRate': setting.sampleRate} : {};
 			
-			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
+			var clientId=false;
+			var ga_cid_hash=false;
+			// Let's check if LocalStorage is available
+			if(typeof(Storage) !== "undefined") {
+				// We only want to read the CID from the localStorage if the _ga cookie is not present
+				// If _ga is not present, we will want to check if it's saved in our localStorage
+				if(!document.cookie.match(new RegExp('_ga=([^;]+)'))){
+					ga_cid_hash = localStorage.getItem('ua_cid');
+				}
+			}
+			
+			
+			ga(function(tracker) {
+				var _tracker=false;
+				if( ns!=="" && _tracker!==false ){
+					_tracker = ga.get(ns);
+					_d(_tracker);
+				}
+				if( ns!=="" && _tracker=== "undefined" ){
+					_tracker = ga.getAll()[0];
+					_d(_tracker);
+				}
+				if( _tracker!==false ){
+					tracker=_tracker;
+				}
+				clientId = typeof(tracker) !== "undefined" ? tracker.get('clientId') : false;
+			});
+			
+			if(ga_cid_hash!==false){
+				clientId = ga_cid_hash;
+			}
+			
+			
+			_clientId		= clientId!==false? {'clientId': clientId}:{};
+			
+			
+			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate,_clientId);
+			
 
 			ga('create', acc.id, opt==={}?'auto':opt);
-			
+			if(typeof(Storage) !== "undefined") {
+				ga(function(tracker) {
+				var _tracker=false;
+				if( ns!=="" && _tracker!==false ){
+					_tracker = ga.get(ns);
+					_d(_tracker);
+				}
+				if( ns!=="" && _tracker=== "undefined" ){
+					_tracker = ga.getAll()[0];
+					_d(_tracker);
+				}
+				if( _tracker!==false ){
+					tracker=_tracker;
+				}
+					// This will be ran right after GA has been loaded, 
+					// We'll check for a saved clientId in our localStorage, if not present, we will grab
+					// the current GA clientID and we will save it 
+					if(!localStorage.getItem('ua_cid')) {
+						var clientId = tracker.get('clientId');
+						localStorage.setItem('ua_cid',clientId);
+					}
+				});
+			}
+
+
 			if(setting.location!==null){
 				ga(ns+'set', 'location', setting.location);
 			}
@@ -504,6 +565,7 @@ var ga;
 				marker = (alias==="undefined" || alias===null)?eventTracked:alias;
 				jtrackOp[marker]=[];
 				jtrackOp[marker]["ele"]=ele;
+
 				jtrackOp[marker]["tasactedEvent"]=tasactedEvent;
 
 				if(overwrites==='true'){
