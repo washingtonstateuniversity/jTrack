@@ -28,6 +28,7 @@
 * Credits: This new version is a fully new version and credits it's self, past versions are crediting in there notes
 */
 var jtrackOp=[];
+var ga;
 (function($) {
 	function _def(n){ return typeof n!=="undefined"; }
 	function _eval(ele, obj) {
@@ -243,7 +244,7 @@ var jtrackOp=[];
 			
 			opt=$.extend({},namedSpace,cookieDomain,cookiePath,autoLink,sampleRate);
 
-			ga('create', acc.id, opt=={}?'auto':opt);
+			ga('create', acc.id, opt==={}?'auto':opt);
 			
 			if(setting.location!==null){
 				ga(ns+'set', 'location', setting.location);
@@ -270,7 +271,7 @@ var jtrackOp=[];
 				
 			}
 			
-			if(autoLink!={}){
+			if(autoLink!=={}){
 				ga(ns+'require', 'linker');
 				if(setting.autoLinkDomains.length>0){
 					ga(ns+'linker:autoLink', setting.autoLinkDomains);
@@ -285,6 +286,28 @@ var jtrackOp=[];
 				ga(ns+'require', 'displayfeatures');
 			}
 			
+			
+			if(setting.force_campaign!==false){
+				if($.isPlainObject(setting.force_campaign)){
+					//replace with loop later
+					if(setting.force_campaign.campaignName){
+						ga('set', 'campaignName', setting.force_campaign.campaignName);
+					}
+					if(setting.force_campaign.campaignSource){
+						ga('set', 'campaignSource', setting.force_campaign.campaignSource);
+					}
+					if(setting.force_campaign.campaignMedium){
+						ga('set', 'campaignMedium', setting.force_campaign.campaignMedium);
+					}
+					if(setting.force_campaign.campaignKeyword){
+						ga('set', 'campaignKeyword', setting.force_campaign.campaignKeyword);
+					}
+					if(setting.force_campaign.campaignContent){
+						ga('set', 'campaignContent', setting.force_campaign.campaignContent);
+					}
+				}
+			}
+
 			ga(ns+'send', 'pageview');
 			
 			if(setting.ecommerce){
@@ -293,19 +316,20 @@ var jtrackOp=[];
 			
 			if($.isFunction(callback) && setting.events!==false){
 				ga(function(){
-					callback(setting.events,ns)
+					callback(setting.events,ns);
 				});
 			}
 		});
 	};
 	$.jtrack.load_script = function(callback) {
-	  	//for now just use the default
+		/* jshint ignore:start */ //Googles code doesn't lint
+		//for now just use the default
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
 		$.jtrack.init_analytics(callback);
 		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		
+		/* jshint ignore:end */
 	};
 	/**
 	* Enables Google Analytics tracking on the page from which it's called. 
