@@ -536,7 +536,7 @@ var jtrackOp=[];
 		// Add event handler to all matching elements
 		return $.each($(this),function() {
 			var ele,settings,overwrites,mode,alias,category,action,eventTracked,label,value,skip_internal,
-			skip_campaign,_link,nonInteraction,callback,tasactedEvent,skip,marker,network,socialAction;
+			_link,nonInteraction,callback,tasactedEvent,skip,marker,network,socialAction;
 			
 			
 			ele			= $(this);
@@ -560,7 +560,6 @@ var jtrackOp=[];
 				value			= _eval(ele, settings.value);
 					value			= isNaN(value)?1:value;
 				skip_internal	= _eval(ele, settings.skip_internal);
-				skip_campaign	= _eval(ele, settings.skip_campaign);
 				_link			= settings._link;
 				nonInteraction	= settings.nonInteraction;
 				callback		= settings.callback;
@@ -589,12 +588,7 @@ var jtrackOp=[];
 					}
 					
 					_d('doing event '+tasactedEvent);
-					if(mode.indexOf("_link")>-1){
-						if(!skip_campaign){
-							e.preventDefault(); e.stopPropagation(); 
-							$.jtrack.make_forced_camp(ele,mode);
-						}
-					}
+
 					if(!skip && mode.indexOf("event")>-1 ){
 						$.jtrack.trackEvent(ele,ns,category, action, label, value,callback);
 					}
@@ -605,24 +599,13 @@ var jtrackOp=[];
 					}
 					if(mode.indexOf("_link")>-1){
 						if(!skip_campaign){
-						_d('Fired _link for Tracking for _link');
-						_d(ele.attr('href'));
-						
-						/*_gaq.push(['_link', ele.attr('href')]); 
-						_gaq.push(function () {
-							var pageTracker = _gat._getTrackerByName(); // Gets the default tracker.
-							var linkerUrl = pageTracker._getLinkerUrl(window.location.toString()); //set to this page
-							if( ele.attr('target')!=="" && ele.attr('target')!=="_self" ){
-								window.open(
-									ele.attr('href'),
-									ele.attr('target') // <- This is what makes it open in a new window/tab.
-								);
-							}else{
-								window.location.href = ele.attr('href');
+							_d('Fired _link for Tracking for _link');
+                           // Cross browser hoops.
+							var target = e.target || e.srcElement;
+							
+							if (target && target.href) {
+								ga('linker:decorate', target);
 							}
-						});
-						return false;
-						*/
 						}
 					}
 					return true;
