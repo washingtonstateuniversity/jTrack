@@ -519,7 +519,7 @@ var jtrackOp=[];
 	*/
 	$.jtrack.clearCampaignUrl = function() {
 		var currentHref = window.location.href;
-		if(currentHref.indexOf('utm_source=')>-1){
+		if(currentHref.indexOf('utm_source=')>-1 || currentHref.indexOf('_ga=')>-1){
 			var currentUrl = currentHref.split(window.location.host)[1];
 			currentUrl = currentHref.split('?')[0];
 			window.history.pushState(null, $(document).find("title").text(), currentUrl);
