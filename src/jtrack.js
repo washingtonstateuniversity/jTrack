@@ -28,7 +28,7 @@
 * Credits: This new version is a fully new version and credits it's self, past versions are crediting in there notes
 */
 var jtrackOp=[];
-var ga;
+//var ga;
 (function($) {
 	function _def(n){ return typeof n!=="undefined"; }
 	function _eval(ele, obj) {
@@ -502,15 +502,16 @@ var ga;
 	* Tracks a pageview using the given uri.
 	*
 	*/
-	$.jtrack.hit = function(ele, ns, hitType, hitPage) {
-		if(!_def(ga)) {
+	$.jtrack.hit = function(ele, ga_name, ns, hitType, hitPage) {
+		var jga = window[ga_name];
+		if(!_def(jga)) {
 			_d('FATAL: ga is not defined');
 		} else {
 			var type,page;
 			
 			type = hitType!==null ? {'hitType': hitType} : {};
 			page = hitPage!==null ? {'page': hitPage} : {};
-			ga(ns+'send', $.extend({},type,page) );
+			jga(ns+'send', $.extend({},type,page) );
 	
 			_d('Fired '+ns+'send for hitType Tracking');	
 		}
