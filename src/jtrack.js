@@ -527,7 +527,7 @@ var jtrackOp=[];
 		if(currentHref.indexOf('utm_source=')>-1 || currentHref.indexOf('_ga=')>-1){
 			var currentUrl = currentHref.split(window.location.host)[1];
 			currentUrl = currentHref.split('?')[0];
-			window.history.pushState(null, $(document).find("title").text(), currentUrl);
+			window.history.replaceState(null, $(document).find("title").text(), currentUrl);
 		}
 	};
 
