@@ -142,12 +142,12 @@ var jtrackOp=[];
 				window[ga_name]=undefined;
 				$.fn.trackPage(ga_name,function(events,ns){
 					if(events!=="undefined"){
-						if(!$.isPlainObject(events)){
+						if(!$.isArray(events) && !$.isPlainObject(events)){
 							$.ajax({
 							  dataType: "jsonp",
 							  url: events,
 							  success: function(data){
-									$.each(data, function(i, v) { 
+									$.each(data, function(i, v) {
 										_d('appling: '+v.element+' for scope '+ns);
 										var selector = v.element.replace("**SELF_DOMAIN**",domain);
 										$(selector).jtrack(_def(v.options)?v.options:null,ga_name,ns);
@@ -155,7 +155,7 @@ var jtrackOp=[];
 								}
 							});
 						}else{
-							$.each(events, function(i, v) { 
+							$.each(events, function(i, v) {
 								_d('appling: '+v.element+' for scope '+ns);
 								var selector = v.element.replace("**SELF_DOMAIN**",domain);
 								$(selector).jtrack(_def(v.options)?v.options:null,ga_name,ns);
