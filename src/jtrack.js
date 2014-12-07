@@ -398,7 +398,7 @@ var jtrackOp=[];
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
 			$.jtrack.init_analytics(ga_name,callback);
-		})(window,document,'script','//www.google-analytics.com/analytics.js',ga_name);
+		})(window,document,'script','//www.google-analytics.com/analytics.js',ga_name||"ga");
 		/* jshint ignore:end */
 	};
 	/**
