@@ -28,7 +28,7 @@
 * Credits: This new version is a fully new version and credits it's self, past versions are crediting in there notes
 */
 var jtrackOp=[];
-var ga;
+//var ga;
 (function($) {
 	function _def(n){ return typeof n!=="undefined"; }
 	function _eval(ele, obj) {
@@ -266,11 +266,11 @@ var ga;
 				jga(function(tracker) {
 					var _tracker=false;
 					if( ns!=="" && _tracker!==false ){
-						_tracker = ga.get(ns);
+						_tracker = jga.get(ns);
 						_d(_tracker);
 					}
 					if( ns!=="" && typeof(_tracker)=== "undefined" ){
-						_tracker = ga.getAll()[idx];
+						_tracker = jga.getAll()[idx];
 						_d(_tracker);
 					}
 					if( _tracker!==false ){
@@ -295,11 +295,11 @@ var ga;
 				jga(function(tracker) {
 					var _tracker=false;
 					if( ns!=="" && _tracker!==false ){
-						_tracker = ga.get(ns);
+						_tracker = jga.get(ns);
 						_d(_tracker);
 					}
 					if( ns!=="" && typeof(_tracker)=== "undefined" ){
-						_tracker = ga.getAll()[idx];
+						_tracker = jga.getAll()[idx];
 						_d(_tracker);
 					}
 					if( _tracker!==false ){
@@ -397,7 +397,7 @@ var ga;
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m);
-		$.jtrack.init_analytics(ga_name,callback);
+			$.jtrack.init_analytics(ga_name,callback);
 		})(window,document,'script','//www.google-analytics.com/analytics.js',ga_name);
 		/* jshint ignore:end */
 	};
@@ -502,15 +502,16 @@ var ga;
 	* Tracks a pageview using the given uri.
 	*
 	*/
-	$.jtrack.hit = function(ele, ns, hitType, hitPage) {
-		if(!_def(ga)) {
+	$.jtrack.hit = function(ele, ga_name, ns, hitType, hitPage) {
+		var jga = window[ga_name];
+		if(!_def(jga)) {
 			_d('FATAL: ga is not defined');
 		} else {
 			var type,page;
 			
 			type = hitType!==null ? {'hitType': hitType} : {};
 			page = hitPage!==null ? {'page': hitPage} : {};
-			ga(ns+'send', $.extend({},type,page) );
+			jga(ns+'send', $.extend({},type,page) );
 	
 			_d('Fired '+ns+'send for hitType Tracking');	
 		}
@@ -526,7 +527,7 @@ var ga;
 		if(currentHref.indexOf('utm_source=')>-1 || currentHref.indexOf('_ga=')>-1){
 			var currentUrl = currentHref.split(window.location.host)[1];
 			currentUrl = currentHref.split('?')[0];
-			window.history.pushState(null, $(document).find("title").text(), currentUrl);
+			window.history.replaceState(null, $(document).find("title").text(), currentUrl);
 		}
 	};
 
