@@ -138,7 +138,7 @@ var jtrackOp=[];
 			if(_def(s.analytics)){
 				$.jtrack.defaultsettings = $.extend({}, $.jtrack.defaultsettings, s.analytics.defaults);
 				$.jtrack.accounts = s.analytics.accounts;
-				var ga_name = s.analytics.ga_name;
+				var ga_name = s.analytics.ga_name||"ga";
 				window[ga_name]=undefined;
 				$.fn.trackPage(ga_name,function(events,ns){
 					if(events!=="undefined"){
