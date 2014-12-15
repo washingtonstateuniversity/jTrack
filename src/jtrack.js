@@ -425,15 +425,30 @@ var jtrackOp=[];
 	*
 	* The trackEvent method takes four arguments:
 	*
-	* ele      - Object  :: jQuery target object
-	* ns       - String  :: the name space of the ga tracker
+
 	* category - String  :: Specifies the event category. Must not be empty.
 	* action   - String  :: Specifies the event action. Must not be empty.
 	* label    - String  :: Optional / Specifies the event label.
 	* value    - Integer :: Optional / Specifies the event value. Values must be non-negative.
+	* ga_name  - String  :: the name space of the ga object
+	* ns       - String  :: the name space of the ga tracker
 	* callback - Function:: Optional 
 	*
 	*/
+	$.fn.trackEvent = function(category, action, label, value,ga_name,ns, callback) {
+		if (arguments.length<5){
+			ga_name = "ga";
+		}
+		if (arguments.length<6){
+			ns = "";
+		}
+		if (arguments.length<7){
+			callback = "";
+		}
+		var ele = typeof(this.selector)!=="undefined" ? $(this.selector) : null;
+		$.jtrack.trackEvent = function(ele,ga_name,ns,category, action, label, value, callback)
+	};
+
 	$.jtrack.trackEvent = function(ele,ga_name,ns,category, action, label, value, callback) {
 		var jga = window[ga_name];
 		if(!_def(jga)) {
@@ -445,7 +460,9 @@ var jtrackOp=[];
 			act = action!==null ? {'eventAction': action} : {};
 			lab = label!==null ? {'eventLabel': label} : {};
 			val = value!==null ? {'eventValue': value} : {};
-
+			if(ns.indexOf('.')<0){
+				ns+='.';
+			}
 			jga(ns+'send', 'event', $.extend({},cat,act,lab,val));
 			if(typeof(callback)!=="undefined"){
 				if($.isFunction(callback)){
