@@ -446,7 +446,7 @@ var jtrackOp=[];
 			callback = "";
 		}
 		var ele = typeof(this.selector)!=="undefined" ? $(this.selector) : null;
-		$.jtrack.trackEvent = function(ele,ga_name,ns,category, action, label, value, callback)
+		$.jtrack.trackEvent(ele,ga_name,ns,category, action, label, value, callback);
 	};
 
 	$.jtrack.trackEvent = function(ele,ga_name,ns,category, action, label, value, callback) {
