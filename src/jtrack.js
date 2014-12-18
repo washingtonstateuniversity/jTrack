@@ -460,7 +460,7 @@ var jtrackOp=[];
 			act = action!==null ? {'eventAction': action} : {};
 			lab = label!==null ? {'eventLabel': label} : {};
 			val = value!==null ? {'eventValue': value} : {};
-			if(ns.indexOf('.')<0){
+			if(ns.length>1 && ns.indexOf('.')<0){
 				ns+='.';
 			}
 			jga(ns+'send', 'event', $.extend({},cat,act,lab,val));
