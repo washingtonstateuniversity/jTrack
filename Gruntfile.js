@@ -2,6 +2,10 @@ module.exports = function(grunt) {
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
+		clean: {
+			root: "<%= pkg.version %>*.js",
+			distro: "distro/"
+		},
 		uglify: {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
@@ -12,12 +16,13 @@ module.exports = function(grunt) {
 			}
 		},
 		copy:{
-			full:{
-				ready: [
-					{ flatten: true, expand: true, src: ["src/<%= pkg.name %>.js"], dest: "distro/<%= pkg.name %>.js"},
-					{ expand: true, src: ["src/tracking/*"], dest: "distro/tracking/"},
-					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.js"], dest: "<%= pkg.name %>.js"},
-					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.min.js"], dest: "<%= pkg.name %>.<%= pkg.version %>.min.js"}
+			ready:{
+				files: [
+					{ flatten: true, expand: true, src: ["src/<%= pkg.name %>.js"], dest: "distro/<%= pkg.name %>.<%= pkg.version %>.js"},
+					{ flatten: true, expand: true, src: ["src/tracking/*"], dest: "distro/tracking/"},
+					{ flatten: true, expand: true, src: ["src/<%= pkg.name %>.js"], dest: ""},
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.min.js"], dest: ""}
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.js"], dest: ""}
 				]
 			}
 		},
@@ -62,8 +67,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-clean');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint','uglify','copy']);
+	grunt.registerTask('default', ['jshint','clean','uglify','copy']);
 
 };
