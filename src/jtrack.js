@@ -533,7 +533,7 @@ var jtrackOp=[];
 			_d('Fired '+ns+'send for hitType Tracking');	
 		}
 	};
-
+	/* NOTE NEEDS AN ECOM HERE TOO */
 
 
 	/**
