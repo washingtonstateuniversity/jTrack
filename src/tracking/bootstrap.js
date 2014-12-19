@@ -1,4 +1,4 @@
-3/*
+/*
 * WSU TRACKING BOOTSCRIPT
 * Version 0.1
 * Copyright (c) 2011-12 Jeremy Bass
@@ -23,14 +23,14 @@ function load_base(url) {
 			(function($) {
 				scriptArray = [ // this is where we'd load the scriptArray list dynamicly.  Right now it's hard coded
 					{
-						src:"http://images.wsu.edu/javascripts/jquery.jTrack.0.2.js",
+						src:"http://images.wsu.edu/javascripts/jquery.jtrack.js",
 						exc:function(){
 							var GAcode = param("gacode", document.getElementById('tracker_agent').src );
 							var _load  = param("loading", document.getElementById('tracker_agent').src );
 							var url='http://images.wsu.edu/javascripts/tracking/configs/pick.asp';
 							$.getJSON(url+'?callback=?'+(_load!=false?'&loading='+_load:''), function(data){
 								$.jtrack.defaults.debug.run = true;
-								$.jtrack.defaults.debug.v_console = true;
+								$.jtrack.defaults.debug.v_console = false;
 								$.jtrack.defaults.debug.console = true;
 								$.jtrack({ load_analytics:{account:GAcode}, trackevents:data });
 							});

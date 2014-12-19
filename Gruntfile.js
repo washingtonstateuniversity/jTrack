@@ -1,38 +1,52 @@
 module.exports = function(grunt) {
-    // Project configuration.
-    grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
-        uglify: {
-            options: {
-                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-            },
-            build: {
-                src: 'src/<%= pkg.name %>.js',
-                dest: 'build/<%= pkg.name %>.min.js'
-            }
-        },
-        jshint: {
-            src: ['src/*.js', 'src/config.js', 'tests/*.js'],
-            options: {
-                smarttabs: true,
-                curly: true,
-                eqeqeq: true,
-                immed: true,
-                latedef: true,
-                newcap: true,
-                noarg: true,
-                sub: true,
-                undef: true,
-                boss: true,
-                eqnull: true,
-                browser: true,
-                globals: {
-                    require: true,
-                    define: true,
-                    requirejs: true,
-                    describe: true,
-                    expect: true,
-                    it: true,
+	// Project configuration.
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+		clean: {
+			root: "<%= pkg.version %>*.js",
+			distro: "distro/"
+		},
+		uglify: {
+			options: {
+				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+			},
+			min: {
+				src: 'src/<%= pkg.name %>.js',
+				dest: 'distro/<%= pkg.name %>.<%= pkg.version %>.min.js'
+			}
+		},
+		copy:{
+			ready:{
+				files: [
+					{ src: "src/<%= pkg.name %>.js", dest: "distro/<%= pkg.name %>.<%= pkg.version %>.js"},
+					{ flatten: true, expand: true, src: ["src/tracking/*"], dest: "distro/tracking/"},
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.min.js"], dest: ""},
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.js"], dest: ""}
+				]
+			}
+		},
+		jshint: {
+			src: ['src/*.js'],
+			options: {
+				smarttabs: true,
+				curly: true,
+				eqeqeq: true,
+				immed: true,
+				latedef: true,
+				newcap: true,
+				noarg: true,
+				sub: true,
+				undef: true,
+				boss: true,
+				eqnull: true,
+				browser: true,
+				globals: {
+					require: true,
+					define: true,
+					requirejs: true,
+					describe: true,
+					expect: true,
+					it: true,
 					_gat: true,
 					jQuery: true,
 					console: true,
@@ -40,23 +54,21 @@ module.exports = function(grunt) {
 					document: true,
 					window:true
 				}
-            }
-        },
-        watch: {
-            files: '<%= jshint.src %>',
-            tasks: ['jshint']
-        }
-    });
+			}
+		},
+		watch: {
+			files: '<%= jshint.src %>',
+			tasks: ['default']
+		}
+	});
 
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    
-    // Load the plugin that provides the "uglify" task.
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-    
-    // Load JSHint task
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    
-    // Default task(s).
-    grunt.registerTask('default', ['jshint','uglify']);
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-clean');
+
+	// Default task(s).
+	grunt.registerTask('default', ['jshint','clean','uglify','copy']);
 
 };
