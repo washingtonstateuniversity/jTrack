@@ -12,8 +12,12 @@ module.exports = function(grunt) {
 			}
 		},
 		copy:{
-			full: [
+			full:{
+				ready: [
 					{ flatten: true, expand: true, src: ["src/<%= pkg.name %>.js"], dest: "distro/<%= pkg.name %>.js"},
+					{ expand: true, src: ["src/tracking/*"], dest: "distro/tracking/"},
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.js"], dest: "<%= pkg.name %>.js"},
+					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.<%= pkg.version %>.min.js"], dest: "<%= pkg.name %>.<%= pkg.version %>.min.js"}
 				]
 			}
 		},
