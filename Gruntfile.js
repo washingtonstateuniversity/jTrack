@@ -6,13 +6,19 @@ module.exports = function(grunt) {
 			options: {
 				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
-			build: {
+			min: {
 				src: 'src/<%= pkg.name %>.js',
-				dest: 'build/<%= pkg.name %>.min.js'
+				dest: 'distro/<%= pkg.name %>.<%= pkg.version %>.min.js'
+			}
+		},
+		copy:{
+			full: [
+					{ flatten: true, expand: true, src: ["src/<%= pkg.name %>.js"], dest: "distro/<%= pkg.name %>.js"},
+				]
 			}
 		},
 		jshint: {
-			src: ['src/*.js', 'src/config.js', 'tests/*.js'],
+			src: ['src/*.js'],
 			options: {
 				smarttabs: true,
 				curly: true,
