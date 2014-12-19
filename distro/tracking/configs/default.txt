@@ -1,0 +1,124 @@
+[
+	{
+		"element":"a",
+		"options":{
+			"category":"outbound"
+			}
+	},{
+		"element":"a:not([href^='http:'])",
+		"options":{
+			"skip_internal":"true",
+			"category":"internal",
+			"noninteraction":"true"
+			}
+	},{
+		"element":"a[href*='.jpg']",
+		"options":{
+			"action":"jpg",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.zip']",
+		"options":{
+			"action":"zips",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.tiff']",
+		"options":{
+			"action":"tiff",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.tif']",
+		"options":{
+			"action":"tiff",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.bin']",
+		"options":{
+			"action":"bin",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.eps']",
+		"options":{
+			"action":"eps",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.gif']",
+		"options":{
+			"action":"gif",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.png']",
+		"options":{
+			"action":"png",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.ppt']",
+		"options":{
+			"action":"ppt",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.pdf']",
+		"options":{
+			"action":"pdf",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.doc']",
+		"options":{
+			"action":"doc",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='.docx']",
+		"options":{
+			"action":"docx",
+			"category":"download",
+			"label":"function(ele){ return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') ) }"
+			}
+	},{
+		"element":"a[href*='facebook.com']",
+		"options":{
+			"category":"Social",
+			"action":"Facebook"
+			}
+	},{
+		"element":"a[href*='.rss']",
+		"options":{
+			"category":"Feed",
+			"action":"RSS"
+			}
+	},{
+		"element":"a[href*='wsu.edu']",
+		"options":{
+			"skip_internal":"true",
+			"category":"internal",
+			"noninteraction":"true"
+			}
+	},{
+		"element":"a[href*='mailto:']",
+		"options":{
+			"category":"email",
+			"overwrites":"true"
+			}
+	}
+]
