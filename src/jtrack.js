@@ -237,7 +237,7 @@ var jtrackOp=[];
 			
 			
 			namedSpace		= setting.namedSpace ? {'name': setting.namedSpace} : {};
-			ns				= $.isPlainObject(namedSpace) && namedSpace.name !== "undefined" ? namedSpace.name + '.' : '';
+			ns				= $.isPlainObject(namedSpace) && typeof namedSpace.name !== "undefined" ? namedSpace.name + '.' : '';
 			
 			cookiePath		= setting.cookiePath ? {'cookiePath' : setting.cookiePath} : {};
 			cookieDomain	= setting.cookieDomain ? {'cookieDomain' : setting.cookieDomain} : {};
