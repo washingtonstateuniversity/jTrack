@@ -539,9 +539,24 @@ var jtrackOp=[];
 	*/
 	$.jtrack.clearCampaignUrl = function() {
 		var currentHref = window.location.href;
+		var GAQueries = [ 'utm_source','utm_medium','utm_term','utm_content','utm_campaign','_ga' ];
 		if(currentHref.indexOf('utm_source=')>-1 || currentHref.indexOf('_ga=')>-1){
 			var currentUrl = currentHref.split(window.location.host)[1];
+			var queries = currentHref.split('?')[1];
 			currentUrl = currentHref.split('?')[0];
+			if(queries!==""){
+				var queryArray = queries.split('&');
+				$.each(queryArray,function(idx,block){
+					var queryPart = block.split('=');
+					if( $.inArray(queryPart[0],GAQueries) ){
+						queryArray.splice(idx, 1);
+					}
+				});
+				if( queryArray.length>0 ){
+					var query = queryArray.join('&');
+					currentUrl=currentUrl+"?"+query;
+				}
+			}
 			window.history.replaceState(null, $(document).find("title").text(), currentUrl);
 		}
 	};
