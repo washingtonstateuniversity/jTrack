@@ -546,14 +546,15 @@ var jtrackOp=[];
 			currentUrl = currentHref.split('?')[0];
 			if(queries!==""){
 				var queryArray = queries.split('&');
+				var newQueries = [];
 				$.each(queryArray,function(idx,block){
 					var queryPart = block.split('=');
-					if( $.inArray(queryPart[0],GAQueries) ){
-						queryArray.splice(idx, 1);
+					if( !$.inArray(queryPart[0],GAQueries) ){
+						newQueries.push(block);
 					}
 				});
-				if( queryArray.length>0 ){
-					var query = queryArray.join('&');
+				if( newQueries.length>0 ){
+					var query = newQueries.join('&');
 					currentUrl=currentUrl+"?"+query;
 				}
 			}
