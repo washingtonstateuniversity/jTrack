@@ -549,7 +549,7 @@ var jtrackOp=[];
 				var newQueries = [];
 				$.each(queryArray,function(idx,block){
 					var queryPart = block.split('=');
-					if( !$.inArray(queryPart[0],GAQueries) ){
+					if($.inArray(queryPart[0],GAQueries)===-1){
 						newQueries.push(block);
 					}
 				});
