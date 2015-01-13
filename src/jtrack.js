@@ -222,7 +222,7 @@ var jtrackOp=[];
 		linkid			: true,// Bool
 		
 		events			: false,// Bool
-		force_campaign	: false,
+		force_campaign	: false
 	};
 	
 	$.jtrack.init_analytics = function(ga_name,callback) {
