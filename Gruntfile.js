@@ -8,11 +8,11 @@ module.exports = function(grunt) {
 		},
 		uglify: {
 			options: {
-				banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+				banner: '/*! <%= pkg.name %> (<%= pkg.version %>) <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
 			min: {
 				src: 'src/<%= pkg.name %>.js',
-				dest: 'distro/<%= pkg.name %>.<%= pkg.version %>.min.js'
+				dest: 'distro/<%= pkg.name %>.min.js'
 			}
 		},
 		copy:{
