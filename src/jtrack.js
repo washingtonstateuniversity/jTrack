@@ -635,7 +635,7 @@ var jtrackOp=[];
 						$.jtrack.trackSocial(ele,ga_name,ns,network,socialAction);
 					}
 					if(mode.indexOf("_link")>-1){
-						_d('Fired _link for Tracking for _link from mode:'+mode);
+						_d('Fired _link for Tracking for _link from mode: '+mode);
 					   // Cross browser hoops.
 						var target = e.target || e.srcElement;
 						
