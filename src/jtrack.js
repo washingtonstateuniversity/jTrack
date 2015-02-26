@@ -627,6 +627,12 @@ var jtrackOp=[];
 					_d('doing event '+tasactedEvent);
 
 					if(!skip && mode.indexOf("event")>-1 ){
+						//rechecking the vales here as it's on `click` not on inital setup
+						action			= _eval(ele, settings.action);
+						label			= _eval(ele, settings.label);
+						category		= _eval(ele, settings.category);
+						value			= _eval(ele, settings.value);
+							value			= isNaN(value)?1:value;
 						$.jtrack.trackEvent(ele,ga_name,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
