@@ -377,7 +377,7 @@ var jtrackOp=[];
 			
 			
 			//if(setting.clearCampaignUrls){
-			if( accounts_total=== (idx-1) ){
+			if( accounts_total === (idx+1) ){
 				$.jtrack.clearCampaignUrl();
 			}
 						
