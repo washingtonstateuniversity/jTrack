@@ -373,13 +373,17 @@ var jtrackOp=[];
 				}
 			}
 
-			jga(ns+'send', 'pageview');
+			jga(ns+'send', 'pageview',{
+  				'hitCallback': function() {
+				//if(setting.clearCampaignUrls){
+				if( accounts_total === (idx+1) ){
+					$.jtrack.clearCampaignUrl();
+				}
+			  }
+			});
 			
 			
-			//if(setting.clearCampaignUrls){
-			if( accounts_total === (idx+1) ){
-				$.jtrack.clearCampaignUrl();
-			}
+
 						
 			if(setting.ecommerce){
 				jga(ns+'require', 'ecommerce');
