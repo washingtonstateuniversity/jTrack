@@ -18,7 +18,7 @@
 *
 * Copyright (c) 2011-12 Jeremy Bass
 *
-* Version 1.0.0
+* Version 1.2.5
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
