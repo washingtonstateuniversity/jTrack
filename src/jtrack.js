@@ -172,7 +172,7 @@ var jtrackOp=[];
 			}
 			
 			if(s.clearCampaignUrls){
-				$.jtrack.clearCampaignUrl();
+				//$.jtrack.clearCampaignUrl();
 			}
 		}
 	};
