@@ -170,10 +170,6 @@ var jtrackOp=[];
 					});
 				}	
 			}
-			
-			if(s.clearCampaignUrls){
-				//$.jtrack.clearCampaignUrl();
-			}
 		}
 	};
 	$.jtrack.defaults = {
@@ -228,6 +224,7 @@ var jtrackOp=[];
 	$.jtrack.init_analytics = function(ga_name,callback) {
 		_d('Google Analytics loaded');
 		var jga = window[ga_name];
+		var accounts_total = $.jtrack.accounts.length;
 		$.each($.jtrack.accounts,function(idx,acc){
 			var setting,namedSpace,ns,cookiePath,cookieDomain,autoLink,sampleRate,opt,_addEvent;
 			$.jtrack.settings = $.extend( {}, $.jtrack.defaultsettings, acc.settings );
@@ -378,6 +375,12 @@ var jtrackOp=[];
 
 			jga(ns+'send', 'pageview');
 			
+			
+			//if(setting.clearCampaignUrls){
+			if( accounts_total=== (idx-1) ){
+				$.jtrack.clearCampaignUrl();
+			}
+						
 			if(setting.ecommerce){
 				jga(ns+'require', 'ecommerce');
 			}
