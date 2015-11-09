@@ -16,9 +16,10 @@
 * $('a').track() - Adds event tracking to element(s).
 * $.timePageLoad() - Measures the time it takes  an event using the given parameters.
 *
-* Copyright (c) 2011-12 Jeremy Bass
+* Copyright (c) 2011-2015 Jeremy Bass
+*               2014-2015 Washington State University
 *
-* Version 1.2.5
+* Version 1.3.0
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
