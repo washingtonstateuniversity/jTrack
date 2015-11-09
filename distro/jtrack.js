@@ -230,13 +230,10 @@ var jtrackOp=[];
 			var setting,namedSpace,ns,cookiePath,cookieDomain,autoLink,sampleRate,opt,_addEvent;
 			$.jtrack.settings = $.extend( {}, $.jtrack.defaultsettings, acc.settings );
 			setting = $.jtrack.settings; // we are doing this to decrease the download size.  balance
-			
-			
-			
-			
+
 			namedSpace		= setting.namedSpace ? {'name': setting.namedSpace} : {};
 			ns				= $.isPlainObject(namedSpace) && typeof namedSpace.name !== "undefined" ? namedSpace.name + '.' : '';
-			
+
 			cookiePath		= setting.cookiePath ? {'cookiePath' : setting.cookiePath} : {};
 			cookieDomain	= setting.cookieDomain ? {'cookieDomain' : setting.cookieDomain} : {};
 			autoLink		= setting.autoLink ? {'allowLinker' : true} : {};

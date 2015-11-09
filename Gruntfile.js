@@ -40,9 +40,9 @@ module.exports = function(grunt) {
 			ready:{
 				files: [
 					{ src: "build/jtrack.js", dest: "distro/jtrack.js"},
-					{ src: "build/jtrack.js", dest: "distro/jtrack.min.js"},
+					{ src: "build/jtrack.min.js", dest: "distro/jtrack.min.js"},
 					{ src: "build/jtrack.js", dest: "jtrack.js"},
-					{ src: "build/jtrack.js", dest: "jtrack.min.js"},
+					{ src: "build/jtrack.min.js", dest: "jtrack.min.js"},
 				]
 			},
 			bootstrap_ready:{
