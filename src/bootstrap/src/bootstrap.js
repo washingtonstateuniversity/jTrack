@@ -49,7 +49,7 @@ function load_base(rendered_accounts) {
 			(function($) {
 				var scriptArray = [
 					{
-						src:"https://repo.wsu.edu/jtrack/develop/jtrack.js",
+						src:"https://repo.wsu.edu/jtrack/1/jtrack.min.js",
 						exc:function(){
 							// Fire tracking on all merged accounts and events with jTrack.
 							jQuery.jtrack({
