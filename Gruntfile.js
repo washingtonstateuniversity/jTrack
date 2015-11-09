@@ -13,6 +13,21 @@ module.exports = function(grunt) {
 			min: {
 				src: 'src/<%= pkg.name %>.js',
 				dest: 'distro/<%= pkg.name %>.min.js'
+			},
+			bootstrap_min: {
+				src: 'src/bootstrap/bootstrap.<%= pkg.bootstrap_version %>.js',
+				dest: 'distro/bootstrap/bootstrap.<%= pkg.bootstrap_version %>.min.js'
+			}
+		},
+		concat:{
+			scripts: {
+				src: [
+					"src/bootstrap/src/init.js",
+					"src/bootstrap/src/default_events.js",
+					"src/bootstrap/src/default_ui-events.js",
+					"src/bootstrap/src/bootstrap.js"
+				],
+				dest: "src/bootstrap/bootstrap.<%= pkg.bootstrap_version %>.js"
 			}
 		},
 		copy:{
@@ -23,10 +38,17 @@ module.exports = function(grunt) {
 					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.min.js"], dest: ""},
 					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.js"], dest: ""}
 				]
+			},
+			ready:{
+				files: [
+					{ src: "src/bootstrap.js", dest: "distro/bootstrap.<%= pkg.bootstrap_version %>.js"},
+					{ flatten: true, expand: true, src: ["distro/bootstrap/bootstrap.<%= pkg.bootstrap_version %>.min.js"], dest: ""},
+					{ flatten: true, expand: true, src: ["distro/bootstrap/bootstrap.<%= pkg.bootstrap_version %>.js"], dest: ""}
+				]
 			}
 		},
 		jshint: {
-			src: ['src/*.js'],
+			src: ['src/*.js','src/bootstrap/src/*.js'],
 			options: {
 				smarttabs: true,
 				curly: true,
@@ -67,8 +89,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint','clean','uglify','copy']);
+	grunt.registerTask('default', ['jshint','clean','concat','uglify','copy']);
 
 };
