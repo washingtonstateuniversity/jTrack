@@ -39,21 +39,21 @@ if((typeof(jQuery) === 'undefined' || typeof($) === 'undefined') || (jQuery().jq
 	async_load_js('https://ajax.googleapis.com/ajax/libs/jquery/'+_jquery_version+'/jquery.min.js');
 }
 
-function load_base(url) {
+function load_base(rendered_accounts) {
 	setTimeout(function(){
 		if((typeof(jQuery) === 'undefined'||typeof($) === 'undefined') || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
-			load_base(url);
+			load_base(rendered_accounts);
 		}else{
 			(function($) {
 				var scriptArray = [ // this is where we'd load the scriptArray list dynamicly.  Right now it's hard coded
 					{
-						src:"https://repo.wsu.edu/jtrack/1/jtrack.min.js",
+						src:"https://repo.wsu.edu/jtrack/1/jtrack.js",
 						exc:function(){
 							// Fire tracking on all merged accounts and events with jTrack.
 							jQuery.jtrack({
 								analytics:{
 									ga_name:"_wsuGA",
-									accounts: window.rendered_accounts
+									accounts: rendered_accounts
 								}
 							});
 						}
@@ -133,7 +133,5 @@ function load_base(url) {
 			}] );
 		}
 	}
-	load_base(url);
+	load_base(rendered_accounts);
 })(jQuery, window, window.wsu_analytics|| { wsuglobal:{}, app:{}, site:{} } );
-
-
