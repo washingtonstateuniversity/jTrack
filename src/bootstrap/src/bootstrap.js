@@ -38,9 +38,11 @@ var _jquery_version =(param('jquery' , url) !== false ? param('jquery' , url) : 
 if((typeof(jQuery) === 'undefined' || typeof($) === 'undefined') || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
 	async_load_js('https://ajax.googleapis.com/ajax/libs/jquery/'+_jquery_version+'/jquery.min.js');
 }
-
+var loading = null;
 function load_base(rendered_accounts) {
-	setTimeout(function(){
+	window.clearTimeout(loading);
+	loading = null;
+	loading = setTimeout(function(){
 		if((typeof(jQuery) === 'undefined'||typeof($) === 'undefined') || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
 			load_base(rendered_accounts);
 		}else{
