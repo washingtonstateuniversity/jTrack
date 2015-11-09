@@ -4,7 +4,6 @@
 		{
 			element:"#wsu-actions-tabs button",
 			options:{
-				action:" closed",
 				action:function(ele){
 					return "Action tab "+ (ele.closest('li').is(".opened") ?"opening":"closing");
 				},
@@ -155,7 +154,7 @@
 				action:"youtube",
 				category:"videos",
 				label:function(ele){
-					return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') );
+					return ( ($(ele).attr('title') !== '' && typeof($(ele).attr('title')) !== 'undefined' ) ? $(ele).attr('title') : $(ele).attr('href') );
 				},
 				overwrites:"true"
 			}
@@ -177,7 +176,7 @@
 				},
 				category:"download",
 				label:function(ele){
-					return ( ($(ele).attr('title')!='' && typeof($(ele).attr('title')) !=='undefined' ) ? $(ele).attr('title') : $(ele).attr('href') );
+					return ( ($(ele).attr('title') !== '' && typeof($(ele).attr('title')) !== 'undefined' ) ? $(ele).attr('title') : $(ele).attr('href') );
 				},
 				overwrites:"true"
 			}
@@ -207,6 +206,4 @@
 			}
 		},
 	];
-
-
 })(jQuery, window, window.wsu_analytics);

@@ -62,6 +62,7 @@ module.exports = function(grunt) {
 				boss: true,
 				eqnull: true,
 				browser: true,
+				multistr:true,
 				globals: {
 					require: true,
 					define: true,
