@@ -11,22 +11,51 @@ module.exports = function(grunt) {
 				banner: '/*! <%= pkg.name %> (<%= pkg.version %>) <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
 			min: {
-				src: 'src/<%= pkg.name %>.js',
-				dest: 'distro/<%= pkg.name %>.min.js'
+				src: 'build/jtrack.js',
+				dest: 'build/jtrack.min.js'
+			},
+			bootstrap_min: {
+				src: 'build/bootstrap/bootstrap.js',
+				dest: 'build/bootstrap/bootstrap.min.js'
+			}
+		},
+		concat:{
+			bootstrap_scripts: {
+				src: [
+					"src/bootstrap/src/init.js",
+					"src/bootstrap/src/default_events.js",
+					"src/bootstrap/src/default_ui-events.js",
+					"src/bootstrap/src/bootstrap.js"
+				],
+				dest: "build/bootstrap/bootstrap.js"
+			},
+			scripts: {
+				src: [
+					"src/jtrack.js"
+				],
+				dest: "build/jtrack.js"
 			}
 		},
 		copy:{
 			ready:{
 				files: [
-					{ src: "src/<%= pkg.name %>.js", dest: "distro/<%= pkg.name %>.js"},
-					{ flatten: true, expand: true, src: ["src/tracking/*"], dest: "distro/tracking/"},
-					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.min.js"], dest: ""},
-					{ flatten: true, expand: true, src: ["distro/<%= pkg.name %>.js"], dest: ""}
+					{ src: "build/jtrack.js", dest: "distro/jtrack.js"},
+					{ src: "build/jtrack.js", dest: "distro/jtrack.min.js"},
+					{ src: "build/jtrack.js", dest: "jtrack.js"},
+					{ src: "build/jtrack.js", dest: "jtrack.min.js"},
+				]
+			},
+			bootstrap_ready:{
+				files: [
+					{ src: "build/bootstrap/bootstrap.js", dest: "distro/bootstrap/bootstrap.js"},
+					{ src: "build/bootstrap/bootstrap.min.js", dest: "distro/bootstrap/bootstrap.min.js"},
+					{ src: "build/bootstrap/bootstrap.js", dest: "bootstrap.js"},
+					{ src: "build/bootstrap/bootstrap.min.js", dest: "bootstrap.min.js"},
 				]
 			}
 		},
 		jshint: {
-			src: ['src/*.js'],
+			src: ['src/*.js','src/bootstrap/src/*.js'],
 			options: {
 				smarttabs: true,
 				curly: true,
@@ -40,6 +69,7 @@ module.exports = function(grunt) {
 				boss: true,
 				eqnull: true,
 				browser: true,
+				multistr:true,
 				globals: {
 					require: true,
 					define: true,
@@ -67,8 +97,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint','clean','uglify','copy']);
+	grunt.registerTask('default', ['jshint','clean','concat','uglify','copy']);
 
 };
