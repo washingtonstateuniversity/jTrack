@@ -252,7 +252,7 @@ var jtrackOp=[];
 					localStorage.setItem('ua_cid',clientId);	
 				}
 			}
-			
+
 			if(ga_cid_hash!==false){
 				clientId = ga_cid_hash;
 			}else{
