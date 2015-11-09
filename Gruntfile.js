@@ -52,6 +52,11 @@ module.exports = function(grunt) {
 					{ src: "build/bootstrap/bootstrap.js", dest: "bootstrap.js"},
 					{ src: "build/bootstrap/bootstrap.min.js", dest: "bootstrap.min.js"},
 				]
+			},
+			bootstrap_test_ready:{
+				files: [
+					{ src: "src/bootstrap/tests/wsu_default.html", dest: "distro/bootstrap/tests/wsu_default.html"}
+				]
 			}
 		},
 		jshint: {
