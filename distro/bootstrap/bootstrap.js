@@ -266,10 +266,10 @@ if((typeof(jQuery) === 'undefined' || typeof($) === 'undefined') ){// || (jQuery
 }
 var loading = null;
 function load_base(rendered_accounts) {
-	window.clearTimeout(loading);
-	loading = null;
 	loading = setTimeout(function(){
 		if((typeof(jQuery) === 'undefined'||typeof($) === 'undefined') || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
+			window.clearTimeout(loading);
+			loading = null;
 			load_base(rendered_accounts);
 		}else{
 			(function($) {
@@ -287,10 +287,17 @@ function load_base(rendered_accounts) {
 						}
 					}
 				];
-				$.each(scriptArray, function(i,v){
+				$.each(scriptArray, function(idx,script){
 					$.ajax({
-						type:"GET",dataType:"script",cache:true,url:v.src,
-						success: function() {v.exc();}
+						type:"GET",
+						dataType:"script",
+						cache:true,
+						url:script.src,
+						success: function() {
+							window.clearTimeout(loading);
+							loading = null;
+							script.exc();
+						}
 					});
 				});
 			}(jQuery));
