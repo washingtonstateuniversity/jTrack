@@ -497,8 +497,8 @@ var jtrackOp=[];
 		if(!_def(jga)) {
 			_d('FATAL: ga is not defined'); // blocked by whatever
 		} else {
-			var net,act,tar;
-			
+			var net, act, tar;
+
 			net = network!==null ? {'socialNetwork': network} : {};
 			act = action!==null ? {'socialAction': action} : {};
 			tar = target!==null ? {'socialTarget': target} : {};
@@ -535,7 +535,7 @@ var jtrackOp=[];
 			type = hitType!==null ? {'hitType': hitType} : {};
 			page = hitPage!==null ? {'page': hitPage} : {};
 			jga(ns+'send', $.extend({},type,page) );
-	
+
 			_d('Fired '+ns+'send for hitType Tracking');	
 		}
 	};
@@ -580,14 +580,16 @@ var jtrackOp=[];
 		// Add event handler to all matching elements
 		return $.each($(this),function() {
 			var jga = window[ga_name];
-			var ele,settings,overwrites,mode,alias,category,action,eventTracked,label,value,skip_internal,
-			_link,nonInteraction,callback,tasactedEvent,skip,marker,network,socialAction;
-			
-			
+			var ele, settings, overwrites, mode, alias,
+				category, action, eventTracked, label,
+				value, skip_internal, _link, nonInteraction,
+				callback, tasactedEvent, skip, marker,
+				network, socialAction;
+
 			ele			= $(this);
 			settings	= $.extend({}, $.jtrack.eventdefaults, options);
 			overwrites	= _eval(ele, settings.overwrites); // this will let one element over any from before
-				overwrites	= (overwrites === 'undefined') ? 'true' : overwrites;
+			overwrites	= (overwrites === 'undefined') ? 'true' : overwrites;
 
 			// Prevent an element from being tracked multiple times.
 			if (ele.is('.tracked') && overwrites === 'false') {
@@ -600,10 +602,10 @@ var jtrackOp=[];
 				category		= _eval(ele, settings.category);
 				action			= _eval(ele, settings.action);
 				eventTracked	= _eval(ele, settings.eventTracked);
-					action			= action===''?eventTracked:action;
+				action			= action===''?eventTracked:action;
 				//label			= _eval(ele, settings.label);
 				//value			= _eval(ele, settings.value);
-				//	value			= isNaN(value)?1:value;
+				//value			= isNaN(value)?1:value;
 				skip_internal	= _eval(ele, settings.skip_internal);
 				_link			= settings._link;
 				nonInteraction	= settings.nonInteraction;
@@ -627,11 +629,11 @@ var jtrackOp=[];
 				}
 				_d(skip?'Skipping ':'Tracking '+' event '+tasactedEvent);
 				ele.on(tasactedEvent, function(e) {
-					
+
 					if(nonInteraction!==null){
 						jga('set', 'nonInteraction', nonInteraction);
 					}
-					
+
 					_d('doing event '+tasactedEvent);
 
 					if(!skip && mode.indexOf("event")>-1 ){
@@ -640,7 +642,7 @@ var jtrackOp=[];
 						label			= _eval(ele, settings.label);
 						category		= _eval(ele, settings.category);
 						value			= _eval(ele, settings.value);
-							value			= isNaN(value)?1:value;
+						value			= isNaN(value)?1:value;
 						$.jtrack.trackEvent(ele,ga_name,ns,category, action, label, value,callback);
 					}
 					if(mode.indexOf("_social")>-1 ){
@@ -652,7 +654,7 @@ var jtrackOp=[];
 						_d('Fired _link for Tracking for _link from mode: '+mode);
 					   // Cross browser hoops.
 						var target = e.target || e.srcElement;
-						
+
 						if (target && target.href) {
 							jga(ns+'linker:decorate', target);
 						}
