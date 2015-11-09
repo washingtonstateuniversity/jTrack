@@ -33,9 +33,9 @@ function param( name , process_url ){
 }
 
 var url = document.getElementById('tracker_agent').src; 
-var _jquery_version =(param('jquery' , url) !== false ? param('jquery' , url) : '1.7.2');
+var _jquery_version =(param('jquery' , url) !== false ? param('jquery' , url) : '1.10.2');
 
-if((typeof(jQuery) === 'undefined' || typeof($) === 'undefined') || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
+if((typeof(jQuery) === 'undefined' || typeof($) === 'undefined') ){// || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
 	async_load_js('https://ajax.googleapis.com/ajax/libs/jquery/'+_jquery_version+'/jquery.min.js');
 }
 var loading = null;
