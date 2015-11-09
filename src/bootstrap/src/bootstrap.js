@@ -47,9 +47,9 @@ function load_base(rendered_accounts) {
 			load_base(rendered_accounts);
 		}else{
 			(function($) {
-				var scriptArray = [ // this is where we'd load the scriptArray list dynamicly.  Right now it's hard coded
+				var scriptArray = [
 					{
-						src:"https://repo.wsu.edu/jtrack/develop/jtrack.min.js",
+						src:"https://repo.wsu.edu/jtrack/develop/jtrack.js",
 						exc:function(){
 							// Fire tracking on all merged accounts and events with jTrack.
 							jQuery.jtrack({
