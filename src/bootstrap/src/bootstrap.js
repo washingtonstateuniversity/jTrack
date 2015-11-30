@@ -80,8 +80,35 @@ function load_base(rendered_accounts) {
 }
 
 (function($, window, analytics){
+	// Setting up defaults that will be used in cause of a half done implementation
+	var defaults = { 
+						wsuglobal:{
+							ga_code:"UA-55791317-1",
+							campus:"none",
+							college:"none",
+							unit:"none",
+							subunit:"none",
+							unit_type:"none",
+							events:[]
+						},
+						app:{
+							ga_code:false,
+							is_editor:"false",
+							events:[]
+						},
+						site:{
+							events:[]
+						}
+					};
+	// merge the default object with the provided object were needed
+	analytics = $.extend(true,defaults,analytics);
+	
+	//setting up a blank array of the accounts we will be rendering out
 	var rendered_accounts = [];
+	
+	// we are ensureing the conversion to a string from a Boolean as google will only take a string value
 	var is_editor = "undefined" !== typeof analytics.app.is_editor ? ""+analytics.app.is_editor : "false";
+	
 	// Track WSU global analytics for front end requests only.
 	if( ("undefined" === typeof analytics.app.page_view_type || "Front End" === analytics.app.page_view_type || "unknown" === analytics.app.page_view_type) &&  analytics.wsuglobal.ga_code !== false){
 		rendered_accounts = jQuery.merge( rendered_accounts , [{
@@ -99,7 +126,7 @@ function load_base(rendered_accounts) {
 					{'name':'dimension7','val': window.location.hostname },		//base site url <string>(as string)
 					{'name':'dimension8','val': analytics.wsuglobal.unit_type }	//unit type <string>
 				],
-				events: analytics.wsuglobal.events
+				events: analytics.wsuglobal.events || []
 			}
 		}] );
 	}
@@ -119,7 +146,7 @@ function load_base(rendered_accounts) {
 					{'name':'dimension5','val': analytics.app.spine_grid },         // The Spine grid layout from Customizer
 					{'name':'dimension6','val': analytics.app.spine_color }         // The color of the Spine from Customizer
 				],
-				events: analytics.app.events
+				events: analytics.app.events || []
 			}
 		}] );
 	}
@@ -134,27 +161,9 @@ function load_base(rendered_accounts) {
 				dimension:[
 					{'name':'dimension1','val': is_editor }//editor <bool>(as string)
 				],
-				events: analytics.site.events
+				events: analytics.site.events || []
 			}
 		}] );
 	}
 	load_base(rendered_accounts);
-})(jQuery, window, window.wsu_analytics || { 
-											wsuglobal:{
-												ga_code:"UA-55791317-1",
-												campus:"none",
-												college:"none",
-												unit:"none",
-												subunit:"none",
-												unit_type:"none",
-												events:[]
-											},
-											app:{
-												ga_code:false,
-												is_editor:"false",
-												events:[]
-											},
-											site:{
-												events:[]
-											}
-										} );
+})(jQuery, window, window.wsu_analytics || {} );
