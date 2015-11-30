@@ -105,7 +105,7 @@ function load_base(rendered_accounts) {
 	}
 
 	// Track app level analytics for front end and admin requests.
-	if(analytics.app.ga_code !== false){
+	if( false !== analytics.app.ga_code ){
 		rendered_accounts = jQuery.merge( rendered_accounts , [{
 			id: analytics.app.ga_code,
 			settings:{
@@ -139,4 +139,22 @@ function load_base(rendered_accounts) {
 		}] );
 	}
 	load_base(rendered_accounts);
-})(jQuery, window, window.wsu_analytics|| { wsuglobal:{}, app:{}, site:{} } );
+})(jQuery, window, window.wsu_analytics || { 
+											wsuglobal:{
+												ga_code:"UA-55791317-1",
+												campus:"none",
+												college:"none",
+												unit:"none",
+												subunit:"none",
+												unit_type:"none",
+												events:[]
+											},
+											app:{
+												ga_code:false,
+												is_editor:"false",
+												events:[]
+											},
+											site:{
+												events:[]
+											}
+										} );
