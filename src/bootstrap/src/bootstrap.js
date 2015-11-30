@@ -105,7 +105,7 @@ function load_base(rendered_accounts) {
 	}
 
 	// Track app level analytics for front end and admin requests.
-	if(analytics.app.ga_code !== false){
+	if( false !== analytics.app.ga_code ){
 		rendered_accounts = jQuery.merge( rendered_accounts , [{
 			id: analytics.app.ga_code,
 			settings:{
