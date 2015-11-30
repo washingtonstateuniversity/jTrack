@@ -365,4 +365,22 @@ function load_base(rendered_accounts) {
 		}] );
 	}
 	load_base(rendered_accounts);
-})(jQuery, window, window.wsu_analytics|| { wsuglobal:{}, app:{}, site:{} } );
+})(jQuery, window, window.wsu_analytics || { 
+											wsuglobal:{
+												ga_code:"UA-55791317-1",
+												campus:"none",
+												college:"none",
+												unit:"none",
+												subunit:"none",
+												unit_type:"none",
+												events:[]
+											},
+											app:{
+												ga_code:false,
+												is_editor:"false",
+												events:[]
+											},
+											site:{
+												events:[]
+											}
+										} );
