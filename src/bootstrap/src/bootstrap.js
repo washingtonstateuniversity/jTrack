@@ -81,7 +81,7 @@ function load_base(rendered_accounts) {
 
 (function($, window, analytics){
 	var rendered_accounts = [];
-	
+	var is_editor = "undefined" !== typeof analytics.app.is_editor ? ""+analytics.app.is_editor : "false";
 	// Track WSU global analytics for front end requests only.
 	if( ("undefined" === typeof analytics.app.page_view_type || "Front End" === analytics.app.page_view_type || "unknown" === analytics.app.page_view_type) &&  analytics.wsuglobal.ga_code !== false){
 		rendered_accounts = jQuery.merge( rendered_accounts , [{
@@ -95,7 +95,7 @@ function load_base(rendered_accounts) {
 					{'name':'dimension3','val': analytics.wsuglobal.college },	//college <string>
 					{'name':'dimension4','val': analytics.wsuglobal.unit },		//unit <string>
 					{'name':'dimension5','val': analytics.wsuglobal.subunit },	//subunit <string>
-					{'name':'dimension6','val': ""+analytics.app.is_editor },	//editor <bool>(as string)
+					{'name':'dimension6','val': is_editor },	//editor <bool>(as string)
 					{'name':'dimension7','val': window.location.hostname },		//base site url <string>(as string)
 					{'name':'dimension8','val': analytics.wsuglobal.unit_type }	//unit type <string>
 				],
@@ -132,7 +132,7 @@ function load_base(rendered_accounts) {
 				namedSpace:'siteScope',
 				cookieDomain:".wsu.edu",
 				dimension:[
-					{'name':'dimension1','val': ""+analytics.app.is_editor }//editor <bool>(as string)
+					{'name':'dimension1','val': is_editor }//editor <bool>(as string)
 				],
 				events: analytics.site.events
 			}
