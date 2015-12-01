@@ -318,7 +318,7 @@ function load_base(rendered_accounts) {
 							events:[]
 						},
 						app:{
-							ga_code:false,
+							ga_code:"UA-69906812-9",	// defaulting to the "Other" for anything we don't know or was not set.  Used to help get things lined up.
 							is_editor:"false",
 							events:[]
 						},
@@ -348,7 +348,7 @@ function load_base(rendered_accounts) {
 					{'name':'dimension3','val': analytics.wsuglobal.college },	//college <string>
 					{'name':'dimension4','val': analytics.wsuglobal.unit },		//unit <string>
 					{'name':'dimension5','val': analytics.wsuglobal.subunit },	//subunit <string>
-					{'name':'dimension6','val': is_editor },	//editor <bool>(as string)
+					{'name':'dimension6','val': is_editor },					//editor <bool>(as string)
 					{'name':'dimension7','val': window.location.hostname },		//base site url <string>(as string)
 					{'name':'dimension8','val': analytics.wsuglobal.unit_type }	//unit type <string>
 				],
@@ -365,9 +365,9 @@ function load_base(rendered_accounts) {
 				namedSpace:'appScope',
 				cookieDomain:".wsu.edu",
 				dimension:[
-					{'name':'dimension1','val': is_editor }, //editor <bool>(as string)
-					{'name':'dimension2','val': window.location.hostname }, //base site url <string>(as string)
-					{'name':'dimension3','val': window.location.protocol } // HTTP or HTTPS
+					{'name':'dimension1','val': is_editor },				//editor <bool>(as string)
+					{'name':'dimension2','val': window.location.hostname },	//base site url <string>(as string)
+					{'name':'dimension3','val': window.location.protocol }	// HTTP or HTTPS
 				],
 				events: analytics.app.events || []
 			}
@@ -382,7 +382,7 @@ function load_base(rendered_accounts) {
 				namedSpace:'siteScope',
 				cookieDomain:".wsu.edu",
 				dimension:[
-					{'name':'dimension1','val': is_editor }//editor <bool>(as string)
+					{'name':'dimension1','val': is_editor }	//editor <bool>(as string)
 				],
 				events: analytics.site.events || []
 			}
