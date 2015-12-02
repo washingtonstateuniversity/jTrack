@@ -1,6 +1,6 @@
 (function($, window, analytics){
 
-	window.wsu_analytics.wsuglobal.events = [
+	window.wsu_analytics.wsuglobal.events = jQuery.merge( window.wsu_analytics.wsuglobal.events || [] , [
 		{
 			element:"#wsu-actions-tabs button",
 			options:{
@@ -95,11 +95,11 @@
 				overwrites:"true"
 			}
 		},
-	];
+	]);
 
-	window.wsu_analytics.app.events    = [];
+	window.wsu_analytics.app.events    = jQuery.merge( window.wsu_analytics.app.events || [] , [] );
 
-	window.wsu_analytics.site.events   = [
+	window.wsu_analytics.site.events   = jQuery.merge( window.wsu_analytics.site.events || [] , [
 		{
 			element:"a[href^='http']:not([href*='wsu.edu']), .track.outbound",
 			options:{
@@ -205,5 +205,5 @@
 				overwrites:"true"
 			}
 		},
-	];
+	]);
 })(jQuery, window, window.wsu_analytics);
