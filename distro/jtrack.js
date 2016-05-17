@@ -177,51 +177,52 @@ var jtrackOp=[];
         debug : false
     };
     $.jtrack.eventdefaults = {
-        mode			: "event", // this is a CSV str ie: "event,_link"
-        category		: function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
-        action			: function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
-        label			: function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
-        value			: function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():null; },
-        eventTracked	: 'click',
-        skip_internal	: false,
-        overwrites		: true,
+        mode            : "event", // this is a CSV str ie: "event,_link"
+        category        : function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
+        action          : function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
+        label           : function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
+        value           : function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():null; },
+        eventTracked    : 'click',
+        skip_internal   : false,
+        overwrites      : true,
 
-        alias			: null,
-        nonInteraction	: null,
-        callback		: function(){}
+        alias           : null,
+        nonInteraction  : null,
+        callback        : function(){},
+        ec              : false
     };
     $.jtrack.accounts={};
     $.jtrack.settings={};
     $.jtrack.defaultsettings={
-        ga_name			: 'ga',
-        namedSpace		: false,// String
+        ga_name         : 'ga',
+        namedSpace      : false,// String
 
-        cookieName		: false,// String
-        cookieDomain	: window.location.host,// String
-        cookieExpires	: false,// String
-        cookiePath		: '/',// String
+        cookieName      : false,// String
+        cookieDomain    : window.location.host,// String
+        cookieExpires   : false,// String
+        cookiePath      : '/',// String
 
-        autoLink		: true,// Bool
-        autoLinkDomains	: [],// Array(String)
+        autoLink        : true,// Bool
+        autoLinkDomains : [],// Array(String)
 
-        dimension		: [],// Array(Objects) {'name':'foo','val':'bar'}
-        metrics			: [],// Array(Objects) {'name':'foo','val':'bar'}
+        dimension       : [],// Array(Objects) {'name':'foo','val':'bar'}
+        metrics         : [],// Array(Objects) {'name':'foo','val':'bar'}
 
-        location		: null,// String
-        hostname		: null,// String
+        location        : null,// String
+        hostname        : null,// String
 
-        experimentID	: null,// String
-        expVar			: null,// Int
+        experimentID    : null,// String
+        expVar          : null,// Int
 
-        sampleRate		: false,// Int
-        displayfeatures	: false,// Bool
-        ec          	: false,// Bool
-        ecommerce		: false,// Bool
-        linkid			: true,// Bool
+        sampleRate      : false,// Int
+        displayfeatures : false,// Bool
+        ec              : false,// Bool
+        ecommerce       : false,// Bool
+        linkid          : true,// Bool
 
-        userId			: false,// Bool
-        events			: false,// Bool
-        force_campaign	: false
+        userId          : false,// Bool
+        events          : false,// Bool
+        force_campaign  : false
     };
 
     $.jtrack.init_analytics = function(ga_name,callback) {
