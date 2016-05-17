@@ -510,7 +510,7 @@ var jtrackOp=[];
     };
 
     /**
-    * Tracks socialnetworks using the given parameters.
+    * Tracks userId.
     *
     * The trackSocial method takes four arguments:
     * ele     - Object  :: jQuery target object
@@ -530,6 +530,53 @@ var jtrackOp=[];
             }
         }
     };
+
+
+    /**
+    * Tracks userId.
+    *
+    * The trackSocial method takes four arguments:
+    * ele       - Object  :: jQuery target object
+    * ga_name   - String  :: name of the ga object
+    * ns        - String  :: the name space of the ga tracker
+    * ec_object - Object  :: object with all parameters in tow
+    */
+    $.jtrack.setEC = function(ele, ga_name, ns, ec_object) {
+        var jga = window[ga_name];
+        if(!_def(jga)) {
+            _d('FATAL: ga is not defined'); // blocked by whatever
+        } else {
+            /* {
+                data : {
+                    type: "addProduct"// per https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce
+                    data:{
+                        id:''
+                        ETC...
+                    }
+                },
+                action:{
+                    type: 'click', //detail / add /etc per https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce#action-types
+                    data:{
+                        id:''
+                        ETC... per https://developers.google.com/analytics/devguides/collection/analyticsjs/enhanced-ecommerce#action-data
+                    }
+                }
+            }*/
+
+            if( ""!== ec_object.data.type && false !== ec_object.data.type){
+                jga(ns+'ec:'+ec_object.data.type, ec_object.data.data);
+            }
+
+            if( ""!== ec_object.action.type && false !== ec_object.action.type){
+                ec_object.data.data = ec_object.action.data || {};
+                jga(ns+'ec:setAction', ec_object.action.type, ec_object.action.data);
+            }
+
+            _d('Fired '+ns+'send for Social Tracking');
+        }
+    };
+
+
 
     /**
     * Tracks a pageview using the given uri.
@@ -607,7 +654,7 @@ var jtrackOp=[];
                 category, action, eventTracked, label,
                 value, skip_internal, _link, nonInteraction,
                 callback, tasactedEvent, skip, marker,
-                network, socialAction;
+                network, socialAction, ec;
 
             ele			= $(this);
             settings	= $.extend({}, $.jtrack.eventdefaults, options);
@@ -633,6 +680,7 @@ var jtrackOp=[];
                 _link			= settings._link;
                 nonInteraction	= settings.nonInteraction;
                 callback		= settings.callback;
+                ec              = settings.ec;
 
                 ele.attr( 'role' , eventTracked+'_'+action+'_'+category);
                 tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
@@ -659,8 +707,13 @@ var jtrackOp=[];
 
                     _d('doing event '+tasactedEvent);
 
-                    if(false !== settings.userId){
-                        $.jtrack.setUserId(ele,ga_name,ns,settings.userId);
+
+                    if(false !== $.jtrack.settings.userId){
+                        $.jtrack.setUserId(ele, ga_name, ns, $.jtrack.settings.userId);
+                    }
+
+                    if( false !== settings.ec && ! $.isEmptyObject(settings.ec) ){
+                        $.jtrack.setEC(ele, ga_name, ns, settings.ec);
                     }
 
                     if(!skip && mode.indexOf("event")>-1 ){
