@@ -373,6 +373,11 @@ var jtrackOp=[];
                 }
             }
 
+            if(setting.ec){
+                jga('require', 'ec');
+            }
+
+
             jga(ns+'send', 'pageview',{
                 'hitCallback': function() {
                 //if(setting.clearCampaignUrls){
@@ -383,9 +388,7 @@ var jtrackOp=[];
             });
 
 
-            if(setting.ec){
-                jga('require', 'ec');
-            }
+
 
             if(setting.ecommerce){
                 jga(ns+'require', 'ecommerce');
