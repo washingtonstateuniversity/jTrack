@@ -566,11 +566,21 @@ var jtrackOp=[];
             }*/
 
             if( ""!== ec_object.data.type && false !== ec_object.data.type){
+                if(typeof(ec_object.data.data)==="object"){
+                    $.each(ec_object.data.data,function(key,val){
+                        ec_object.data.data[key]=_eval(ele, val);
+                    });
+                }
                 jga(ns+'ec:'+ec_object.data.type, ec_object.data.data);
             }
 
             if( ""!== ec_object.action.type && false !== ec_object.action.type){
-                ec_object.data.data = ec_object.action.data || {};
+                ec_object.action.data = ec_object.action.data || {};
+                if(typeof(ec_object.action.data)==="object"){
+                    $.each(ec_object.action.data,function(key,val){
+                        ec_object.action.data[key]=_eval(ele, val);
+                    });
+                }
                 jga(ns+'ec:setAction', ec_object.action.type, ec_object.action.data);
             }
 
