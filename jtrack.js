@@ -215,6 +215,7 @@ var jtrackOp=[];
 
         sampleRate		: false,// Int
         displayfeatures	: false,// Bool
+        ec          	: false,// Bool
         ecommerce		: false,// Bool
         linkid			: true,// Bool
 
