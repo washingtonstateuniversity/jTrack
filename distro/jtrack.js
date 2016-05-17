@@ -372,7 +372,7 @@ var jtrackOp=[];
             }
 
             if( false !== setting.ec ){
-                jga('require', 'ec');
+                jga(ns+'require', 'ec');
             }
 
             if( "object" === typeof(setting.ec) ){
