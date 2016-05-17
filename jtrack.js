@@ -381,7 +381,9 @@ var jtrackOp=[];
             });
 
 
-
+            if(setting.ec){
+                jga('require', 'ec');
+            }
 
             if(setting.ecommerce){
                 jga(ns+'require', 'ecommerce');
