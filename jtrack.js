@@ -375,7 +375,7 @@ var jtrackOp=[];
                 jga('require', 'ec');
             }
 
-            if( false !== setting.ec && ! $.isEmptyObject(setting.ec) ){
+            if( "object" === typeof(setting.ec) ){
                 $.jtrack.setEC(null, ga_name, ns, setting.ec);
             }
 
