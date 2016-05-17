@@ -16,10 +16,10 @@
 * $('a').track() - Adds event tracking to element(s).
 * $.timePageLoad() - Measures the time it takes  an event using the given parameters.
 *
-* Copyright (c) 2011-2015 Jeremy Bass
-*               2014-2015 Washington State University
+* Copyright (c) 2011-2016 Jeremy Bass
+*               2014-2016 Washington State University
 *
-* Version 1.3.0
+* Version 1.5.0
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
@@ -327,13 +327,12 @@ var jtrackOp=[];
                 $.each(setting.dimension,function(idx,obj){
                     jga(ns+'set', obj.name, obj.val);
                 });
-
             }
+
             if(setting.metrics.length>0){
                 $.each(setting.metrics,function(idx,obj){
                     jga(ns+'set', obj.name, obj.val);
                 });
-
             }
 
             if(autoLink!=={}){
@@ -350,7 +349,6 @@ var jtrackOp=[];
             if(setting.displayfeatures){
                 jga(ns+'require', 'displayfeatures');
             }
-
 
             if(setting.force_campaign!==false){
                 if($.isPlainObject(setting.force_campaign)){
@@ -389,8 +387,6 @@ var jtrackOp=[];
                 }
               }
             });
-
-
 
 
             if(setting.ecommerce){
