@@ -219,6 +219,7 @@ var jtrackOp=[];
         ecommerce		: false,// Bool
         linkid			: true,// Bool
 
+        userId			: false,// Bool
         events			: false,// Bool
         force_campaign	: false
     };
@@ -509,6 +510,28 @@ var jtrackOp=[];
     };
 
     /**
+    * Tracks socialnetworks using the given parameters.
+    *
+    * The trackSocial method takes four arguments:
+    * ele     - Object  :: jQuery target object
+    * ga_name - String  :: name of the ga object
+    * ns      - String  :: the name space of the ga tracker
+    * userId  - String  :: the user id if provided
+    */
+    $.jtrack.setUserId = function(ele, ga_name, ns, userId) {
+        var jga = window[ga_name];
+        if(!_def(jga)) {
+            _d('FATAL: ga is not defined'); // blocked by whatever
+        } else {
+            userId = null !== userId && "" !== userId ? userId : false;
+            if(false !== userId){
+                jga(ns+'set', 'userId', userId );
+                _d('Fired '+ns+'send for Social Tracking');
+            }
+        }
+    };
+
+    /**
     * Tracks a pageview using the given uri.
     *
     */
@@ -635,6 +658,10 @@ var jtrackOp=[];
                     }
 
                     _d('doing event '+tasactedEvent);
+
+                    if(false !== settings.userId){
+                        $.jtrack.setUserId(ele,ga_name,ns,settings.userId);
+                    }
 
                     if(!skip && mode.indexOf("event")>-1 ){
                         //rechecking the vales here as it's on `click` not on inital setup
