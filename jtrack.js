@@ -373,10 +373,13 @@ var jtrackOp=[];
                 }
             }
 
-            if(setting.ec){
+            if( false !== setting.ec ){
                 jga('require', 'ec');
             }
 
+            if( false !== setting.ec && ! $.isEmptyObject(setting.ec) ){
+                $.jtrack.setEC(null, ga_name, ns, setting.ec);
+            }
 
             jga(ns+'send', 'pageview',{
                 'hitCallback': function() {
