@@ -181,7 +181,7 @@ var jtrackOp=[];
         category        : function(ele) { return (ele[0].hostname === location.hostname) ? 'internal':'external'; },
         action          : function(ele) { return typeof(ele.attr('alt'))!=='undefined' ? ele.attr('alt'):''; },
         label           : function(ele) { return typeof(ele.text())!=='undefined' ? ele.attr('href'):''; },
-        value           : function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():null; },
+        value           : function(ele) { return typeof(ele.text())!=='undefined' ? ele.text():0; },
         eventTracked    : 'click',
         skip_internal   : false,
         overwrites      : true,
