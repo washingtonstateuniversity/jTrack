@@ -1,6 +1,6 @@
 {
   "name": "jtrack",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "bootstrap_version": "0.4.0",
   "description": "Automates the application of Google analytics including events and indexs all from json",
   "main": "Gruntfile.js",

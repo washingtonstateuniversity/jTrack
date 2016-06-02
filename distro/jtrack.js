@@ -19,7 +19,7 @@
 * Copyright (c) 2011-2016 Jeremy Bass
 *               2014-2016 Washington State University
 *
-* Version 1.5.0
+* Version 1.5.1
 *
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
