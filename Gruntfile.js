@@ -11,12 +11,12 @@ module.exports = function(grunt) {
 				banner: '/*! <%= pkg.name %> (<%= pkg.version %>) <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 			},
 			min: {
-				src: 'build/jtrack.js',
-				dest: 'build/jtrack.min.js'
+				src: 'distro/jtrack.js',
+				dest: 'distro/jtrack.min.js'
 			},
 			bootstrap_min: {
-				src: 'build/bootstrap/bootstrap.js',
-				dest: 'build/bootstrap/bootstrap.min.js'
+				src: 'distro/bootstrap/bootstrap.js',
+				dest: 'distro/bootstrap/bootstrap.min.js'
 			}
 		},
 		concat:{
@@ -27,28 +27,16 @@ module.exports = function(grunt) {
 					"src/bootstrap/src/default_ui-events.js",
 					"src/bootstrap/src/bootstrap.js"
 				],
-				dest: "build/bootstrap/bootstrap.js"
+				dest: "distro/bootstrap/bootstrap.js"
 			},
 			scripts: {
 				src: [
 					"src/jtrack.js"
 				],
-				dest: "build/jtrack.js"
+				dest: "distro/jtrack.js"
 			}
 		},
 		copy:{
-			ready:{
-				files: [
-					{ src: "build/jtrack.js", dest: "distro/jtrack.js"},
-					{ src: "build/jtrack.min.js", dest: "distro/jtrack.min.js"}
-				]
-			},
-			bootstrap_ready:{
-				files: [
-					{ src: "build/bootstrap/bootstrap.js", dest: "distro/bootstrap/bootstrap.js"},
-					{ src: "build/bootstrap/bootstrap.min.js", dest: "distro/bootstrap/bootstrap.min.js"}
-				]
-			},
 			bootstrap_test_ready:{
 				files: [
 					{ src: "src/bootstrap/tests/wsu_default.html", dest: "distro/bootstrap/tests/wsu_default.html"}
