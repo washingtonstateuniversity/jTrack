@@ -11,8 +11,12 @@
     "type": "git",
     "url": "git@github.com:washingtonstateuniversity/jTrack.git"
   },
-  "author": "jeremyBass",
-  "license": "GDL",
+  "author": "Washington State University",
+  "contributors": [
+	  { "name": "jeremyBass" },
+	  { "name": "jeremyfelt" }
+  ],
+  "license": "MIT",
   "private": true,
   "devDependencies": {
     "grunt": "~1.0.1",
