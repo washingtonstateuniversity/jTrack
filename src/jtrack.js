@@ -185,6 +185,7 @@ var jtrackOp=[];
         eventTracked    : 'click',
         skip_internal   : false,
         overwrites      : true,
+        set_role        : false,
 
         alias           : null,
         nonInteraction  : null,
@@ -695,7 +696,10 @@ var jtrackOp=[];
                 callback		= settings.callback;
                 ec              = settings.ec;
 
-                ele.attr( 'role' , eventTracked+'_'+action+'_'+category);
+                if( false !== settings.set_role ){
+                    ele.attr( 'role' , eventTracked+'_'+action+'_'+category);
+                }
+
                 tasactedEvent = eventTracked + '.' + (alias==="undefined" || alias===null ? 'jtrack': alias);
 
                 skip = skip_internal && (ele[0].hostname === location.hostname);
