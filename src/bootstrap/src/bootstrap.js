@@ -2,6 +2,7 @@
 * WSU TRACKING BOOTSCRIPT
 * Version 0.1
 * Copyright (c) 2011-12 Jeremy Bass
+* Copyright (c) 2012-16 Washington State University
 * Licensed under the MIT license:
 * http://www.opensource.org/licenses/mit-license.php
 */
@@ -32,7 +33,7 @@ function param( name , process_url ){
 	}
 }
 
-var url = document.getElementById('tracker_agent').src; 
+var url = document.getElementById('tracker_agent').src;
 var _jquery_version =(param('jquery' , url) !== false ? param('jquery' , url) : '1.10.2');
 
 if(  (typeof(jQuery) === 'undefined' || (typeof($) === 'undefined' && typeof(jQuery) === 'undefined') ) ){// || (jQuery().jquery !== _jquery_version || jQuery.fn.jquery !== _jquery_version) ){
@@ -81,7 +82,7 @@ function load_base(rendered_accounts) {
 
 (function($, window, analytics){
 	// Setting up defaults that will be used in cause of a half done implementation
-	var defaults = { 
+	var defaults = {
 						wsuglobal:{
 							ga_code:"UA-55791317-1",
 							campus:"none",
@@ -102,13 +103,13 @@ function load_base(rendered_accounts) {
 					};
 	// merge the default object with the provided object were needed
 	analytics = $.extend(true,defaults,analytics);
-	
+
 	//setting up a blank array of the accounts we will be rendering out
 	var rendered_accounts = [];
-	
+
 	// we are ensureing the conversion to a string from a Boolean as google will only take a string value
 	var is_editor = "undefined" !== typeof analytics.app.is_editor ? ""+analytics.app.is_editor : "false";
-	
+
 	// Track WSU global analytics for front end requests only.
 	if( ("undefined" === typeof analytics.app.page_view_type || "Front End" === analytics.app.page_view_type || "unknown" === analytics.app.page_view_type) &&  analytics.wsuglobal.ga_code !== false){
 		rendered_accounts = jQuery.merge( rendered_accounts , [{
